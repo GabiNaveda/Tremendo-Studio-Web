@@ -898,6 +898,10 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
   .porta-wide   { grid-column: span 2; grid-row: span 1; }
   .porta-square { grid-column: span 1; grid-row: span 1; }
 }
+@media (max-width: 600px) {
+  .porta-grid { grid-template-columns: 1fr; grid-auto-rows: 260px; }
+  .porta-tall, .porta-wide, .porta-square { grid-column: span 1; grid-row: span 1; }
+}
 
 /* ── HOME CTA ────────────────────────────────────────────── */
 .home-cta {
@@ -1373,6 +1377,8 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
   border-color: var(--orange);
   color: var(--cream);
 }
+.carousel-block.light .dot { border-color: var(--burnt); color: var(--burnt); }
+.carousel-block.light .dot.on { background: var(--ink); border-color: var(--ink); color: var(--cream); }
 .dot-tier { font-size: 10px; opacity: 0.7; }
 .dot-name { font-size: 13px; font-weight: 600; }
 
@@ -2514,6 +2520,9 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
 .showreel-aster-1 { top: 22%; left: 8%; }
 .showreel-aster-2 { bottom: 18%; right: 12%; }
 
+.showreel-bg-mobile { display: none; }
+.showreel-bg-desktop { display: inline; }
+
 @media (max-width: 720px) {
   .showreel { padding: 6rem 1.25rem 7rem; }
   .showreel-stage { min-height: 600px; }
@@ -2521,4 +2530,25 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
   .showreel-meta-l { left: 1.25rem; }
   .showreel-meta-r { right: 1.25rem; }
   .showreel-aster-1, .showreel-aster-2 { display: none; }
+}
+@media (max-width: 600px) {
+  /* 1. Hero: TREMENDO on 2nd line, no image scroll effect */
+  .hero-h1 { font-size: clamp(1.9rem, 9vw, 3.5rem); }
+  .hero-lede { white-space: normal; }
+
+  /* 4. Showreel: smaller phone, TRE/MEN/DO behind */
+  .showreel { padding: 4rem 1.25rem 0; overflow: visible; isolation: auto; }
+  .showreel-stage { min-height: 480px; }
+  .phone { width: 200px; }
+  .showreel-bg {
+    font-size: clamp(90px, 26vw, 130px);
+    line-height: 0.82;
+    top: 6%;
+    text-align: left;
+    letter-spacing: -0.01em;
+  }
+  .showreel-bg-desktop { display: none; }
+  .showreel-bg-mobile { display: block; }
+  .showreel-bg-2 { display: none; }
+  .showreel-meta { display: none; }
 }

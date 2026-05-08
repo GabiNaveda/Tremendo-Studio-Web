@@ -7,9 +7,11 @@ const { useEffect, useRef, useState } = React;
 
 function Hero() {
   const wrapRef = useRef(null);
-  const [progress, setProgress] = useState(0); // 0 = hidden, 1 = fully visible
+  const isMobile = window.innerWidth <= 600;
+  const [progress, setProgress] = useState(isMobile ? 1 : 0);
 
   useEffect(() => {
+    if (isMobile) return;
     let revealed = false;
     const onScroll = () => {
       const y = window.scrollY;
@@ -17,7 +19,6 @@ function Hero() {
       const end = 480;
       const p = Math.max(0, Math.min(1, (y - start) / (end - start)));
       if (p > 0.95) revealed = true;
-      // Once revealed, never go below 0.55 — image stays softly visible
       const floor = revealed ? 0.55 : 0;
       setProgress(Math.max(floor, p));
     };
@@ -256,7 +257,10 @@ function Portafolio() {
 function Showreel() {
   return (
     <section className="showreel">
-      <span className="display showreel-bg" aria-hidden="true">TREMENDO</span>
+      <span className="display showreel-bg" aria-hidden="true">
+        <span className="showreel-bg-desktop">TREMENDO</span>
+        <span className="showreel-bg-mobile">TRE<br/>MEN<br/>DO</span>
+      </span>
       <span className="display showreel-bg showreel-bg-2" aria-hidden="true">
         <em className="serif-ital">en movimiento</em>
       </span>
