@@ -2344,6 +2344,7 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
   .hero-meta, .hero-scroll, .hero-stamp { display: none; }
   .manifiesto, .porta, .home-cta, .pillar-block, .academia,
   .nosotras-def, .nosotras-tres, .team-section, .page-hero,
+  .hablemos-meta { grid-template-columns: 1fr; }
   .hablemos-hero, .hablemos-form-wrap, .page-foot {
     padding-left: 1.25rem; padding-right: 1.25rem;
   }
