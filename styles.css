@@ -2070,7 +2070,7 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
 .hablemos-meta {
   margin-top: 3rem;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 1.5rem;
   border-top: 1px solid rgba(28, 28, 27, 0.15);
   padding-top: 2rem;

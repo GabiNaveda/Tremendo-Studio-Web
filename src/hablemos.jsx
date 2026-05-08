@@ -80,7 +80,7 @@ function Hablemos() {
           <div>
             <span className="eyebrow">Ubicación</span>
             <span className="serif-ital">Sin Fronteras.</span>
-            <p style={{ marginTop: "0.5rem", fontSize: "13px", opacity: 0.7, maxWidth: 320, lineHeight: 1.6 }}>
+            <p style={{ marginTop: "0.5rem", fontSize: "13px", opacity: 0.7, lineHeight: 1.6 }}>
               Sede en México, alcance mundial. Trabajamos remoto para marcas que buscan algo tremendo.
             </p>
           </div>
