@@ -31,7 +31,7 @@ function Hero() {
     <section className="hero" ref={wrapRef}>
       <div className="hero-photo-wrap">
         <img
-          src="assets/team-photo.png"
+          src={isMobile ? "assets/team-photo-mobile.png" : "assets/team-photo.png"}
           alt="Jos, Gabi y Dani — Tremendo Studio"
           className="hero-photo loaded"
           style={{
