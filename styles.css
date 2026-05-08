@@ -1304,6 +1304,32 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
 }
 .pkg-feats svg { flex-shrink: 0; opacity: 0.85; transform: translateY(3px); }
 
+.pkg-savings {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 1rem;
+}
+.pkg-savings-icon {
+  color: var(--orange);
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.pkg-savings-text {
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.85;
+  margin: 0;
+}
+.carousel-block.light .pkg-savings {
+  background: rgba(28, 28, 27, 0.05);
+  border-color: rgba(28, 28, 27, 0.15);
+}
 .pkg-btn {
   width: 100%;
   justify-content: center;

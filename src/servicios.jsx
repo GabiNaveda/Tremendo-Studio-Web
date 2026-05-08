@@ -20,13 +20,16 @@ const BRANDING_PKG = [
 const CONTENT_PKG = [
 { tier: "TR-1", name: "Pack Básico de Contenido", price: "$5,700", unit: "MXN / mes", tag: "básico",
   blurb: "El impulso visual que tu feed pide a gritos.",
-  features: ["10 artes estáticos", "2 videos editados", "1 shooting cada 2 meses"] },
+  features: ["10 artes estáticos", "2 videos editados", "1 shooting cada 2 meses"],
+  savings: "Ahorra $1,500 MXN mensuales enviándonos tu propio material visual (fotos/videos). *No incluye shooting." },
 { tier: "TR-2", name: "Pack Plus de Contenido", price: "$8,500", unit: "MXN / mes", tag: "el sweet spot",
   blurb: "Para cuando la marca ya camina y quiere correr.",
-  features: ["15 artes estáticos", "4 videos editados", "6 stories interactivos", "Estrategia personalizada", "1 shooting mensual"] },
+  features: ["15 artes estáticos", "4 videos editados", "6 stories interactivos", "Estrategia personalizada", "1 shooting mensual"],
+  savings: "Ahorra $2,000 MXN mensuales enviándonos tu propio material visual (fotos/videos). *No incluye shooting." },
 { tier: "TR-3", name: "Pack Premium de Contenido", price: "$12,000", unit: "MXN / mes", tag: "pro",
   blurb: "Estrategia omnicanal. Marca siempre visible.",
-  features: ["20 artes estáticos", "6 videos profesionales", "8 stories interactivos", "Estrategia personalizada", "1 shooting mensual", "Reporte de métricas mensual"] }];
+  features: ["20 artes estáticos", "6 videos profesionales", "8 stories interactivos", "Estrategia personalizada", "1 shooting mensual", "Reporte de métricas mensual"],
+  savings: "Ahorra $2,000 MXN mensuales enviándonos tu propio material visual (fotos/videos). *No incluye shooting." }];
 
 
 // ──────────────────────────────────────────────────────────
@@ -162,6 +165,12 @@ function PkgCard({ pkg, isActive, wrap, variant, accent, onClick }) {
               </li>
           )}
           </ul>
+          {pkg.savings && (
+            <div className="pkg-savings">
+              <span className="pkg-savings-icon">✦</span>
+              <p className="pkg-savings-text">{pkg.savings}</p>
+            </div>
+          )}
           <a
             className="btn pkg-btn"
             href={"https://wa.me/525548900185?text=" + encodeURIComponent("Hola! Me interesa el paquete " + pkg.name + " de Tremendo Studio 🙌")}
