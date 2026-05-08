@@ -142,42 +142,45 @@ function Manifiesto() {
 
 // Portfolio — image grid (placeholders editoriales hasta que el usuario suba reales)
 const PORTFOLIO = [
-{ id: "01", name: "Privé", cat: "Branding", tag: "Pilates Room", size: "tall",
+{ id: "01", name: "Privé", cat: "Branding + Content", tag: "Estudio de Pilates", size: "tall",
   frames: [
   { src: "assets/portfolio/prive-1.png" },
   { src: "assets/portfolio/prive-4.png" },
   { src: "assets/portfolio/prive-3.png" },
   { src: "assets/portfolio/prive-2.png" }]
 },
-{ id: "02", name: "Barra Nocturna", cat: "Content", tag: "F&B", size: "wide",
+{ id: "02", name: "Barisca", cat: "Branding", tag: "Cafetería", size: "wide",
   frames: [
-  { bg: "var(--ink)", fg: "var(--orange)", label: "Barra Nocturna" },
-  { bg: "#2a1410", fg: "var(--cream)", label: "Reel 01" },
-  { bg: "var(--orange)", fg: "var(--ink)", label: "Feed" }]
+  { src: "assets/portfolio/barisca-1.png" },
+  { src: "assets/portfolio/barisca-2.png" },
+  { src: "assets/portfolio/barisca-3.png" },
+  { src: "assets/portfolio/barisca-4.png" }]
 },
-{ id: "03", name: "Casa Lina", cat: "Branding + Content", tag: "Home", size: "square",
+{ id: "03", name: "Snakd", cat: "Branding + Content", tag: "Snacks", size: "square",
   frames: [
-  { bg: "var(--cream-deep)", fg: "var(--ink)", label: "Casa Lina" },
-  { bg: "var(--cream-soft)", fg: "var(--burnt)", label: "Manual" },
-  { bg: "var(--ink)", fg: "var(--cream)", label: "Lookbook" }]
+  { src: "assets/portfolio/snakd-1.png" },
+  { src: "assets/portfolio/snakd-2.png" },
+  { src: "assets/portfolio/snakd-3.png" }]
 },
-{ id: "04", name: "Taller Norte", cat: "Branding", tag: "Moda", size: "tall",
+{ id: "04", name: "Bueno Verte", cat: "Branding", tag: "Social Room", size: "tall",
   frames: [
-  { bg: "var(--burnt)", fg: "var(--cream)", label: "Taller Norte" },
-  { bg: "var(--ink)", fg: "var(--orange)", label: "Logotipo" },
-  { bg: "var(--cream-soft)", fg: "var(--ink)", label: "Etiquetas" }]
+  { src: "assets/portfolio/buenoverte-1.png" },
+  { src: "assets/portfolio/buenoverte-2.png" },
+  { src: "assets/portfolio/buenoverte-3.png" },
+  { src: "assets/portfolio/buenoverte-4.png" }]
 },
-{ id: "05", name: "Forma Libre", cat: "Content", tag: "Yoga", size: "wide",
+{ id: "05", name: "Misión", cat: "Content", tag: "Restaurante", size: "wide",
   frames: [
-  { bg: "var(--cream-soft)", fg: "var(--burnt)", label: "Forma Libre" },
-  { bg: "var(--orange)", fg: "var(--cream)", label: "Stories" },
-  { bg: "var(--cream-deep)", fg: "var(--ink)", label: "Feed mensual" }]
+  { src: "assets/portfolio/mision-1.png" },
+  { src: "assets/portfolio/mision-2.png" },
+  { src: "assets/portfolio/mision-3.png" },
+  { src: "assets/portfolio/mision-4.png" }]
 },
-{ id: "06", name: "Quiosco Solar", cat: "Branding", tag: "Heladería", size: "square",
+{ id: "06", name: "Yokō", cat: "Branding + Content", tag: "Matcha Café", size: "square",
   frames: [
-  { bg: "var(--ink)", fg: "var(--cream)", label: "Quiosco Solar" },
-  { bg: "var(--orange)", fg: "var(--ink)", label: "Empaque" },
-  { bg: "var(--cream-deep)", fg: "var(--burnt)", label: "Cartéles" }]
+  { src: "assets/portfolio/yoko-1.png" },
+  { src: "assets/portfolio/yoko-2.png" },
+  { src: "assets/portfolio/yoko-3.png" }]
 }];
 
 
