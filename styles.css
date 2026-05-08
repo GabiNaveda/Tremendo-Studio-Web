@@ -2367,7 +2367,7 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
     padding-top: 1.5rem;
   }
   .nosotras-hero-right .phone { width: 190px; }
-  .nosotras-bg-word span { font-size: clamp(130px, 47vw, 190px); }
+  .nosotras-bg-word span { font-size: clamp(165px, 57vw, 240px); }
 }
 
 /* ── SHOWREEL ────────────────────────────────────────────── */
