@@ -169,14 +169,14 @@ const PORTFOLIO = [
   { src: "assets/portfolio/buenoverte-3.png" },
   { src: "assets/portfolio/buenoverte-4.png" }]
 },
-{ id: "05", name: "Misión", cat: "Content", tag: "Restaurante", size: "wide",
+{ id: "05", name: "Misión", cat: "Content", tag: "Restaurante", size: "tall",
   frames: [
   { src: "assets/portfolio/mision-1.png" },
   { src: "assets/portfolio/mision-2.png" },
   { src: "assets/portfolio/mision-3.png" },
   { src: "assets/portfolio/mision-4.png" }]
 },
-{ id: "06", name: "Yokō", cat: "Branding + Content", tag: "Matcha Café", size: "square",
+{ id: "06", name: "Yokō", cat: "Branding + Content", tag: "Matcha Café", size: "wide",
   frames: [
   { src: "assets/portfolio/yoko-1.png" },
   { src: "assets/portfolio/yoko-2.png" },
