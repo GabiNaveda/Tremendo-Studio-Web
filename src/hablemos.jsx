@@ -24,8 +24,6 @@ const WHENS = ["Ayer", "Este mes", "En 1–3 meses", "Todavía explorando"];
 
 function Hablemos() {
   const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -38,26 +36,23 @@ function Hablemos() {
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   const pick = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setSending(true);
-    setError(false);
-    try {
-      const res = await fetch("https://formspree.io/f/mqenypwg", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(form),
-      });
-      if (res.ok) {
-        setSent(true);
-      } else {
-        setError(true);
-      }
-    } catch (_) {
-      setError(true);
-    } finally {
-      setSending(false);
-    }
+    const lines = [
+      "¡Hola! 👋 Nuevo mensaje desde Tremendo Studio:",
+      "",
+      `*Nombre:* ${form.name}`,
+      `*Email:* ${form.email}`,
+      "",
+      `*Proyecto:* ${form.project}`,
+      form.pkg    ? `*Paquete:* ${form.pkg}`       : "",
+      form.budget ? `*Presupuesto:* ${form.budget}` : "",
+      form.when   ? `*¿Para cuándo?:* ${form.when}` : "",
+      form.heard  ? `*¿Cómo nos encontró?:* ${form.heard}` : "",
+    ].filter((l, i) => i < 5 || l !== "");
+    const msg = encodeURIComponent(lines.join("\n"));
+    window.open("https://wa.me/525548900185?text=" + msg, "_blank");
+    setSent(true);
   };
 
   if (sent) {
@@ -211,17 +206,12 @@ function Hablemos() {
           </div>
 
           <div className="submit-row">
-            <button className="btn" type="submit" disabled={sending}>
-              {sending ? "Enviando…" : <>Enviar mensaje <Star size={12} /></>}
+            <button className="btn" type="submit">
+              Enviar mensaje <Star size={12} />
             </button>
             <p className="serif-ital submit-note">
               Hablemos, <strong>las tres</strong> escuchamos.
             </p>
-            {error && (
-              <p style={{ color: "var(--orange)", fontSize: "14px", marginTop: "0.5rem" }}>
-                Algo salió mal. Intenta de nuevo o escríbenos directo a hola@tremendostudio.mx
-              </p>
-            )}
           </div>
         </form>
 
