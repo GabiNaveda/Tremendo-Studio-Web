@@ -1377,7 +1377,7 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
   border-color: var(--orange);
   color: var(--cream);
 }
-.carousel-block.light .dot { border-color: var(--burnt); color: var(--burnt); }
+.carousel-block.light .dot { border-color: rgba(242, 218, 198, 0.5); color: var(--cream); }
 .carousel-block.light .dot.on { background: var(--ink); border-color: var(--ink); color: var(--cream); }
 .dot-tier { font-size: 10px; opacity: 0.7; }
 .dot-name { font-size: 13px; font-weight: 600; }
@@ -2536,16 +2536,25 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
   .hero-h1 { font-size: clamp(1.9rem, 9vw, 3.5rem); }
   .hero-lede { white-space: normal; }
 
-  /* 4. Showreel: smaller phone, TRE/MEN/DO behind */
+  /* 2. Carousel controls: minimal and centered */
+  .carousel-head { align-items: center; text-align: center; }
+  .carousel-controls { width: 100%; justify-content: center; gap: 1.5rem; }
+  .cc-btn { width: 36px; height: 36px; font-size: 15px; border-width: 1px; }
+  .cc-count { font-size: 15px; min-width: 52px; }
+
+  /* 3. Showreel: smaller phone, TRE/MEN/DO centered behind */
   .showreel { padding: 4rem 1.25rem 0; overflow: visible; isolation: auto; }
   .showreel-stage { min-height: 480px; }
-  .phone { width: 200px; }
+  .phone { width: 155px; }
   .showreel-bg {
-    font-size: clamp(90px, 26vw, 130px);
+    font-size: clamp(80px, 24vw, 115px);
     line-height: 0.82;
-    top: 6%;
-    text-align: left;
+    top: 4%;
+    text-align: center;
     letter-spacing: -0.01em;
+    width: 100%;
+    transform: none;
+    left: 0;
   }
   .showreel-bg-desktop { display: none; }
   .showreel-bg-mobile { display: block; }
