@@ -157,8 +157,6 @@ function Footer({ go }) {
             <ul>
               <li><a href="#" onClick={(e) => e.preventDefault()}>Instagram ↗</a></li>
               <li><a href="#" onClick={(e) => e.preventDefault()}>TikTok ↗</a></li>
-              <li><a href="#" onClick={(e) => e.preventDefault()}>Behance ↗</a></li>
-              <li><a href="#" onClick={(e) => e.preventDefault()}>Pinterest ↗</a></li>
             </ul>
           </div>
           <div>
