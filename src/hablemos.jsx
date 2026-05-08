@@ -81,7 +81,7 @@ function Hablemos() {
             <span className="eyebrow">Ubicación</span>
             <span className="serif-ital">Sin Fronteras.</span>
             <p style={{ marginTop: "0.5rem", fontSize: "13px", opacity: 0.7, maxWidth: 320, lineHeight: 1.6 }}>
-              Nuestra sede está en México, pero nuestro diseño no tiene fronteras. Trabajamos de forma remota para marcas que buscan algo tremendo.
+              Sede en México, alcance mundial. Trabajamos remoto para marcas que buscan algo tremendo.
             </p>
           </div>
         </Reveal>
