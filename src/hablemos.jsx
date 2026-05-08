@@ -79,7 +79,10 @@ function Hablemos() {
         <Reveal delay={180} className="hablemos-meta">
           <div>
             <span className="eyebrow">Ubicación</span>
-            <span className="serif-ital">MX.</span>
+            <span className="serif-ital">Sin Fronteras.</span>
+            <p style={{ marginTop: "0.5rem", fontSize: "13px", opacity: 0.7, maxWidth: 320, lineHeight: 1.6 }}>
+              Nuestra sede está en México, pero nuestro diseño no tiene fronteras. Trabajamos de forma remota para marcas que buscan algo tremendo.
+            </p>
           </div>
         </Reveal>
       </section>

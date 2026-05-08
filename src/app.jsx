@@ -14,8 +14,8 @@ function App() {
 
   const enter = () => {
     if (welcome !== "idle") return;
+    go("home");
     setWelcome("exiting");
-    // After letters collapse + curtain pulls away
     setTimeout(() => setWelcome("gone"), 1800);
   };
 

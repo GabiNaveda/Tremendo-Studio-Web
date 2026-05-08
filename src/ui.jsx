@@ -163,8 +163,10 @@ function Footer({ go }) {
             <p className="eyebrow footer-head">Contacto</p>
             <ul>
               <li><a href="mailto:hola@tremendostudio.mx">hola@tremendostudio.mx</a></li>
-              <li><a href="#" onClick={(e) => e.preventDefault()}>+52 33 0000 0000</a></li>
-              <li>Guadalajara, MX</li>
+              <li><a href="https://wa.me/525543493110" target="_blank" rel="noopener noreferrer">Jos — WhatsApp ↗</a></li>
+              <li><a href="https://wa.me/525548900185" target="_blank" rel="noopener noreferrer">Gabi — WhatsApp ↗</a></li>
+              <li><a href="https://wa.me/525537278763" target="_blank" rel="noopener noreferrer">Dani — WhatsApp ↗</a></li>
+              <li>Sin Fronteras — MX</li>
             </ul>
           </div>
         </div>
