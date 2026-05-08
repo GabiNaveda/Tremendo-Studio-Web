@@ -837,7 +837,7 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
 }
 .porta-card:hover { transform: translateY(-6px) rotate(-0.4deg); }
 .porta-tall   { grid-column: span 2; grid-row: span 3; }
-.porta-wide   { grid-column: span 4; grid-row: span 2; }
+.porta-wide   { grid-column: span 4; grid-row: span 3; }
 .porta-square { grid-column: span 2; grid-row: span 2; }
 .porta-img {
   position: absolute;
