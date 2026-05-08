@@ -247,7 +247,7 @@ function Portafolio() {
       </Reveal>
 
       <Reveal className="porta-foot">
-        <p className="serif-ital">...y algunos proyectos todavía bajo NDA.</p>
+        <p className="serif-ital" style={{ color: "#fff" }}>...y algunos proyectos todavía bajo NDA.</p>
       </Reveal>
     </section>);
 
