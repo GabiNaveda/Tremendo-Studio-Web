@@ -28,6 +28,7 @@ function Hablemos() {
     name: "",
     email: "",
     phone: "",
+    location: "",
     project: "",
     pkg: "",
     budget: "",
@@ -44,7 +45,8 @@ function Hablemos() {
       "",
       `*Nombre:* ${form.name}`,
       `*Email:* ${form.email}`,
-      form.phone ? `*Teléfono:* ${form.phone}` : "",
+      form.phone    ? `*Teléfono:* ${form.phone}`       : "",
+      form.location ? `*Ubicación:* ${form.location}`   : "",
       "",
       `*Proyecto:* ${form.project}`,
       form.pkg    ? `*Paquete:* ${form.pkg}`       : "",
@@ -146,7 +148,17 @@ function Hablemos() {
           </div>
 
           <div className="field">
-            <label className="eyebrow"><span>04</span> Cuéntanos tu proyecto <em className="serif-ital">soñado.</em></label>
+            <label className="eyebrow"><span>04</span> ¿Desde dónde nos escribes?</label>
+            <input
+              type="text"
+              value={form.location}
+              onChange={set("location")}
+              placeholder="Ciudad, País"
+            />
+          </div>
+
+          <div className="field">
+            <label className="eyebrow"><span>05</span> Cuéntanos tu proyecto <em className="serif-ital">soñado.</em></label>
             <textarea
               required
               rows={4}
@@ -157,7 +169,7 @@ function Hablemos() {
           </div>
 
           <div className="field">
-            <label className="eyebrow"><span>05</span> ¿A qué paquete le echaste el ojo?</label>
+            <label className="eyebrow"><span>06</span> ¿A qué paquete le echaste el ojo?</label>
             <div className="chip-grid">
               {PACKAGES.flatMap((g) =>
                 g.options.map((o) => (
@@ -176,7 +188,7 @@ function Hablemos() {
 
           <div className="field-row">
             <div className="field">
-              <label className="eyebrow"><span>06</span> Presupuesto aproximado</label>
+              <label className="eyebrow"><span>07</span> Presupuesto aproximado</label>
               <div className="chip-grid tight">
                 {BUDGETS.map((b) => (
                   <button
@@ -191,7 +203,7 @@ function Hablemos() {
               </div>
             </div>
             <div className="field">
-              <label className="eyebrow"><span>07</span> ¿Para cuándo?</label>
+              <label className="eyebrow"><span>08</span> ¿Para cuándo?</label>
               <div className="chip-grid tight">
                 {WHENS.map((b) => (
                   <button
@@ -208,7 +220,7 @@ function Hablemos() {
           </div>
 
           <div className="field">
-            <label className="eyebrow"><span>08</span> ¿Cómo nos encontraste? <span className="opt">(opcional)</span></label>
+            <label className="eyebrow"><span>09</span> ¿Cómo nos encontraste? <span className="opt">(opcional)</span></label>
             <input
               type="text"
               value={form.heard}
