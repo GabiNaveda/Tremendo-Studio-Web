@@ -162,9 +162,13 @@ function PkgCard({ pkg, isActive, wrap, variant, accent, onClick }) {
               </li>
           )}
           </ul>
-          <button className="btn pkg-btn">
+          <a
+            className="btn pkg-btn"
+            href={"https://wa.me/525548900185?text=" + encodeURIComponent("Hola! Me interesa el paquete " + pkg.name + " de Tremendo Studio 🙌")}
+            target="_blank"
+            rel="noopener noreferrer">
             Lo quiero <Star size={12} />
-          </button>
+          </a>
         </>
       }
 

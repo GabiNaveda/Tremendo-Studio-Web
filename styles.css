@@ -1303,13 +1303,15 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
 .pkg-btn {
   width: 100%;
   justify-content: center;
-  background: var(--orange);
+  background-color: var(--orange);
+  background-image: linear-gradient(var(--ink), var(--ink));
   color: var(--cream);
 }
-.pkg-btn::after { background: var(--ink); }
-.pkg-btn:hover { color: var(--cream); }
-.carousel-block.dark .pkg-btn { background: var(--orange); color: var(--cream); }
-.carousel-block.dark .pkg-btn::after { background: var(--burnt); }
+.carousel-block.dark .pkg-btn {
+  background-color: var(--ink);
+  background-image: linear-gradient(var(--burnt), var(--burnt));
+  color: var(--cream);
+}
 
 .pkg-side-hint {
   margin-top: auto;
