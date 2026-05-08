@@ -361,7 +361,11 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
 .btn {
   display: inline-flex; align-items: center; gap: 0.6rem;
   padding: 0.95rem 1.6rem;
-  background: var(--orange);
+  background-color: var(--orange);
+  background-image: linear-gradient(var(--burnt), var(--burnt));
+  background-size: 100% 0%;
+  background-repeat: no-repeat;
+  background-position: bottom;
   color: var(--cream);
   font-family: var(--body);
   font-size: 14px;
@@ -369,29 +373,19 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
   letter-spacing: 0.02em;
   border-radius: 999px;
   text-decoration: none;
-  transition: background 0.2s, transform 0.2s;
-  position: relative;
-  overflow: hidden;
+  transition: background-size 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.2s, transform 0.2s;
   -webkit-tap-highlight-color: transparent;
 }
-.btn::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: var(--burnt);
-  transform: translateY(101%);
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-  z-index: 0;
-}
-.btn > * { position: relative; z-index: 1; }
-.btn:hover::after, .btn:active::after { transform: translateY(0); }
-.btn:active { color: var(--cream); background: var(--burnt); }
+.btn:hover, .btn:active { background-size: 100% 100%; color: var(--cream); }
 .btn.ghost {
-  background: transparent;
+  background-color: transparent;
+  background-image: linear-gradient(var(--ink), var(--ink));
+  background-size: 100% 0%;
+  background-position: bottom;
   color: var(--ink);
   border: 1.5px solid var(--ink);
 }
-.btn.ghost::after { background: var(--ink); }
-.btn.ghost:hover, .btn.ghost:active { color: var(--cream); }
+.btn.ghost:hover, .btn.ghost:active { color: var(--cream); background-size: 100% 100%; }
 
 :focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
 
@@ -936,16 +930,17 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
   justify-content: center;
 }
 .home-cta .btn {
-  background: var(--ink);
+  background-color: var(--ink);
+  background-image: linear-gradient(var(--burnt), var(--burnt));
   color: var(--cream);
 }
 .home-cta .btn.ghost {
   border-color: var(--cream);
   color: var(--cream);
-  background: transparent;
+  background-color: transparent;
+  background-image: linear-gradient(var(--cream), var(--cream));
 }
-.home-cta .btn.ghost::after { background: var(--cream); }
-.home-cta .btn.ghost:hover { color: var(--orange); }
+.home-cta .btn.ghost:hover, .home-cta .btn.ghost:active { color: var(--orange); background-size: 100% 100%; }
 
 /* ── FOOTER ──────────────────────────────────────────────── */
 .footer {
