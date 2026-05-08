@@ -1304,7 +1304,7 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
   width: 100%;
   justify-content: center;
   background-color: var(--orange);
-  background-image: linear-gradient(var(--ink), var(--ink));
+  background-image: linear-gradient(var(--burnt), var(--burnt));
   color: var(--cream);
 }
 .carousel-block.dark .pkg-btn {
