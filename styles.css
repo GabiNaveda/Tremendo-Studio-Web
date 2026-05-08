@@ -2533,7 +2533,7 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
 }
 @media (max-width: 600px) {
   /* 1. Hero: TREMENDO on 2nd line, no image scroll effect */
-  .hero-h1 { font-size: clamp(1.9rem, 9vw, 3.5rem); }
+  .hero-h1 { font-size: clamp(2.6rem, 11.5vw, 4rem); }
   .hero-lede { white-space: normal; }
 
   /* 2. Carousel controls: minimal and centered */
