@@ -11,7 +11,8 @@ const TEAM = [
   handle: "@gabi.tremenda",
   role: "Directora de Estrategia & Contenido",
   bio: "Creativa con enfoque estratégico. Experta en construir marcas que conectan y crecen en redes. Entiende el comportamiento digital y transforma ideas en contenido con intención.",
-  sign: "Acuario ♒︎ • Mente inquieta y energía imparable",
+  sign: "Acuario ♒︎",
+  tagline: "Mente inquieta y energía imparable",
   color: "var(--orange)",
   photo: "assets/gabi.png"
 },
@@ -20,7 +21,8 @@ const TEAM = [
   handle: "@dani.tremenda",
   role: "Directora de Identidad & Branding",
   bio: "Especialista en diseño de marca. Da forma a lo intangible: crea identidades sólidas, memorables y coherentes que reflejan el alma de cada proyecto desde el primer trazo.",
-  sign: "Libra ♎︎ • Minimalismo puro y ejecución perfecta",
+  sign: "Libra ♎︎",
+  tagline: "Minimalismo puro y ejecución perfecta",
   color: "var(--burnt)",
   photo: "assets/dani.png"
 },
@@ -29,7 +31,8 @@ const TEAM = [
   handle: "@jos.tremenda",
   role: "Directora de Arte & Dirección Visual",
   bio: "Ojo editorial y visión estética afilada. Lidera shootings y el estilo visual de cada marca. Aporta narrativa, intención y belleza en cada encuadre.",
-  sign: "Leo ♌︎ • Experta que estructura y sociable por instinto",
+  sign: "Leo ♌︎",
+  tagline: "Experta que estructura y sociable por instinto",
   color: "var(--ink)",
   photo: "assets/jos.png"
 }];
@@ -63,6 +66,7 @@ function TeamCard({ t, i }) {
             <span className="teamcard-stat" title="Signo">
               <Asterisk size={11} /> {t.sign}
             </span>
+            <span className="teamcard-stat">{t.tagline}</span>
           </div>
           <button
             type="button"
