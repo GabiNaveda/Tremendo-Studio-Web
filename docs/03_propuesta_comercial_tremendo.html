@@ -1372,7 +1372,7 @@
 <script>
   function mostrar(tipo) {
     document.getElementById('selector').style.display = 'none';
-    document.getElementById('view-' + tipo).style.display = 'block';
+    var el=document.getElementById('view-'+tipo);el.style.display='block';el.classList.add('activa');
     window.scrollTo(0, 0);
     if (tipo === 'branding') selectPkg('refinamiento');
     if (tipo === 'contenido') selectPack('basico');
@@ -1505,41 +1505,40 @@ async function descargarPDFScroll() {
   var btn = event ? event.target : null;
   if(btn){ btn.textContent = "Generando PDF..."; btn.disabled = true; }
 
-  // Expandir el body para capturar todo el contenido
-  var body = document.body;
-  var page = document.querySelector('.page');
-  var prevOverflow = body.style.overflow;
-  var prevHeight = body.style.height;
-  body.style.overflow = 'visible';
-  body.style.height = 'auto';
+  // Capturar la vista activa (la que está visible) o el .page completo
+  var target = document.querySelector('.contrato-view[style*="block"]')
+            || document.querySelector('.prop-view.activa') || document.querySelector('.prop-view[style*="block"]')
+            || document.querySelector('.page')
+            || document.body;
 
-  await new Promise(r => setTimeout(r, 200));
+  var prevOverflow = document.body.style.overflow;
+  var prevHeight   = document.body.style.height;
+  document.body.style.overflow = 'visible';
+  document.body.style.height   = 'auto';
+  target.style.overflow = 'visible';
 
-  var totalHeight = page ? page.scrollHeight : body.scrollHeight;
-  var totalWidth  = page ? page.offsetWidth  : body.offsetWidth;
+  await new Promise(r => setTimeout(r, 250));
 
-  var canvas = await html2canvas(page || body, {
+  var canvas = await html2canvas(target, {
     scale: 2,
     useCORS: true,
     allowTaint: true,
     backgroundColor: '#ffffff',
     logging: false,
-    width: totalWidth,
-    height: totalHeight,
-    windowWidth: totalWidth,
-    windowHeight: totalHeight,
+    width: target.offsetWidth,
+    height: target.scrollHeight,
+    windowWidth: target.offsetWidth,
+    windowHeight: target.scrollHeight,
     scrollX: 0,
-    scrollY: 0
+    scrollY: -window.scrollY
   });
 
-  // Restaurar
-  body.style.overflow = prevOverflow;
-  body.style.height   = prevHeight;
+  document.body.style.overflow = prevOverflow;
+  document.body.style.height   = prevHeight;
 
   var imgData = canvas.toDataURL('image/jpeg', 0.95);
   var { jsPDF } = window.jspdf;
 
-  // Un solo PDF con ancho A4 proporcional en altura
   var pxPerMm = canvas.width / 210;
   var pdfH    = canvas.height / pxPerMm;
 
