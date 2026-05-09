@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brief de Cliente — Tremendo Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --negro: #000000;
+    --naranja: #E8502A;
+    --crudo: #FFF8EE;
+    --blanco: #ffffff;
+    --gris-suave: #F2F2F0;
+    --gris-texto: #888;
+    --fuente-display: 'Barlow Condensed', sans-serif;
+    --fuente-body: 'Barlow', sans-serif;
+    --fuente-titulo: 'Bebas Neue', sans-serif;
+    --page-pad: 56px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: radial-gradient(ellipse at 80% 50%, #7a2210 0%, #3a0f05 35%, #000000 70%);
+    color: var(--negro);
+    font-family: var(--fuente-body);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; }
+    .no-print { display: none !important; }
+    .page { box-shadow: none !important; margin: 0 !important; border-radius: 0 !important; }
+    .section { page-break-inside: avoid; }
+    header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .field-label { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .naranja-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .submit-btn { display: none !important; }
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 40px auto;
+    background: white;
+    box-shadow: 0 8px 60px rgba(0,0,0,0.12);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--negro);
+    color: var(--blanco);
+    padding: 48px var(--page-pad) 40px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24px;
+  }
+
+  .logo-area .eyebrow {
+    font-family: var(--fuente-body);
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--naranja);
+    margin-bottom: 8px;
+  }
+
+  .logo-tremendo {
+    font-family: var(--fuente-display);
+    font-weight: 800;
+    font-size: 64px;
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    color: var(--blanco);
+  }
+
+  .logo-sub {
+    font-family: var(--fuente-body);
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-top: 6px;
+    display: flex;
+    gap: 24px;
+  }
+
+  .header-right {
+    text-align: right;
+  }
+
+  .doc-type {
+    font-family: var(--fuente-titulo);
+    font-size: 36px;
+    line-height: 1;
+    color: var(--naranja);
+    letter-spacing: 2px;
+  }
+
+  .doc-meta {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+  }
+
+  /* ── ORANGE BAND ── */
+  .naranja-block {
+    background: var(--naranja);
+    padding: 14px var(--page-pad);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .naranja-block p {
+    font-family: var(--fuente-display);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--blanco);
+  }
+
+  .naranja-block span {
+    font-family: var(--fuente-body);
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── BODY CONTENT ── */
+  .content {
+    padding: 48px 0 0;
+  }
+
+  .section {
+    margin-bottom: 0;
+    padding: 0 var(--page-pad);
+  }
+
+  .intro-box {
+    border-left: 3px solid var(--naranja);
+    padding: 16px 20px;
+    margin: 0 var(--page-pad) 48px;
+    background: var(--gris-suave);
+  }
+
+  .intro-box p {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.7;
+  }
+
+  .intro-box strong {
+    color: var(--negro);
+    font-weight: 500;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section {
+    margin-bottom: 0;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  .section-num {
+    background: var(--negro);
+    color: var(--blanco);
+    font-family: var(--fuente-display);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 4px 8px;
+    min-width: 36px;
+    text-align: center;
+  }
+
+  .section-title {
+    font-family: var(--fuente-display);
+    font-weight: 800;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--negro);
+  }
+
+  .section-title span {
+    color: var(--naranja);
+  }
+
+  /* ── FORM FIELDS ── */
+  .field-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 24px;
+    margin-bottom: 20px;
+  }
+
+  .field-group.full { grid-template-columns: 1fr; }
+  .field-group.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field-label {
+    font-family: var(--fuente-display);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--naranja);
+  }
+
+  .field-input {
+    border: none;
+    border-bottom: 1.5px solid var(--negro);
+    padding: 8px 0;
+    font-family: var(--fuente-body);
+    font-size: 14px;
+    color: var(--negro);
+    background: transparent;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.2s;
+  }
+
+  .field-input:focus {
+    border-bottom-color: var(--naranja);
+  }
+
+  .field-textarea {
+    border: 1.5px solid #ddd;
+    border-radius: 2px;
+    padding: 12px;
+    font-family: var(--fuente-body);
+    font-size: 14px;
+    color: var(--negro);
+    background: transparent;
+    outline: none;
+    width: 100%;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.2s;
+  }
+
+  .field-textarea:focus {
+    border-color: var(--naranja);
+  }
+
+  /* ── CHECKBOXES / RADIO ── */
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin-top: 6px;
+  }
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .option-item input[type="checkbox"],
+  .option-item input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--naranja);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .option-item label {
+    font-size: 13px;
+    color: var(--negro);
+    cursor: pointer;
+    line-height: 1.3;
+  }
+
+  /* ── SCALE ── */
+  .scale-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+  }
+
+  .scale-label {
+    font-size: 12px;
+    color: var(--gris-texto);
+    min-width: 90px;
+  }
+
+  .scale-label.right { text-align: right; }
+
+  .scale-dots {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .scale-dot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .scale-dot input[type="radio"] {
+    accent-color: var(--naranja);
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+
+  .scale-dot span {
+    font-size: 10px;
+    color: var(--gris-texto);
+  }
+
+  /* ── TAG CHIPS ── */
+  .tags-section {
+    margin-top: 8px;
+  }
+
+  .tag-instruction {
+    font-size: 12px;
+    color: var(--gris-texto);
+    margin-bottom: 10px;
+  }
+
+  .tags-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1.5px solid var(--negro);
+    padding: 6px 14px;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 12px;
+    font-family: var(--fuente-display);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: white;
+    color: var(--negro);
+    user-select: none;
+  }
+
+  .tag input { display: none; }
+
+  .tag:hover {
+    background: var(--negro);
+    color: var(--blanco);
+  }
+
+  .tag.selected {
+    background: var(--naranja);
+    border-color: var(--naranja);
+    color: var(--blanco);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, var(--naranja), transparent);
+    margin: 48px var(--page-pad);
+  }
+
+  /* ── SUBMIT AREA ── */
+
+  .submit-text h4 {
+    font-family: var(--fuente-display);
+    font-weight: 800;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+
+  .submit-text p {
+    font-size: 13px;
+    color: var(--negro);
+    letter-spacing: 0.03em;
+  }
+
+  .submit-btn {
+    background: var(--naranja);
+    color: var(--blanco);
+    border: none;
+    padding: 14px 32px;
+    font-family: var(--fuente-display);
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    border-radius: 0;
+    white-space: nowrap;
+  }
+
+  .submit-btn:hover { opacity: 0.85; }
+  .submit-btn:active { transform: scale(0.98); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--negro);
+    color: rgba(255,255,255,0.25);
+    padding: 16px var(--page-pad);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-logo {
+    font-family: var(--fuente-display);
+    font-weight: 800;
+    font-size: 14px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── PRINT BTN ── */
+  .print-bar {
+    max-width: 860px;
+    margin: 0 auto 16px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 0 8px;
+  }
+
+  .print-bar button {
+    background: var(--negro);
+    color: var(--blanco);
+    border: none;
+    padding: 10px 20px;
+    font-family: var(--fuente-display);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 0.2s;
+  }
+
+  .print-bar button:hover { background: var(--naranja); }
+
+  @media (max-width: 600px) {
+    :root { --page-pad: 20px; }
+    body { background: #000; }
+    .page { margin: 0; border-radius: 0; }
+    header { grid-template-columns: 1fr; padding: 28px 20px 24px; gap: 12px; }
+    .header-right { text-align: left; }
+    .doc-type { font-size: 24px; }
+    .logo-tremendo { font-size: 42px; }
+    .naranja-block { flex-direction: column; gap: 4px; padding: 10px 20px; }
+    .content { padding: 28px 0 0; }
+    .section { padding: 0 20px; }
+    .intro-box { margin: 0 20px 32px; }
+    .divider { margin: 28px 20px; }
+    .field-group,
+    .field-group.three { grid-template-columns: 1fr !important; }
+    .options-grid { grid-template-columns: 1fr 1fr !important; }
+    .tags-grid { gap: 6px; }
+    .tag { font-size: 11px; padding: 5px 10px; }
+    .section-title { font-size: 15px; }
+    .submit-area { grid-template-columns: 1fr; padding: 24px 20px; gap: 16px; }
+    .submit-text h4 { font-size: 15px; }
+    footer { flex-direction: column; gap: 4px; padding: 12px 20px; text-align: center; }
+    .print-bar { padding: 0 16px; }
+    .cta-bar { flex-direction: column; padding: 20px; gap: 12px; }
+    .cta-bar p { text-align: center; }
+  }
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<div class="print-bar no-print">
+  <button onclick="descargarPDFScroll()">↓ Imprimir / Guardar PDF</button>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-area">
+      <p class="eyebrow">CDMX · © 2025</p>
+      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iQ2FwYV8yIiBkYXRhLW5hbWU9IkNhcGEgMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgODk1LjA5IDI1NC40MiI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPGcgaWQ9IkNhcGFfMS0yIiBkYXRhLW5hbWU9IkNhcGEgMSI+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNjAuMiAxNzIuNDkgMjEuNDEgMTcyLjQ5IDIxLjQxIDYzLjI4IDAgNjMuMjggMCAyOC44NyA4Mi40MSAyOC44NyA4Mi40MSA2My4yOCA2MC4xNyA2My4yOCA2MC4xNyAxNzIuNDkgNjAuMiAxNzIuNDkiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTEzMy4xNiw5NS4zOGgyLjU5YzQuNDcsMCw4LjE4LTEuNywxMS4xNS01LjEzLDIuOTctMy40LDQuNDctNy43NSw0LjQ3LTEzLjAyLDAtMTAuNzItNS42Mi0xNi4xMS0xNi44My0xNi4xMWgtMS4zOHYzNC4yNlpNMTk2LjUzLDE3Mi40OWgtNDEuOTZsLTE5LjE2LTUxLjE4Yy0uMTctLjg2LS41Mi0yLjAyLS45OC0zLjQ2LS40Ni0xLjQxLTEuMDQtMy4xNC0xLjczLTUuMTNsLjI5LDkuNDh2NTAuMjNoLTM4LjYxVjI4Ljc5aDM5Ljc0YzE3LjQ5LDAsMzAuNTcsMy40NiwzOS4yNSwxMC4zMiwxMS4wNCw4LjgyLDE2LjU3LDIxLjMyLDE2LjU3LDM3LjU4LDAsMTcuMzgtNy40MSwyOS4zNi0yMi4yNSwzNS45OWwyOC44NSw1OS43NHYuMDlaIi8+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMjA2LjY0IDE3Mi40OSAyMDYuNjQgMjguODUgMjc4Ljc0IDI4Ljg1IDI3OC43NCA2Mi42MiAyNDUuNDMgNjIuNjIgMjQ1LjQzIDgzLjU0IDI3NS4yOCA4My41NCAyNzUuMjggMTE2LjAxIDI0NS40MyAxMTYuMDEgMjQ1LjQzIDEzNy45NyAyNzguNzQgMTM3Ljk3IDI3OC43NCAxNzIuNDkgMjA2LjY0IDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDI2LjkxLDE3Mi40OWgtMzguM2wtMi40OC02NS41LTEuMDQtMjYuMTRjLS4zNyw1LjAxLS44MSw5LjgzLTEuMjcsMTQuMzgtLjQ2LDQuNTUtMS4wNyw4Ljk2LTEuNzYsMTMuMjZsLTEwLjQzLDY0aC0yNy4xMmwtOC45My02NC4wOWMtLjUyLTMuNzItMS4yNC0xMC4xMS0yLjE2LTE5LjE2LS4xMi0xLjM1LS4zNS00LjE1LS43Mi04LjM2bC0uODEsMjYuNTEtMi45NCw2NS4xM2gtMzYuOTRWMjguODdoNTcuMjlsNi45NCw0OC4zOGMuNTgsMy45OCwxLjEsOC4yNywxLjU2LDEyLjk0LjQ2LDQuNjQuODYsOS43MSwxLjI0LDE1LjE2LjY5LTkuMTEsMS42NC0xNy4yNiwyLjg4LTI0LjQ3bDguNDQtNTIuMDFoNTYuNTd2MTQzLjY1bC0uMDMtLjAzWiIvPgogICAgPHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjQ0MS4wMSAxNzIuNDkgNDQxLjAxIDI4Ljg1IDUxMy4xIDI4Ljg1IDUxMy4xIDYyLjYyIDQ3OS43OSA2Mi42MiA0NzkuNzkgODMuNTQgNTA5LjY1IDgzLjU0IDUwOS42NSAxMTYuMDEgNDc5Ljc5IDExNi4wMSA0NzkuNzkgMTM3Ljk3IDUxMy4xIDEzNy45NyA1MTMuMSAxNzIuNDkgNDQxLjAxIDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTI5Ljg1LDE3Mi40OVYyOC44NWgzNy4wM2wxOS40NSw1MC40M2MxLjA3LDIuOTcsMi4yNSw2LjQsMy41NywxMC4yMywxLjMzLDMuODMsMi44LDguMjcsNC40MSwxMy4zMWw0LjAxLDEyLjY1Yy0xLjQ0LTEyLjQ4LTIuNTEtMjMuMTQtMy4yNi0zMi4wMS0uNzUtOC44OC0xLjEyLTE2LjMxLTEuMTItMjIuMzNWMjguODVoMzcuMDN2MTQzLjY1aC0zNy4wM2wtMTkuNTQtNTIuODVjLTIuMDUtNS42NS0zLjg5LTEwLjkyLTUuNTMtMTUuODVzLTMuMDgtOS42Mi00LjMyLTE0LjA5Yy44MSwxMC4xMSwxLjM4LDE4LjkzLDEuNzYsMjYuNDIuMzcsNy41Mi41NSwxNC4wOS41NSwxOS43MXYzNi42NWgtMzcuMDMuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik02ODYuNDYsMTM3LjhjMTMuODktLjY5LDIwLjgzLTEyLjY1LDIwLjgzLTM1LjkxLDAtMTEuNDctMS43Ni0yMC41Mi01LjMtMjcuMTctMy41NC02LjY5LTguMy0xMC4wNi0xNC4zMi0xMC4wNmgtMS4yMXY3My4xNFpNNjQ3LjY4LDE3Mi40OVYyOC44NWgzMy40OGMxOS4xNiwwLDM0LjA5LDUuMTYsNDQuNzUsMTUuNDUsMTQuMDMsMTMuNDYsMjEuMDQsMzIuMjcsMjEuMDQsNTYuNDhzLTUuOTEsNDIuMjItMTcuNzgsNTUuMTVjLTEwLjExLDExLjA0LTI1LjE5LDE2LjU3LTQ1LjIxLDE2LjU3aC0zNi4yOFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTgyNi4wNSwxMDEuNzVjMC0yNS4xOS00LjU4LTM3LjgxLTEzLjc3LTM3LjgxLTQuNTgsMC04LjI0LDMuMzEtMTAuOTgsOS45MS0yLjY4LDYuMTQtNC4wMSwxNS4xNi00LjAxLDI3LjA2czEuMjcsMjAuODMsMy43NywyNy4yOWMyLjUxLDYuNDUsNS45OSw5LjcxLDEwLjQ2LDkuNzFzOC4xMy0zLjIsMTAuNi05LjU3YzIuNTktNi4zNywzLjkyLTE1LjI0LDMuOTItMjYuNlpNODY2LjM0LDEwMS40NmMwLDIxLjI0LTQuOTksMzguNS0xNC45OCw1MS43OC05LjkxLDEzLjIzLTIyLjg1LDE5Ljg1LTM4Ljc5LDE5Ljg1LTE0LjE1LDAtMjYuMjUtNS4wNy0zNi4zNy0xNS4yNC0xMi43MS0xMi44OC0xOS4wOC0zMi4xNi0xOS4wOC01Ny45MnM2LjYzLTQzLjUxLDE5LjkxLTU2LjU3YzkuODYtOS42OCwyMS41NS0xNC41MiwzNS4wNy0xNC41MiwxNi41NywwLDI5Ljc0LDYuNTcsMzkuNTQsMTkuNjUsOS44LDEzLjExLDE0LjcsMzAuNzUsMTQuNyw1Mi45NloiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzNyAyMjkuOTUgMjUuODIgMjI5Ljk1IDI1LjgyIDIzNi42NyAzNi42OCAyMzYuNjcgMzYuNjggMjQwLjYyIDI1LjgyIDI0MC42MiAyNS44MiAyNDkuOTUgMzcgMjQ5Ljk1IDM3IDI1My45IDIxLjU4IDI1My45IDIxLjU4IDIyNS45OCAzNyAyMjUuOTggMzcgMjI5LjkzIDM3IDIyOS45NSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjAuMTcsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjA5LTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0czEuNTgsMi45NCwxLjU4LDQuODRjMCwyLjU2LS44Niw0LjctMi41Niw2LjM3LTEuNzMsMS43LTMuODYsMi41NC02LjQzLDIuNTQtMi40MiwwLTQuNDQtLjcyLTUuOTktMi4xNi0xLjU2LTEuNDQtMi41NC0zLjQ2LTIuOTEtNi4wNWw0LjI2LS45NWMuMiwxLjY0LjUyLDIuNzcsMS4wMSwzLjQuODYsMS4yMSwyLjEzLDEuODIsMy44LDEuODIsMS4zLDAsMi4zOS0uNDMsMy4yOS0xLjMzczEuMy0xLjk5LDEuMy0zLjM0YzAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zMi0xLjEyLS42My0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDEsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSI3Ni4wNSAyMjkuOTUgNzYuMDUgMjUzLjkgNzEuODQgMjUzLjkgNzEuODQgMjI5Ljk1IDY1LjQxIDIyOS45NSA2NS40MSAyMjYuMDEgODIuNDQgMjI2LjAxIDgyLjQ0IDIyOS45NSA3Ni4wNSAyMjkuOTUiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTkyLjI3LDI0OS45NWgxLjljMS45LDAsMy40Ni0uMiw0LjczLS42MSwxLjI3LS40MywyLjM5LTEuMSwzLjQtMi4wMiwyLjA3LTEuOSwzLjExLTQuMzUsMy4xMS03LjQxcy0xLjAxLTUuNTMtMy4wOC03LjQzYy0xLjg0LTEuNy00LjU1LTIuNTQtOC4xNi0yLjU0aC0xLjl2MjBaTTg4LjA2LDI1My45M3YtMjcuOTJoNS44NWMyLjgyLDAsNS4wMS4yOSw2LjY2Ljg0LDEuNzYuNTUsMy4zNCwxLjQ3LDQuNzUsMi43NywyLjg4LDIuNjIsNC4zMiw2LjA4LDQuMzIsMTAuMzVzLTEuNSw3Ljc1LTQuNSwxMC40Yy0xLjUsMS4zMy0zLjA4LDIuMjUtNC43MywyLjc3LTEuNTMuNTItMy43Mi43OC02LjU3Ljc4aC01Ljc5di4wM1oiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTExNi42NSwyNTEuODhjMC0uNjYuMjMtMS4yNy43NS0xLjc2LjQ5LS40OSwxLjEtLjc1LDEuNzYtLjc1czEuMjcuMjYsMS43Ni43NWMuNDkuNDkuNzUsMS4xLjc1LDEuNzZzLS4yNiwxLjMtLjc1LDEuNzktMS4wNy43Mi0xLjc2LjcyLTEuMy0uMjMtMS43OS0uNzJjLS40OS0uNDktLjcyLTEuMS0uNzItMS44MnYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik03ODEuNjIsMjQ5Ljk1aDEwLjR2My45NWgtMTguNzZsOS42OC0xMS43M2MuOTUtMS4xOCwxLjc2LTIuMTksMi4zOS0zLjAzLjYzLS44NCwxLjEyLTEuNTgsMS40Ny0yLjE2LjY5LTEuMTIsMS4wNC0yLjE2LDEuMDQtMy4wNSwwLTEuMy0uNDYtMi4zOS0xLjM4LTMuMjktLjkyLS44OS0yLjA1LTEuMzMtMy40LTEuMzMtMi44MiwwLTQuNDQsMS42Ny00Ljg0LDUuMDFoLTQuMjFjLjY2LTUuODgsMy42Ni04LjgyLDguOS04LjgyLDIuNTQsMCw0LjY3LjgxLDYuNCwyLjQyczIuNTksMy42LDIuNTksNS45OWMwLDEuNTMtLjQsMy0xLjIxLDQuNDctLjQuNzUtMS4wMSwxLjY3LTEuNzksMi43MS0uNzgsMS4wNC0xLjc5LDIuMjgtMywzLjY5bC00LjM1LDUuMTMuMDYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04MDIuNzQsMjM5LjgxYzAsMy4wOC41NSw1LjY4LDEuNjEsNy43MiwxLjA3LDIuMDIsMi40NSwzLjAzLDQuMDksMy4wM3MzLjAzLTEuMDEsNC4wOS0zLjAzYzEuMS0xLjk5LDEuNjEtNC41MiwxLjYxLTcuNThzLS41NS01LjU5LTEuNjEtNy41OGMtMS4xLTEuOTktMi40NS0zLTQuMDktM3MtMywxLjAxLTQuMDksM2MtMS4wOSwxLjk5LTEuNjEsNC40Ny0xLjYxLDcuNDNaTTc5OC42MiwyMzkuNzhjMC00LjQ0LDEuMDQtNy45OCwzLjExLTEwLjY2LDEuODQtMi4zOSw0LjA5LTMuNiw2Ljc0LTMuNnM0LjksMS4yMSw2Ljc0LDMuNmMyLjA3LDIuNjUsMy4xMSw2LjI1LDMuMTEsMTAuODNzLTEuMDQsOC4xNS0zLjExLDEwLjgxYy0xLjg0LDIuMzktNC4wOSwzLjYtNi43MSwzLjZzLTQuODctMS4yMS02Ljc3LTMuNmMtMi4wNy0yLjY1LTMuMTEtNi4zMS0zLjExLTEwLjk4WiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODMxLjAxLDI0OS45NWgxMC40djMuOTVoLTE4Ljc2bDkuNjgtMTEuNzNjLjk1LTEuMTgsMS43Ni0yLjE5LDIuMzktMy4wMy42My0uODQsMS4xMi0xLjU4LDEuNDctMi4xNi42OS0xLjEyLDEuMDQtMi4xNiwxLjA0LTMuMDUsMC0xLjMtLjQ2LTIuMzktMS4zOC0zLjI5cy0yLjA1LTEuMzMtMy40LTEuMzNjLTIuODIsMC00LjQ0LDEuNjctNC44NCw1LjAxaC00LjIxYy42Ni01Ljg4LDMuNjYtOC44Miw4LjktOC44MiwyLjU0LDAsNC42Ny44MSw2LjQsMi40MnMyLjU5LDMuNiwyLjU5LDUuOTljMCwxLjUzLS40LDMtMS4yMSw0LjQ3LS40Ljc1LTEuMDEsMS42Ny0xLjc5LDIuNzEtLjc4LDEuMDQtMS43OSwyLjI4LTMsMy42OWwtNC4zNSw1LjEzLjA2LjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODY1LjksMjI5Ljk1aC04LjYybC0xLjM4LDQuNjRjLjIsMCwuNC0uMDMuNTgtLjA2LjE3LS4wMy4zNSwwLC41MiwwLDIuNzEsMCw0LjkzLjkyLDYuNjYsMi43NCwxLjc2LDEuODIsMi42Miw0LjE1LDIuNjIsN3MtLjk4LDUuMzYtMi45Nyw3LjI2Yy0xLjk5LDEuOS00LjQ3LDIuODUtNy40NiwyLjg1LTMuNjksMC02LjYzLTEuNzMtOC43Ni01LjIybDMuMTctMi42OGMuODksMS41LDEuNzYsMi41NCwyLjY1LDMuMTcuODkuNjEsMS45OS44OSwzLjI4Ljg5LDEuNywwLDMuMTEtLjYxLDQuMjQtMS43NiwxLjE1LTEuMjEsMS43My0yLjY4LDEuNzMtNC40NHMtLjU4LTMuMjMtMS43LTQuMzhjLTEuMTItMS4xOC0yLjU0LTEuNzYtNC4yNC0xLjc2LTEuOSwwLTMuNTIuODQtNC45LDIuNDhoLTEuMzhsNC4zOC0xNC42N2gxMS41M3YzLjk1bC4wNi0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0zNzguNTYsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjEyLTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0LDEuMDcsMS4zLDEuNTgsMi45NCwxLjU4LDQuODQsMCwyLjU2LS44Niw0LjY3LTIuNTYsNi4zNy0xLjczLDEuNjctMy44NiwyLjU0LTYuNDMsMi41NC0yLjQyLDAtNC40NC0uNzItNS45OS0yLjE2LTEuNTYtMS40NC0yLjU0LTMuNDYtMi45MS02LjA1bDQuMjYtLjk1Yy4yLDEuNjQuNTIsMi43NywxLjAxLDMuNC44NiwxLjIxLDIuMTMsMS44MiwzLjgsMS44MiwxLjMsMCwyLjM5LS40MywzLjI5LTEuMzMuODYtLjg5LDEuMy0xLjk5LDEuMy0zLjM0LDAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zNS0xLjEyLS42Ni0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDQsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzOTQuNDQgMjI5Ljk4IDM5NC40NCAyNTMuOTMgMzkwLjIzIDI1My45MyAzOTAuMjMgMjI5Ljk4IDM4My44MSAyMjkuOTggMzgzLjgxIDIyNi4wNCA0MDAuODQgMjI2LjA0IDQwMC44NCAyMjkuOTggMzk0LjQ0IDIyOS45OCIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDEwLjY2LDIyNi4wMXYxNi44YzAsMi4zOS4zNyw0LjE1LDEuMTgsNS4yNywxLjE1LDEuNjEsMi44MiwyLjM5LDQuOTMsMi4zOXMzLjc3LS44MSw0Ljk2LTIuMzljLjc4LTEuMDcsMS4xOC0yLjgyLDEuMTgtNS4yN3YtMTYuOGg0LjIxdjE3Ljk4YzAsMi45NC0uOTIsNS4zNi0yLjc0LDcuMjYtMi4wNywyLjEtNC41OCwzLjE3LTcuNTgsMy4xN3MtNS41My0xLjA3LTcuNTgtMy4xN2MtMS44NC0xLjktMi43NC00LjMyLTIuNzQtNy4yNnYtMTcuOThoNC4yMS0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00MzkuODUsMjQ5Ljk1aDEuOWMxLjksMCwzLjQ2LS4yLDQuNzMtLjYxLDEuMjQtLjQzLDIuMzktMS4xLDMuNC0yLjAyLDIuMDctMS45LDMuMTEtNC4zNSwzLjExLTcuNDFzLTEuMDQtNS41Ni0zLjA4LTcuNDNjLTEuODQtMS43LTQuNTUtMi41NC04LjE2LTIuNTRoLTEuOXYyMFpNNDM1LjY1LDI1My45M3YtMjcuOTJoNS44NWMyLjgsMCw1LjAxLjI2LDYuNjYuODQsMS43Ni41NSwzLjM0LDEuNDcsNC43NSwyLjc3LDIuODgsMi42Miw0LjMyLDYuMDgsNC4zMiwxMC4zNXMtMS41LDcuNzUtNC41LDEwLjRjLTEuNSwxLjMzLTMuMDgsMi4yNS00LjczLDIuNzctMS41Ni41Mi0zLjc1Ljc4LTYuNTcuNzhoLTUuNzl2LjAzWiIvPgogICAgPHJlY3QgY2xhc3M9ImNscy0xIiB4PSI0NjQuMzgiIHk9IjIyNi4wMSIgd2lkdGg9IjQuMjEiIGhlaWdodD0iMjcuOTIiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQ4MC4wMiwyMzkuOWMwLDMuMDgsMS4wNCw1LjYyLDMuMTEsNy42MSwyLjA3LDEuOTksNC40NCwzLDcuMTUsMywyLjk0LDAsNS4zOS0xLjAxLDcuNDEtMy4wMywyLjAyLTIuMDUsMy4wMy00LjU1LDMuMDMtNy40OXMtMS4wMS01LjQ4LTMtNy40OWMtMS45OS0yLjAyLTQuNDQtMy4wMy03LjM1LTMuMDNzLTUuMzYsMS4wMS03LjM1LDMuMDNjLTEuOTksMS45OS0zLDQuNDctMyw3LjQxWk00NzUuNzYsMjM5Ljg0YzAtMy45MiwxLjQ0LTcuMjksNC4zMi0xMC4xMSwyLjg1LTIuODIsNi4zMS00LjI0LDEwLjM1LTQuMjRzNy4zOCwxLjQxLDEwLjIzLDQuMjZjMi44NSwyLjgyLDQuMjksNi4yNSw0LjI5LDEwLjI2cy0xLjQ0LDcuNDEtNC4yOSwxMC4yYy0yLjg4LDIuOC02LjM3LDQuMjEtMTAuNDMsNC4yMS0zLjYsMC02LjgzLTEuMjQtOS43MS0zLjc1LTMuMTctMi43Ny00LjczLTYuMzctNC43My0xMC44M2gtLjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODgwLjYsMi4xYy0zLjI5LDAtNi4wOCwxLjIxLTguNDQsMy42M3MtMy41NCw1LjMtMy41NCw4LjY0LDEuMTgsNi4zNCwzLjU0LDguNzZjMi4zMywyLjQyLDUuMTksMy42Myw4LjU2LDMuNjNzNi4xNC0xLjIxLDguNS0zLjZjMi4zMy0yLjQyLDMuNTItNS4zMywzLjUyLTguNzYsMC0xLjg0LS40Ni0zLjcyLTEuMzgtNS42OC0uOTItMS44NC0yLjEzLTMuMjktMy42My00LjM1LTIuMTMtMS41LTQuNS0yLjI1LTcuMTItMi4yNXYtLjAzWk04OTUuMDksMTQuNDFjMCw0LjAxLTEuNDEsNy40MS00LjIxLDEwLjIzLTIuOCwyLjgyLTYuMiw0LjIxLTEwLjE0LDQuMjFzLTcuMzgtMS40MS0xMC4yLTQuMjRjLTIuOC0yLjgyLTQuMjEtNi4yMi00LjIxLTEwLjI2LDAtMi4yMi40Ni00LjI2LDEuMzUtNi4wOC45Mi0xLjk2LDIuMTktMy42LDMuODMtNC45NiwyLjY4LTIuMjIsNS42OC0zLjMxLDkuMDItMy4zMSwyLjIyLDAsNC4yMS40Myw2LjAyLDEuMjcsMi41NCwxLjEyLDQuNjEsMi44OCw2LjE3LDUuMywxLjU2LDIuNDIsMi4zNiw1LjA0LDIuMzYsNy44NFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTg3OS4yNSwxMy41MWgtLjU1di00LjU1aC42M2MyLjE5LDAsMy4zMS43MiwzLjMxLDIuMTksMCwxLjU2LTEuMTUsMi4zNi0zLjQsMi4zNlpNODgyLjEzLDE1Ljc5bC4yMy0uMDZjLjk4LS4yOSwxLjc5LS44NiwyLjQyLTEuNzMuNjMtLjg5Ljk1LTEuODQuOTUtMi44OCwwLTEuNTYtLjYxLTIuOC0xLjc5LTMuNzUtMS4wNy0uODQtMi43Ny0xLjI0LTUuMDctMS4yNGgtMy4zMXYxNi42M2gzLjE3di02LjZsNC45Myw2LjZoMy44OWwtNS40Mi02Ljk0di0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04NzguODQsMTMuMzRoLjM3YzIuMTksMCwzLjI2LS43MiwzLjI2LTIuMTksMC0xLjM4LTEuMDQtMi4wNS0zLjE0LTIuMDVoLS40OXY0LjI0Wk04NzkuMjUsMTMuNjZoLS42OXYtNC44NGguODFjMi4zMSwwLDMuNDYuNzgsMy40NiwyLjMzLDAsMS42Ny0xLjIxLDIuNTEtMy41NywyLjUxWk04ODMuNzEsMjIuNTloMy40OWwtNS4zMy02Ljg2LjQzLS4xNGMuOTUtLjI5LDEuNzMtLjg0LDIuMzMtMS42Ny42MS0uODYuOTItMS43OS45Mi0yLjgsMC0xLjUtLjU1LTIuNzEtMS43My0zLjYzLTEuMDQtLjgxLTIuNzEtMS4yMS00Ljk5LTEuMjFoLTMuMTd2MTYuMzFoMi44NXYtNi44OWw1LjE2LDYuODloLjAzWk04ODcuODMsMjIuOTFoLTQuMjZsLTQuNy02LjI4djYuMjhoLTMuNDlWNS45OWgzLjQ5YzIuMzMsMCw0LjA5LjQzLDUuMTksMS4yNywxLjIxLjk4LDEuODQsMi4yOCwxLjg0LDMuODYsMCwxLjA3LS4zMiwyLjA3LS45OCwyLjk3cy0xLjUsMS41LTIuNTEsMS43OWw1LjQ4LDcuMDNoLS4wNloiLz4KICA8L2c+Cjwvc3ZnPg==" alt="Tremendo Studio" style="height:70px; display:block; margin-top:4px;">
+    </div>
+    <div class="header-right">
+      <div class="doc-type">BRIEF</div>
+      <div class="doc-type" style="color:white;font-size:20px;letter-spacing:4px;">DE CLIENTE</div>
+      <div class="doc-meta">CDMX · 2025</div>
+    </div>
+  </header>
+
+  <!-- ORANGE BAND -->
+  <div class="naranja-block">
+    <p>Cuéntanos todo. Entre más sepamos, mejor el resultado.</p>
+    <span>DOCUMENTO CONFIDENCIAL</span>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- INTRO -->
+    <div class="intro-box">
+      <p>Este brief es nuestra primera conversación real contigo. <strong>No hay respuestas incorrectas</strong> — solo información que nos permite conocer tu marca al fondo y diseñar con intención. Tómate el tiempo que necesites. Lo que aquí compartes es la materia prima de algo tremendo.</p>
+    </div>
+
+    <!-- 01 DATOS DE CONTACTO -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div class="section-title">Datos de <span>Contacto</span></div>
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">Nombre completo *</label>
+          <input class="field-input" type="text" placeholder="Tu nombre">
+        </div>
+        <div class="field">
+          <label class="field-label">Nombre de la marca / empresa *</label>
+          <input class="field-input" type="text" placeholder="Nombre de tu marca">
+        </div>
+      </div>
+
+      <div class="field-group three">
+        <div class="field">
+          <label class="field-label">Email de contacto *</label>
+          <input class="field-input" type="email" placeholder="hola@tumarca.com">
+        </div>
+        <div class="field">
+          <label class="field-label">Teléfono / WhatsApp</label>
+          <input class="field-input" type="tel" placeholder="+52 55 0000 0000">
+        </div>
+        <div class="field">
+          <label class="field-label">País / Ciudad</label>
+          <input class="field-input" type="text" placeholder="CDMX, México">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">Instagram / Red social principal</label>
+          <input class="field-input" type="text" placeholder="@tumarca">
+        </div>
+        <div class="field">
+          <label class="field-label">Sitio web (si tienes)</label>
+          <input class="field-input" type="text" placeholder="www.tumarca.com">
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 02 LA MARCA -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div class="section-title">Tu <span>Marca</span></div>
+      </div>
+
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">¿Qué hace tu marca / negocio? (en tus propias palabras) *</label>
+          <textarea class="field-textarea" rows="3" placeholder="Cuéntanos qué vendes, ofreces o haces. Sin tecnicismos, con honestidad."></textarea>
+        </div>
+      </div>
+
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">¿En qué industria o giro opera tu marca?</label>
+          <div class="options-grid">
+            <label class="option-item"><input type="checkbox" name="industria" value="moda"><label>Moda / Lifestyle</label></label>
+            <label class="option-item"><input type="checkbox" name="industria" value="belleza"><label>Belleza / Skincare</label></label>
+            <label class="option-item"><input type="checkbox" name="industria" value="food"><label>Food & Beverage</label></label>
+            <label class="option-item"><input type="checkbox" name="industria" value="fitness"><label>Fitness / Wellness</label></label>
+            <label class="option-item"><input type="checkbox" name="industria" value="tech"><label>Tecnología / Apps</label></label>
+            <label class="option-item"><input type="checkbox" name="industria" value="educacion"><label>Educación / Cursos</label></label>
+            <label class="option-item"><input type="checkbox" name="industria" value="servicios"><label>Servicios profesionales</label></label>
+            <label class="option-item"><input type="checkbox" name="industria" value="arte"><label>Arte / Creatividad</label></label>
+            <label class="option-item"><input type="checkbox" name="industria" value="otro" id="chk-otro-ind" onchange="document.getElementById('otro-ind-txt').style.display=this.checked?'block':'none'"><label>Otro</label></label>
+          </div>
+          <input class="field-input" type="text" id="otro-ind-txt" placeholder="Escribe tu industria..." style="display:none;margin-top:10px;max-width:320px;">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">¿Cuánto tiempo lleva tu marca en el mercado?</label>
+          <div class="options-grid" style="grid-template-columns: repeat(4,1fr)">
+            <label class="option-item"><input type="radio" name="antiguedad"><label>Apenas empieza</label></label>
+            <label class="option-item"><input type="radio" name="antiguedad"><label>Menos de 1 año</label></label>
+            <label class="option-item"><input type="radio" name="antiguedad"><label>1 a 3 años</label></label>
+            <label class="option-item"><input type="radio" name="antiguedad"><label>Más de 3 años</label></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">Si tu marca fuera una persona, ¿cómo la describirías?</label>
+          <textarea class="field-textarea" rows="2" placeholder="Ej: Es audaz, directa, divertida pero seria cuando se necesita..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 03 PROYECTO -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div class="section-title">El <span>Proyecto</span></div>
+      </div>
+
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">¿Qué servicio de Tremendo te interesa? *</label>
+          <div class="tags-section">
+            <p class="tag-instruction">Selecciona todo lo que aplica</p>
+            <div class="tags-grid" id="servicios-grid">
+              <div class="tag" data-val="refinamiento">Refinamiento de Marca</div>
+              <div class="tag" data-val="creacion">Creación de Marca</div>
+              <div class="tag" data-val="despliegue">Despliegue de Marca</div>
+              <div class="tag" data-val="basico">Pack Básico de Contenido</div>
+              <div class="tag" data-val="plus">Pack Plus de Contenido</div>
+              <div class="tag" data-val="premium">Pack Premium de Contenido</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">¿Cuál es el objetivo principal del proyecto? *</label>
+          <textarea class="field-textarea" rows="3" placeholder="¿Qué quieres lograr? ¿Reposicionarte, lanzarte, actualizarte...?"></textarea>
+        </div>
+        <div class="field">
+          <label class="field-label">¿Qué no está funcionando hoy con tu imagen actual?</label>
+          <textarea class="field-textarea" rows="3" placeholder="Sé honesta. Esto nos ayuda a entender qué hay que romper."></textarea>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">¿Cuándo necesitas el proyecto?</label>
+          <input class="field-input" type="text" placeholder="Fecha aproximada">
+        </div>
+        <div class="field">
+          <label class="field-label">¿Tienes presupuesto definido?</label>
+          <div style="display:flex;gap:16px;margin-top:8px;">
+            <label class="option-item"><input type="radio" name="presupuesto"><label>Sí</label></label>
+            <label class="option-item"><input type="radio" name="presupuesto"><label>No aún</label></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 04 AUDIENCIA -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div class="section-title">Tu <span>Audiencia</span></div>
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">¿A quién le vendes? Describe a tu cliente ideal *</label>
+          <textarea class="field-textarea" rows="3" placeholder="Edad, género, estilo de vida, valores, hábitos de consumo..."></textarea>
+        </div>
+        <div class="field">
+          <label class="field-label">¿Qué problema resuelves para esa persona?</label>
+          <textarea class="field-textarea" rows="3" placeholder="¿Qué transformación vive tu cliente al trabajar contigo o comprar tu producto?"></textarea>
+        </div>
+      </div>
+
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">¿En qué plataformas está tu audiencia principalmente?</label>
+          <div class="options-grid">
+            <label class="option-item"><input type="checkbox"><label>Instagram</label></label>
+            <label class="option-item"><input type="checkbox"><label>TikTok</label></label>
+            <label class="option-item"><input type="checkbox"><label>YouTube</label></label>
+            <label class="option-item"><input type="checkbox"><label>Facebook</label></label>
+            <label class="option-item"><input type="checkbox"><label>LinkedIn</label></label>
+            <label class="option-item"><input type="checkbox"><label>Tienda física</label></label>
+            <label class="option-item"><input type="checkbox" id="chk-otra-plat" onchange="document.getElementById('otra-plat-txt').style.display=this.checked?'inline-block':'none'"><label>Otro</label></label>
+          </div>
+          <input class="field-input" type="text" id="otra-plat-txt" placeholder="¿Cuál?" style="display:none;margin-top:10px;max-width:220px;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 05 DIRECCIÓN VISUAL -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div class="section-title">Dirección <span>Visual</span></div>
+      </div>
+
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">¿Tienes referencias visuales? (marcas, estilos, colores que te gusten)</label>
+          <textarea class="field-textarea" rows="2" placeholder="Puedes nombrar marcas, pegar links o describir el feeling que buscas."></textarea>
+        </div>
+      </div>
+
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">¿Cómo quieres que se sienta tu marca visualmente? *</label>
+          <div class="tags-section">
+            <div class="tags-grid">
+              <label class="tag" onclick="this.classList.toggle('selected')">Minimalista</label>
+              <label class="tag" onclick="this.classList.toggle('selected')">Bold / Impactante</label>
+              <label class="tag" onclick="this.classList.toggle('selected')">Editorial</label>
+              <label class="tag" onclick="this.classList.toggle('selected')">Lúdico / Colorido</label>
+              <label class="tag" onclick="this.classList.toggle('selected')">Elegante / Lujo</label>
+              <label class="tag" onclick="this.classList.toggle('selected')">Orgánico / Natural</label>
+              <label class="tag" onclick="this.classList.toggle('selected')">Retro / Vintage</label>
+              <label class="tag" onclick="this.classList.toggle('selected')">Moderno / Clean</label>
+              <label class="tag" onclick="this.classList.toggle('selected')">Rebelde / Disruptivo</label>
+              <label class="tag" onclick="this.classList.toggle('selected')">Femenino / Delicado</label>
+              <label class="tag" onclick="this.classList.toggle('selected')">Oscuro / Dramático</label>
+              <label class="tag" onclick="this.classList.toggle('selected')">Neutro / Crudo</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">¿Tienes paleta de colores definida?</label>
+          <div style="display:flex;gap:16px;margin-top:8px;">
+            <label class="option-item"><input type="radio" name="colores"><label>Sí, tengo colores definidos</label></label>
+            <label class="option-item"><input type="radio" name="colores"><label>Tengo ideas pero nada fijo</label></label>
+            <label class="option-item"><input type="radio" name="colores"><label>Necesito que ustedes propongan</label></label>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">¿Tienes tipografías o fuentes que ya uses?</label>
+          <input class="field-input" type="text" placeholder="Nombre de fuentes o descripción del estilo tipográfico">
+        </div>
+      </div>
+
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">¿Hay algo que definitivamente NO quieras en tu visual?</label>
+          <textarea class="field-textarea" rows="2" placeholder="Colores, estilos, referencias que quieres evitar a toda costa."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 06 COMPETENCIA -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div class="section-title">Competencia y <span>Mercado</span></div>
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">Nombra 2-3 competidores directos</label>
+          <textarea class="field-textarea" rows="2" placeholder="Marcas que hacen algo similar a ti (puede ser local o internacional)."></textarea>
+        </div>
+        <div class="field">
+          <label class="field-label">¿En qué eres diferente a ellos?</label>
+          <textarea class="field-textarea" rows="2" placeholder="Tu diferenciador real, tu ventaja competitiva, lo que hace que alguien te elija a ti."></textarea>
+        </div>
+      </div>
+
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">¿Qué marcas admiras (aunque no sean competencia directa) y por qué?</label>
+          <textarea class="field-textarea" rows="2" placeholder="Pueden ser de cualquier industria. ¿Qué tienen ellas que quisieras para ti?"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 07 EXTRAS -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <div class="section-title">Lo <span>Extra</span></div>
+      </div>
+
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">¿Tienes material previo que debamos considerar?</label>
+          <div class="options-grid">
+            <label class="option-item"><input type="checkbox"><label>Logo / Logotipo</label></label>
+            <label class="option-item"><input type="checkbox"><label>Fotografías existentes</label></label>
+            <label class="option-item"><input type="checkbox"><label>Videos / Reels previos</label></label>
+            <label class="option-item"><input type="checkbox"><label>Guía de marca anterior</label></label>
+            <label class="option-item"><input type="checkbox"><label>Nada aún — empezamos de cero</label></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group full">
+        <div class="field">
+          <label class="field-label">¿Hay algo más que quieras contarnos sobre tu marca o proyecto?</label>
+          <textarea class="field-textarea" rows="4" placeholder="Espacio libre. Cuéntanos lo que sientas que necesitamos saber para hacer algo tremendo."></textarea>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label class="field-label">¿Cómo llegaste a Tremendo Studio?</label>
+          <div class="options-grid" style="grid-template-columns: repeat(3,1fr)">
+            <label class="option-item"><input type="radio" name="origen"><label>Instagram</label></label>
+            <label class="option-item"><input type="radio" name="origen"><label>Recomendación</label></label>
+            <label class="option-item"><input type="radio" name="origen"><label>Google</label></label>
+            <label class="option-item"><input type="radio" name="origen"><label>TikTok</label></label>
+            <label class="option-item"><input type="radio" name="origen"><label>LinkedIn</label></label>
+            <label class="option-item"><input type="radio" name="origen"><label>Otro</label></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end content -->
+
+  <!-- SUBMIT AREA -->
+  <div style="padding: 28px var(--page-pad); display:flex; align-items:center; justify-content:space-between; gap:24px; background:white;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px; color:#E8502A; text-align:center; flex:1; margin:0;">Descarga y envíanos este brief por WhatsApp o compártelo directo con tu diseñadora asignada.</p>
+    <button class="submit-btn" onclick="descargarPDFScroll()" style="background:var(--negro);flex-shrink:0;">Guardar PDF →</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">TR.</div>
+    <span>TREMENDO STUDIO ® 2025 · CDMX</span>
+    <span>55.3727.8763</span>
+  </footer>
+
+</div>
+
+</body>
+<script>
+  document.querySelectorAll('#servicios-grid .tag').forEach(function(tag) {
+    tag.addEventListener('click', function() {
+      this.classList.toggle('selected');
+    });
+  });
+
+function descargarHTML() {
+  var nombre = 'brief-cliente-tremendo.html';
+  var blob = new Blob([document.documentElement.outerHTML], {type: 'text/html;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = nombre;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+
+async function descargarPDFScroll() {
+  var btn = event ? event.target : null;
+  if(btn){ btn.textContent = "Generando PDF..."; btn.disabled = true; }
+
+  // Expandir el body para capturar todo el contenido
+  var body = document.body;
+  var page = document.querySelector('.page');
+  var prevOverflow = body.style.overflow;
+  var prevHeight = body.style.height;
+  body.style.overflow = 'visible';
+  body.style.height = 'auto';
+
+  await new Promise(r => setTimeout(r, 200));
+
+  var totalHeight = page ? page.scrollHeight : body.scrollHeight;
+  var totalWidth  = page ? page.offsetWidth  : body.offsetWidth;
+
+  var canvas = await html2canvas(page || body, {
+    scale: 2,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: '#ffffff',
+    logging: false,
+    width: totalWidth,
+    height: totalHeight,
+    windowWidth: totalWidth,
+    windowHeight: totalHeight,
+    scrollX: 0,
+    scrollY: 0
+  });
+
+  // Restaurar
+  body.style.overflow = prevOverflow;
+  body.style.height   = prevHeight;
+
+  var imgData = canvas.toDataURL('image/jpeg', 0.95);
+  var { jsPDF } = window.jspdf;
+
+  // Un solo PDF con ancho A4 proporcional en altura
+  var pxPerMm = canvas.width / 210;
+  var pdfH    = canvas.height / pxPerMm;
+
+  var pdf = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: [210, pdfH],
+    compress: true
+  });
+
+  pdf.addImage(imgData, 'JPEG', 0, 0, 210, pdfH, undefined, 'FAST');
+  pdf.save('tremendo-studio.pdf');
+
+  if(btn){ btn.textContent = "↓ Guardar PDF"; btn.disabled = false; }
+}
+
+</script>
+</html>

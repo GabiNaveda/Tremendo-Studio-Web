@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Branding Proposal — Tremendo Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,800;1,300;1,400;1,700&family=Barlow:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --negro:#000;--naranja:#E8502A;--crudo:#FFF8EE;--blanco:#fff;--fd:'Barlow Condensed',sans-serif;--fb:'Barlow',sans-serif; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#111;font-family:var(--fb);overflow:hidden;height:100vh;width:100vw;color:var(--blanco);}
+
+  /* FIX 2: contenteditable siempre blanco, paste sin formato */
+  [contenteditable="true"]{outline:none;cursor:text;transition:background .15s;color:inherit;}
+  [contenteditable="true"]:hover{background:rgba(232,80,42,.07);}
+  [contenteditable="true"]:focus{background:rgba(232,80,42,.12);outline:1px dashed rgba(232,80,42,.5);}
+
+  /* NAV */
+  #nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.88);padding:10px 18px;z-index:1000;backdrop-filter:blur(8px);}
+  .nav-btn{background:transparent;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:7px 14px;cursor:pointer;transition:all .2s;}
+  .nav-btn:hover{border-color:var(--naranja);color:var(--naranja);}
+  /* FIX 10 */
+  .pdf-btn{background:var(--naranja);border:none;color:#fff;font-family:var(--fd);font-weight:800;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:7px 14px;cursor:pointer;transition:opacity .2s;}
+  .pdf-btn:hover{opacity:.85;}
+  #slide-counter{font-family:var(--fd);font-weight:700;font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.1em;min-width:56px;text-align:center;}
+  #dots{display:flex;gap:5px;align-items:center;}
+  .dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .2s;}
+  .dot.active{background:var(--naranja);width:18px;border-radius:3px;}
+
+  /* SLIDES */
+  #sw{width:100vw;height:100vh;overflow:hidden;position:relative;}
+  .slide{position:absolute;top:0;left:0;width:100vw;height:100vh;display:none;overflow:hidden;}
+  .slide.active{display:flex;}
+
+  /* IMG PLACEHOLDER — FIX 4/5/6/7/8 */
+  .ip{background:rgba(255,255,255,.05);border:2px dashed rgba(255,255,255,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;width:100%;height:100%;}
+  .ip:hover{border-color:var(--naranja);background:rgba(232,80,42,.07);}
+  .ip input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:2;}
+  .ip .ico{font-size:22px;color:rgba(255,255,255,.2);pointer-events:none;z-index:1;}
+  .ip .lbl{font-family:var(--fd);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.22);pointer-events:none;z-index:1;}
+  .ip .li{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:3;pointer-events:none;}
+
+  /* HEADER */
+  .sh{position:absolute;top:0;left:0;right:0;height:44px;background:var(--negro);display:flex;align-items:center;justify-content:space-between;padding:0 48px;z-index:10;}
+  .sh .br{font-family:var(--fd);font-weight:800;font-size:13px;letter-spacing:.1em;color:rgba(255,255,255,.5);text-transform:uppercase;}
+  .sh .sl{font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.2em;color:rgba(255,255,255,.28);text-transform:uppercase;}
+  .sh .yr{font-family:var(--fd);font-size:11px;color:rgba(255,255,255,.18);letter-spacing:.1em;}
+
+  /* COLOR SWATCH PICKER */
+  .cs{position:relative;overflow:hidden;cursor:pointer;}
+  .cs input[type="color"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;border:none;padding:0;z-index:5;}
+
+  /* ── S01 PORTADA ── */
+  #s01{background:var(--negro);flex-direction:row;}
+  #s01 .L{width:50%;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:48px;}
+  #s01 .R{width:50%;height:100%;}
+  .bl{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+  .cn{font-family:var(--fd);font-weight:800;font-size:clamp(28px,4vw,52px);line-height:.95;text-transform:uppercase;color:var(--blanco);letter-spacing:-.5px;min-height:54px;}
+  /* FIX 1 */
+  .dt{font-family:var(--fd);font-weight:300;font-size:clamp(10px,1.1vw,14px);letter-spacing:.25em;text-transform:uppercase;color:var(--naranja);margin-top:10px;}
+  .mt{font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;line-height:1.8;}
+
+  /* ── S02 MISIÓN VISIÓN ── */
+  #s02{background:var(--negro);flex-direction:row;padding-top:44px;}
+  #s02 .H{width:50%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:flex-end;padding:48px 52px;}
+  #s02 .H.r{border-left:1px solid rgba(255,255,255,.07);}
+  .mvl{font-family:var(--fd);font-weight:800;font-size:clamp(28px,3.5vw,48px);text-transform:uppercase;letter-spacing:.02em;color:var(--blanco);margin-bottom:20px;line-height:1;}
+  .mvt{font-size:clamp(12px,1.1vw,15px);color:rgba(255,255,255,.65);line-height:1.75;max-width:420px;min-height:80px;}
+
+  /* ── S03 PALABRAS CLAVE ── */
+  #s03{background:var(--negro);padding-top:44px;flex-direction:row;}
+  #s03 .L{width:38%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:center;padding:48px 52px;}
+  #s03 .R{width:62%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:center;padding:48px 52px;}
+  .sb{font-family:var(--fd);font-weight:800;font-size:clamp(28px,3.5vw,48px);text-transform:uppercase;color:var(--blanco);line-height:1;margin-bottom:8px;}
+  .ss{font-size:12px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;}
+  .kr{display:flex;align-items:center;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+  .kr:first-child{border-top:1px solid rgba(255,255,255,.08);}
+  .kn{font-family:var(--fd);font-weight:300;font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.1em;min-width:28px;}
+  .kt{font-family:var(--fd);font-weight:700;font-size:clamp(18px,2.2vw,28px);text-transform:uppercase;letter-spacing:.05em;color:var(--blanco);flex:1;padding:0 16px;min-height:36px;}
+
+  /* ── S04 ARQUETIPO ── */
+  #s04{background:var(--negro);padding-top:44px;flex-direction:row;}
+  #s04 .L{width:55%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:flex-end;padding:48px 52px;}
+  #s04 .R{width:45%;height:calc(100% - 44px);}
+  .al{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--naranja);margin-bottom:8px;}
+  .an{font-family:var(--fd);font-weight:800;font-size:clamp(32px,5vw,72px);text-transform:uppercase;color:var(--blanco);line-height:.9;letter-spacing:-1px;margin-bottom:20px;min-height:64px;}
+  .ad{font-size:clamp(12px,1.1vw,14px);color:rgba(255,255,255,.55);line-height:1.75;max-width:460px;min-height:56px;margin-bottom:24px;}
+  .ag{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .ail{font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:4px;}
+  .aiv{font-size:13px;color:rgba(255,255,255,.7);line-height:1.5;min-height:34px;}
+
+  /* ── S05 CONCEPTO ── */
+  #s05{background:var(--negro);padding-top:44px;flex-direction:row;}
+  #s05 .L{width:50%;height:calc(100% - 44px);}
+  #s05 .R{width:50%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:flex-end;padding:48px 52px;}
+  .cl{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:8px;}
+  .ct{font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--naranja);border:1px solid var(--naranja);display:inline-block;padding:3px 10px;margin-bottom:16px;min-width:80px;}
+  .cti{font-family:var(--fd);font-weight:800;font-size:clamp(24px,3.5vw,48px);text-transform:uppercase;color:var(--blanco);line-height:1;margin-bottom:18px;min-height:50px;}
+  .cx{font-size:clamp(12px,1.1vw,14px);color:rgba(255,255,255,.6);line-height:1.75;min-height:80px;}
+
+  /* ── S06 PALETA ── */
+  #s06{background:var(--negro);padding-top:44px;flex-direction:column;}
+  #s06 .top{height:68px;display:flex;align-items:flex-end;padding:0 52px 12px;justify-content:space-between;}
+  #s06 .sw{flex:1;display:flex;flex-direction:row;}
+  .swb{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:22px 26px;position:relative;transition:flex .3s;}
+  .swb:hover{flex:1.08;}
+  .swn{font-family:var(--fd);font-weight:800;font-size:clamp(13px,1.8vw,22px);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+  .swh{font-family:var(--fd);font-weight:400;font-size:12px;letter-spacing:.1em;opacity:.6;}
+  .swrg{font-size:11px;opacity:.4;letter-spacing:.05em;margin-top:2px;}
+  .addbtn{background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.2);color:rgba(255,255,255,.35);font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;padding:0 14px;transition:all .2s;}
+  .addbtn:hover{background:rgba(232,80,42,.15);border-color:var(--naranja);color:var(--naranja);}
+
+  /* FIX 3: S07 TIPOGRAFÍAS */
+  #s07{background:var(--negro);padding-top:44px;flex-direction:row;}
+  #s07 .fc{flex:1;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:space-between;padding:34px 38px;border-right:1px solid rgba(255,255,255,.07);}
+  #s07 .fc:last-child{border-right:none;}
+  .fsw{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+  .fst{font-size:clamp(60px,9vw,120px);line-height:1;color:var(--blanco);letter-spacing:-2px;cursor:text;text-align:center;}
+  .fiz{position:absolute;inset:0;display:none;}
+  .tbtn{background:transparent;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.38);font-family:var(--fd);font-weight:700;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;cursor:pointer;margin-bottom:8px;transition:all .2s;}
+  .tbtn:hover{border-color:var(--naranja);color:var(--naranja);}
+  .fm .fn{font-family:var(--fd);font-weight:800;font-size:clamp(14px,1.5vw,20px);text-transform:uppercase;letter-spacing:.05em;color:var(--blanco);margin-bottom:4px;min-height:26px;}
+  .fm .fr{font-family:var(--fd);font-weight:400;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--naranja);}
+  .fm .fa{font-size:11px;color:rgba(255,255,255,.2);line-height:1.8;letter-spacing:.05em;margin-top:10px;}
+
+  /* ── S08 ESTILO GRÁFICO — FIX 4 ── */
+  #s08{background:var(--negro);padding-top:44px;flex-direction:row;}
+  #s08 .L{width:36%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:flex-end;padding:40px 44px;}
+  #s08 .R{width:64%;height:calc(100% - 44px);display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;}
+  #s08 .R .ip{height:100%;}
+
+  /* ── S09 FOTOGRAFÍA ── */
+  #s09{background:var(--negro);padding-top:44px;flex-direction:row;}
+  #s09 .L{width:40%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:flex-end;padding:40px 44px;}
+  #s09 .R{width:60%;height:calc(100% - 44px);display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;}
+  #s09 .R .ip{height:100%;}
+
+  /* FIX 5: S10 MANIFIESTO — fondo full */
+  #s10{flex-direction:row;position:relative;}
+  #s10 .bgf{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+  #s10 .bgf .ip{width:100%;height:100%;border:none;background:rgba(0,0,0,.5);}
+  #s10 .ov{position:absolute;inset:0;background:rgba(0,0,0,.62);z-index:1;pointer-events:none;}
+  #s10 .co{position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 120px;text-align:center;pointer-events:none;}
+  #s10 .co [contenteditable]{pointer-events:all;}
+  .mtl{font-family:var(--fd);font-weight:800;font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:28px;}
+  .mtx{font-family:var(--fb);font-style:italic;font-size:clamp(13px,1.4vw,18px);color:rgba(255,255,255,.85);line-height:1.9;min-height:100px;max-width:700px;}
+  .mta{font-family:var(--fd);font-weight:800;font-size:clamp(14px,2vw,22px);letter-spacing:.15em;text-transform:uppercase;color:var(--blanco);margin-top:30px;min-height:28px;}
+
+  /* FIX 6/7/8: LOGOTIPOS — imagen ocupa toda la zona derecha */
+  .ls{padding-top:44px;flex-direction:row;}
+  .ls .L{width:35%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:flex-end;padding:40px 44px;}
+  .ls .R{width:65%;height:calc(100% - 44px);position:relative;overflow:hidden;}
+  .ls .R .ip{width:100%;height:100%;border:none;}
+  .lvl{font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--naranja);margin-bottom:8px;}
+  .lvn{font-family:var(--fd);font-weight:800;font-size:clamp(22px,3vw,40px);text-transform:uppercase;color:var(--blanco);line-height:1;margin-bottom:14px;min-height:44px;}
+  .lvd{font-size:13px;color:rgba(255,255,255,.42);line-height:1.6;min-height:40px;}
+
+  /* FIX 9: S16 PROPORCIÓN — dinámica */
+  #s16{background:var(--negro);padding-top:44px;flex-direction:column;}
+  #s16 .top{height:66px;display:flex;align-items:flex-end;padding:0 52px 10px;justify-content:space-between;}
+  #s16 .bars{flex:1;display:flex;flex-direction:column;}
+  .pb{display:flex;align-items:center;padding:0 52px;position:relative;transition:flex .4s;}
+  .pbi{display:flex;align-items:center;justify-content:space-between;width:100%;position:relative;z-index:2;}
+  .pbl{font-family:var(--fd);font-weight:800;font-size:clamp(14px,2vw,26px);text-transform:uppercase;letter-spacing:.05em;cursor:text;}
+  .pbp{font-family:var(--fd);font-weight:300;font-size:clamp(14px,2vw,24px);letter-spacing:.1em;opacity:.7;cursor:text;min-width:60px;text-align:right;}
+  /* Color picker como botón pequeño en esquina, no cubre el texto */
+  .pb-color-btn{position:absolute;bottom:6px;left:52px;width:22px;height:22px;border:2px solid rgba(255,255,255,.3);cursor:pointer;z-index:3;border-radius:0;overflow:hidden;flex-shrink:0;}
+  .pb-color-btn input[type="color"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;border:none;padding:0;}
+  .pb-color-dot{width:100%;height:100%;pointer-events:none;}
+
+  /* APLICACIONES */
+  .as{background:var(--negro);padding-top:44px;flex-direction:row;}
+  .as .L{width:30%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:flex-end;padding:40px 44px;}
+  .as .R{width:70%;height:calc(100% - 44px);display:grid;gap:2px;}
+  .as .R .ip{height:100%;}
+  .apl{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--naranja);margin-bottom:8px;}
+  .apt{font-family:var(--fd);font-weight:800;font-size:clamp(22px,3vw,40px);text-transform:uppercase;color:var(--blanco);line-height:1;margin-bottom:12px;min-height:44px;}
+  .apd{font-size:12px;color:rgba(255,255,255,.38);line-height:1.6;min-height:34px;}
+
+  /* CIERRE */
+  #sc{background:var(--negro);flex-direction:column;align-items:center;justify-content:center;}
+  .cn2{width:60px;height:3px;background:var(--naranja);margin:22px auto;}
+  .ctg{font-family:var(--fd);font-weight:800;font-size:clamp(18px,2.5vw,32px);letter-spacing:.1em;text-transform:uppercase;color:var(--blanco);text-align:center;min-height:36px;max-width:600px;}
+  .cco{font-size:12px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:2;min-height:40px;}
+
+  @media print{body{overflow:visible;height:auto;background:white;}.slide{position:relative!important;display:flex!important;page-break-after:always;width:100vw;height:100vh;}#nav{display:none!important;}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<div id="nav">
+  <button class="nav-btn" onclick="prevSlide()">← Ant.</button>
+  <div id="dots"></div>
+  <span id="slide-counter">1 / 20</span>
+  <button class="nav-btn" onclick="nextSlide()">Sig. →</button>
+  <button class="pdf-btn" onclick="exportPDF()">↓ Guardar PDF</button>
+</div>
+
+<div id="sw">
+
+<!-- S01 PORTADA -->
+<div class="slide active" id="s01">
+  <div class="L">
+    <div>
+      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iQ2FwYV8yIiBkYXRhLW5hbWU9IkNhcGEgMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgODk1LjA5IDI1NC40MiI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPGcgaWQ9IkNhcGFfMS0yIiBkYXRhLW5hbWU9IkNhcGEgMSI+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNjAuMiAxNzIuNDkgMjEuNDEgMTcyLjQ5IDIxLjQxIDYzLjI4IDAgNjMuMjggMCAyOC44NyA4Mi40MSAyOC44NyA4Mi40MSA2My4yOCA2MC4xNyA2My4yOCA2MC4xNyAxNzIuNDkgNjAuMiAxNzIuNDkiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTEzMy4xNiw5NS4zOGgyLjU5YzQuNDcsMCw4LjE4LTEuNywxMS4xNS01LjEzLDIuOTctMy40LDQuNDctNy43NSw0LjQ3LTEzLjAyLDAtMTAuNzItNS42Mi0xNi4xMS0xNi44My0xNi4xMWgtMS4zOHYzNC4yNlpNMTk2LjUzLDE3Mi40OWgtNDEuOTZsLTE5LjE2LTUxLjE4Yy0uMTctLjg2LS41Mi0yLjAyLS45OC0zLjQ2LS40Ni0xLjQxLTEuMDQtMy4xNC0xLjczLTUuMTNsLjI5LDkuNDh2NTAuMjNoLTM4LjYxVjI4Ljc5aDM5Ljc0YzE3LjQ5LDAsMzAuNTcsMy40NiwzOS4yNSwxMC4zMiwxMS4wNCw4LjgyLDE2LjU3LDIxLjMyLDE2LjU3LDM3LjU4LDAsMTcuMzgtNy40MSwyOS4zNi0yMi4yNSwzNS45OWwyOC44NSw1OS43NHYuMDlaIi8+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMjA2LjY0IDE3Mi40OSAyMDYuNjQgMjguODUgMjc4Ljc0IDI4Ljg1IDI3OC43NCA2Mi42MiAyNDUuNDMgNjIuNjIgMjQ1LjQzIDgzLjU0IDI3NS4yOCA4My41NCAyNzUuMjggMTE2LjAxIDI0NS40MyAxMTYuMDEgMjQ1LjQzIDEzNy45NyAyNzguNzQgMTM3Ljk3IDI3OC43NCAxNzIuNDkgMjA2LjY0IDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDI2LjkxLDE3Mi40OWgtMzguM2wtMi40OC02NS41LTEuMDQtMjYuMTRjLS4zNyw1LjAxLS44MSw5LjgzLTEuMjcsMTQuMzgtLjQ2LDQuNTUtMS4wNyw4Ljk2LTEuNzYsMTMuMjZsLTEwLjQzLDY0aC0yNy4xMmwtOC45My02NC4wOWMtLjUyLTMuNzItMS4yNC0xMC4xMS0yLjE2LTE5LjE2LS4xMi0xLjM1LS4zNS00LjE1LS43Mi04LjM2bC0uODEsMjYuNTEtMi45NCw2NS4xM2gtMzYuOTRWMjguODdoNTcuMjlsNi45NCw0OC4zOGMuNTgsMy45OCwxLjEsOC4yNywxLjU2LDEyLjk0LjQ2LDQuNjQuODYsOS43MSwxLjI0LDE1LjE2LjY5LTkuMTEsMS42NC0xNy4yNiwyLjg4LTI0LjQ3bDguNDQtNTIuMDFoNTYuNTd2MTQzLjY1bC0uMDMtLjAzWiIvPgogICAgPHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjQ0MS4wMSAxNzIuNDkgNDQxLjAxIDI4Ljg1IDUxMy4xIDI4Ljg1IDUxMy4xIDYyLjYyIDQ3OS43OSA2Mi42MiA0NzkuNzkgODMuNTQgNTA5LjY1IDgzLjU0IDUwOS42NSAxMTYuMDEgNDc5Ljc5IDExNi4wMSA0NzkuNzkgMTM3Ljk3IDUxMy4xIDEzNy45NyA1MTMuMSAxNzIuNDkgNDQxLjAxIDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTI5Ljg1LDE3Mi40OVYyOC44NWgzNy4wM2wxOS40NSw1MC40M2MxLjA3LDIuOTcsMi4yNSw2LjQsMy41NywxMC4yMywxLjMzLDMuODMsMi44LDguMjcsNC40MSwxMy4zMWw0LjAxLDEyLjY1Yy0xLjQ0LTEyLjQ4LTIuNTEtMjMuMTQtMy4yNi0zMi4wMS0uNzUtOC44OC0xLjEyLTE2LjMxLTEuMTItMjIuMzNWMjguODVoMzcuMDN2MTQzLjY1aC0zNy4wM2wtMTkuNTQtNTIuODVjLTIuMDUtNS42NS0zLjg5LTEwLjkyLTUuNTMtMTUuODVzLTMuMDgtOS42Mi00LjMyLTE0LjA5Yy44MSwxMC4xMSwxLjM4LDE4LjkzLDEuNzYsMjYuNDIuMzcsNy41Mi41NSwxNC4wOS41NSwxOS43MXYzNi42NWgtMzcuMDMuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik02ODYuNDYsMTM3LjhjMTMuODktLjY5LDIwLjgzLTEyLjY1LDIwLjgzLTM1LjkxLDAtMTEuNDctMS43Ni0yMC41Mi01LjMtMjcuMTctMy41NC02LjY5LTguMy0xMC4wNi0xNC4zMi0xMC4wNmgtMS4yMXY3My4xNFpNNjQ3LjY4LDE3Mi40OVYyOC44NWgzMy40OGMxOS4xNiwwLDM0LjA5LDUuMTYsNDQuNzUsMTUuNDUsMTQuMDMsMTMuNDYsMjEuMDQsMzIuMjcsMjEuMDQsNTYuNDhzLTUuOTEsNDIuMjItMTcuNzgsNTUuMTVjLTEwLjExLDExLjA0LTI1LjE5LDE2LjU3LTQ1LjIxLDE2LjU3aC0zNi4yOFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTgyNi4wNSwxMDEuNzVjMC0yNS4xOS00LjU4LTM3LjgxLTEzLjc3LTM3LjgxLTQuNTgsMC04LjI0LDMuMzEtMTAuOTgsOS45MS0yLjY4LDYuMTQtNC4wMSwxNS4xNi00LjAxLDI3LjA2czEuMjcsMjAuODMsMy43NywyNy4yOWMyLjUxLDYuNDUsNS45OSw5LjcxLDEwLjQ2LDkuNzFzOC4xMy0zLjIsMTAuNi05LjU3YzIuNTktNi4zNywzLjkyLTE1LjI0LDMuOTItMjYuNlpNODY2LjM0LDEwMS40NmMwLDIxLjI0LTQuOTksMzguNS0xNC45OCw1MS43OC05LjkxLDEzLjIzLTIyLjg1LDE5Ljg1LTM4Ljc5LDE5Ljg1LTE0LjE1LDAtMjYuMjUtNS4wNy0zNi4zNy0xNS4yNC0xMi43MS0xMi44OC0xOS4wOC0zMi4xNi0xOS4wOC01Ny45MnM2LjYzLTQzLjUxLDE5LjkxLTU2LjU3YzkuODYtOS42OCwyMS41NS0xNC41MiwzNS4wNy0xNC41MiwxNi41NywwLDI5Ljc0LDYuNTcsMzkuNTQsMTkuNjUsOS44LDEzLjExLDE0LjcsMzAuNzUsMTQuNyw1Mi45NloiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzNyAyMjkuOTUgMjUuODIgMjI5Ljk1IDI1LjgyIDIzNi42NyAzNi42OCAyMzYuNjcgMzYuNjggMjQwLjYyIDI1LjgyIDI0MC42MiAyNS44MiAyNDkuOTUgMzcgMjQ5Ljk1IDM3IDI1My45IDIxLjU4IDI1My45IDIxLjU4IDIyNS45OCAzNyAyMjUuOTggMzcgMjI5LjkzIDM3IDIyOS45NSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjAuMTcsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjA5LTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0czEuNTgsMi45NCwxLjU4LDQuODRjMCwyLjU2LS44Niw0LjctMi41Niw2LjM3LTEuNzMsMS43LTMuODYsMi41NC02LjQzLDIuNTQtMi40MiwwLTQuNDQtLjcyLTUuOTktMi4xNi0xLjU2LTEuNDQtMi41NC0zLjQ2LTIuOTEtNi4wNWw0LjI2LS45NWMuMiwxLjY0LjUyLDIuNzcsMS4wMSwzLjQuODYsMS4yMSwyLjEzLDEuODIsMy44LDEuODIsMS4zLDAsMi4zOS0uNDMsMy4yOS0xLjMzczEuMy0xLjk5LDEuMy0zLjM0YzAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zMi0xLjEyLS42My0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDEsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSI3Ni4wNSAyMjkuOTUgNzYuMDUgMjUzLjkgNzEuODQgMjUzLjkgNzEuODQgMjI5Ljk1IDY1LjQxIDIyOS45NSA2NS40MSAyMjYuMDEgODIuNDQgMjI2LjAxIDgyLjQ0IDIyOS45NSA3Ni4wNSAyMjkuOTUiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTkyLjI3LDI0OS45NWgxLjljMS45LDAsMy40Ni0uMiw0LjczLS42MSwxLjI3LS40MywyLjM5LTEuMSwzLjQtMi4wMiwyLjA3LTEuOSwzLjExLTQuMzUsMy4xMS03LjQxcy0xLjAxLTUuNTMtMy4wOC03LjQzYy0xLjg0LTEuNy00LjU1LTIuNTQtOC4xNi0yLjU0aC0xLjl2MjBaTTg4LjA2LDI1My45M3YtMjcuOTJoNS44NWMyLjgyLDAsNS4wMS4yOSw2LjY2Ljg0LDEuNzYuNTUsMy4zNCwxLjQ3LDQuNzUsMi43NywyLjg4LDIuNjIsNC4zMiw2LjA4LDQuMzIsMTAuMzVzLTEuNSw3Ljc1LTQuNSwxMC40Yy0xLjUsMS4zMy0zLjA4LDIuMjUtNC43MywyLjc3LTEuNTMuNTItMy43Mi43OC02LjU3Ljc4aC01Ljc5di4wM1oiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTExNi42NSwyNTEuODhjMC0uNjYuMjMtMS4yNy43NS0xLjc2LjQ5LS40OSwxLjEtLjc1LDEuNzYtLjc1czEuMjcuMjYsMS43Ni43NWMuNDkuNDkuNzUsMS4xLjc1LDEuNzZzLS4yNiwxLjMtLjc1LDEuNzktMS4wNy43Mi0xLjc2LjcyLTEuMy0uMjMtMS43OS0uNzJjLS40OS0uNDktLjcyLTEuMS0uNzItMS44MnYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik03ODEuNjIsMjQ5Ljk1aDEwLjR2My45NWgtMTguNzZsOS42OC0xMS43M2MuOTUtMS4xOCwxLjc2LTIuMTksMi4zOS0zLjAzLjYzLS44NCwxLjEyLTEuNTgsMS40Ny0yLjE2LjY5LTEuMTIsMS4wNC0yLjE2LDEuMDQtMy4wNSwwLTEuMy0uNDYtMi4zOS0xLjM4LTMuMjktLjkyLS44OS0yLjA1LTEuMzMtMy40LTEuMzMtMi44MiwwLTQuNDQsMS42Ny00Ljg0LDUuMDFoLTQuMjFjLjY2LTUuODgsMy42Ni04LjgyLDguOS04LjgyLDIuNTQsMCw0LjY3LjgxLDYuNCwyLjQyczIuNTksMy42LDIuNTksNS45OWMwLDEuNTMtLjQsMy0xLjIxLDQuNDctLjQuNzUtMS4wMSwxLjY3LTEuNzksMi43MS0uNzgsMS4wNC0xLjc5LDIuMjgtMywzLjY5bC00LjM1LDUuMTMuMDYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04MDIuNzQsMjM5LjgxYzAsMy4wOC41NSw1LjY4LDEuNjEsNy43MiwxLjA3LDIuMDIsMi40NSwzLjAzLDQuMDksMy4wM3MzLjAzLTEuMDEsNC4wOS0zLjAzYzEuMS0xLjk5LDEuNjEtNC41MiwxLjYxLTcuNThzLS41NS01LjU5LTEuNjEtNy41OGMtMS4xLTEuOTktMi40NS0zLTQuMDktM3MtMywxLjAxLTQuMDksM2MtMS4wOSwxLjk5LTEuNjEsNC40Ny0xLjYxLDcuNDNaTTc5OC42MiwyMzkuNzhjMC00LjQ0LDEuMDQtNy45OCwzLjExLTEwLjY2LDEuODQtMi4zOSw0LjA5LTMuNiw2Ljc0LTMuNnM0LjksMS4yMSw2Ljc0LDMuNmMyLjA3LDIuNjUsMy4xMSw2LjI1LDMuMTEsMTAuODNzLTEuMDQsOC4xNS0zLjExLDEwLjgxYy0xLjg0LDIuMzktNC4wOSwzLjYtNi43MSwzLjZzLTQuODctMS4yMS02Ljc3LTMuNmMtMi4wNy0yLjY1LTMuMTEtNi4zMS0zLjExLTEwLjk4WiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODMxLjAxLDI0OS45NWgxMC40djMuOTVoLTE4Ljc2bDkuNjgtMTEuNzNjLjk1LTEuMTgsMS43Ni0yLjE5LDIuMzktMy4wMy42My0uODQsMS4xMi0xLjU4LDEuNDctMi4xNi42OS0xLjEyLDEuMDQtMi4xNiwxLjA0LTMuMDUsMC0xLjMtLjQ2LTIuMzktMS4zOC0zLjI5cy0yLjA1LTEuMzMtMy40LTEuMzNjLTIuODIsMC00LjQ0LDEuNjctNC44NCw1LjAxaC00LjIxYy42Ni01Ljg4LDMuNjYtOC44Miw4LjktOC44MiwyLjU0LDAsNC42Ny44MSw2LjQsMi40MnMyLjU5LDMuNiwyLjU5LDUuOTljMCwxLjUzLS40LDMtMS4yMSw0LjQ3LS40Ljc1LTEuMDEsMS42Ny0xLjc5LDIuNzEtLjc4LDEuMDQtMS43OSwyLjI4LTMsMy42OWwtNC4zNSw1LjEzLjA2LjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODY1LjksMjI5Ljk1aC04LjYybC0xLjM4LDQuNjRjLjIsMCwuNC0uMDMuNTgtLjA2LjE3LS4wMy4zNSwwLC41MiwwLDIuNzEsMCw0LjkzLjkyLDYuNjYsMi43NCwxLjc2LDEuODIsMi42Miw0LjE1LDIuNjIsN3MtLjk4LDUuMzYtMi45Nyw3LjI2Yy0xLjk5LDEuOS00LjQ3LDIuODUtNy40NiwyLjg1LTMuNjksMC02LjYzLTEuNzMtOC43Ni01LjIybDMuMTctMi42OGMuODksMS41LDEuNzYsMi41NCwyLjY1LDMuMTcuODkuNjEsMS45OS44OSwzLjI4Ljg5LDEuNywwLDMuMTEtLjYxLDQuMjQtMS43NiwxLjE1LTEuMjEsMS43My0yLjY4LDEuNzMtNC40NHMtLjU4LTMuMjMtMS43LTQuMzhjLTEuMTItMS4xOC0yLjU0LTEuNzYtNC4yNC0xLjc2LTEuOSwwLTMuNTIuODQtNC45LDIuNDhoLTEuMzhsNC4zOC0xNC42N2gxMS41M3YzLjk1bC4wNi0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0zNzguNTYsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjEyLTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0LDEuMDcsMS4zLDEuNTgsMi45NCwxLjU4LDQuODQsMCwyLjU2LS44Niw0LjY3LTIuNTYsNi4zNy0xLjczLDEuNjctMy44NiwyLjU0LTYuNDMsMi41NC0yLjQyLDAtNC40NC0uNzItNS45OS0yLjE2LTEuNTYtMS40NC0yLjU0LTMuNDYtMi45MS02LjA1bDQuMjYtLjk1Yy4yLDEuNjQuNTIsMi43NywxLjAxLDMuNC44NiwxLjIxLDIuMTMsMS44MiwzLjgsMS44MiwxLjMsMCwyLjM5LS40MywzLjI5LTEuMzMuODYtLjg5LDEuMy0xLjk5LDEuMy0zLjM0LDAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zNS0xLjEyLS42Ni0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDQsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzOTQuNDQgMjI5Ljk4IDM5NC40NCAyNTMuOTMgMzkwLjIzIDI1My45MyAzOTAuMjMgMjI5Ljk4IDM4My44MSAyMjkuOTggMzgzLjgxIDIyNi4wNCA0MDAuODQgMjI2LjA0IDQwMC44NCAyMjkuOTggMzk0LjQ0IDIyOS45OCIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDEwLjY2LDIyNi4wMXYxNi44YzAsMi4zOS4zNyw0LjE1LDEuMTgsNS4yNywxLjE1LDEuNjEsMi44MiwyLjM5LDQuOTMsMi4zOXMzLjc3LS44MSw0Ljk2LTIuMzljLjc4LTEuMDcsMS4xOC0yLjgyLDEuMTgtNS4yN3YtMTYuOGg0LjIxdjE3Ljk4YzAsMi45NC0uOTIsNS4zNi0yLjc0LDcuMjYtMi4wNywyLjEtNC41OCwzLjE3LTcuNTgsMy4xN3MtNS41My0xLjA3LTcuNTgtMy4xN2MtMS44NC0xLjktMi43NC00LjMyLTIuNzQtNy4yNnYtMTcuOThoNC4yMS0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00MzkuODUsMjQ5Ljk1aDEuOWMxLjksMCwzLjQ2LS4yLDQuNzMtLjYxLDEuMjQtLjQzLDIuMzktMS4xLDMuNC0yLjAyLDIuMDctMS45LDMuMTEtNC4zNSwzLjExLTcuNDFzLTEuMDQtNS41Ni0zLjA4LTcuNDNjLTEuODQtMS43LTQuNTUtMi41NC04LjE2LTIuNTRoLTEuOXYyMFpNNDM1LjY1LDI1My45M3YtMjcuOTJoNS44NWMyLjgsMCw1LjAxLjI2LDYuNjYuODQsMS43Ni41NSwzLjM0LDEuNDcsNC43NSwyLjc3LDIuODgsMi42Miw0LjMyLDYuMDgsNC4zMiwxMC4zNXMtMS41LDcuNzUtNC41LDEwLjRjLTEuNSwxLjMzLTMuMDgsMi4yNS00LjczLDIuNzctMS41Ni41Mi0zLjc1Ljc4LTYuNTcuNzhoLTUuNzl2LjAzWiIvPgogICAgPHJlY3QgY2xhc3M9ImNscy0xIiB4PSI0NjQuMzgiIHk9IjIyNi4wMSIgd2lkdGg9IjQuMjEiIGhlaWdodD0iMjcuOTIiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQ4MC4wMiwyMzkuOWMwLDMuMDgsMS4wNCw1LjYyLDMuMTEsNy42MSwyLjA3LDEuOTksNC40NCwzLDcuMTUsMywyLjk0LDAsNS4zOS0xLjAxLDcuNDEtMy4wMywyLjAyLTIuMDUsMy4wMy00LjU1LDMuMDMtNy40OXMtMS4wMS01LjQ4LTMtNy40OWMtMS45OS0yLjAyLTQuNDQtMy4wMy03LjM1LTMuMDNzLTUuMzYsMS4wMS03LjM1LDMuMDNjLTEuOTksMS45OS0zLDQuNDctMyw3LjQxWk00NzUuNzYsMjM5Ljg0YzAtMy45MiwxLjQ0LTcuMjksNC4zMi0xMC4xMSwyLjg1LTIuODIsNi4zMS00LjI0LDEwLjM1LTQuMjRzNy4zOCwxLjQxLDEwLjIzLDQuMjZjMi44NSwyLjgyLDQuMjksNi4yNSw0LjI5LDEwLjI2cy0xLjQ0LDcuNDEtNC4yOSwxMC4yYy0yLjg4LDIuOC02LjM3LDQuMjEtMTAuNDMsNC4yMS0zLjYsMC02LjgzLTEuMjQtOS43MS0zLjc1LTMuMTctMi43Ny00LjczLTYuMzctNC43My0xMC44M2gtLjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODgwLjYsMi4xYy0zLjI5LDAtNi4wOCwxLjIxLTguNDQsMy42M3MtMy41NCw1LjMtMy41NCw4LjY0LDEuMTgsNi4zNCwzLjU0LDguNzZjMi4zMywyLjQyLDUuMTksMy42Myw4LjU2LDMuNjNzNi4xNC0xLjIxLDguNS0zLjZjMi4zMy0yLjQyLDMuNTItNS4zMywzLjUyLTguNzYsMC0xLjg0LS40Ni0zLjcyLTEuMzgtNS42OC0uOTItMS44NC0yLjEzLTMuMjktMy42My00LjM1LTIuMTMtMS41LTQuNS0yLjI1LTcuMTItMi4yNXYtLjAzWk04OTUuMDksMTQuNDFjMCw0LjAxLTEuNDEsNy40MS00LjIxLDEwLjIzLTIuOCwyLjgyLTYuMiw0LjIxLTEwLjE0LDQuMjFzLTcuMzgtMS40MS0xMC4yLTQuMjRjLTIuOC0yLjgyLTQuMjEtNi4yMi00LjIxLTEwLjI2LDAtMi4yMi40Ni00LjI2LDEuMzUtNi4wOC45Mi0xLjk2LDIuMTktMy42LDMuODMtNC45NiwyLjY4LTIuMjIsNS42OC0zLjMxLDkuMDItMy4zMSwyLjIyLDAsNC4yMS40Myw2LjAyLDEuMjcsMi41NCwxLjEyLDQuNjEsMi44OCw2LjE3LDUuMywxLjU2LDIuNDIsMi4zNiw1LjA0LDIuMzYsNy44NFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTg3OS4yNSwxMy41MWgtLjU1di00LjU1aC42M2MyLjE5LDAsMy4zMS43MiwzLjMxLDIuMTksMCwxLjU2LTEuMTUsMi4zNi0zLjQsMi4zNlpNODgyLjEzLDE1Ljc5bC4yMy0uMDZjLjk4LS4yOSwxLjc5LS44NiwyLjQyLTEuNzMuNjMtLjg5Ljk1LTEuODQuOTUtMi44OCwwLTEuNTYtLjYxLTIuOC0xLjc5LTMuNzUtMS4wNy0uODQtMi43Ny0xLjI0LTUuMDctMS4yNGgtMy4zMXYxNi42M2gzLjE3di02LjZsNC45Myw2LjZoMy44OWwtNS40Mi02Ljk0di0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04NzguODQsMTMuMzRoLjM3YzIuMTksMCwzLjI2LS43MiwzLjI2LTIuMTksMC0xLjM4LTEuMDQtMi4wNS0zLjE0LTIuMDVoLS40OXY0LjI0Wk04NzkuMjUsMTMuNjZoLS42OXYtNC44NGguODFjMi4zMSwwLDMuNDYuNzgsMy40NiwyLjMzLDAsMS42Ny0xLjIxLDIuNTEtMy41NywyLjUxWk04ODMuNzEsMjIuNTloMy40OWwtNS4zMy02Ljg2LjQzLS4xNGMuOTUtLjI5LDEuNzMtLjg0LDIuMzMtMS42Ny42MS0uODYuOTItMS43OS45Mi0yLjgsMC0xLjUtLjU1LTIuNzEtMS43My0zLjYzLTEuMDQtLjgxLTIuNzEtMS4yMS00Ljk5LTEuMjFoLTMuMTd2MTYuMzFoMi44NXYtNi44OWw1LjE2LDYuODloLjAzWk04ODcuODMsMjIuOTFoLTQuMjZsLTQuNy02LjI4djYuMjhoLTMuNDlWNS45OWgzLjQ5YzIuMzMsMCw0LjA5LjQzLDUuMTksMS4yNywxLjIxLjk4LDEuODQsMi4yOCwxLjg0LDMuODYsMCwxLjA3LS4zMiwyLjA3LS45OCwyLjk3cy0xLjUsMS41LTIuNTEsMS43OWw1LjQ4LDcuMDNoLS4wNloiLz4KICA8L2c+Cjwvc3ZnPg==" alt="Tremendo Studio" style="height:50px;margin-bottom:26px;display:block;">
+      <p class="bl">BRANDING PROPOSAL — 2025</p>
+    </div>
+    <div>
+      <div class="cn" contenteditable="true">NOMBRE DE LA MARCA</div>
+      <div class="dt">BY TREMENDO STUDIO</div>
+    </div>
+    <div class="mt">
+      <div contenteditable="true">CDMX, MAYO 2025</div>
+      <div contenteditable="true">DISEÑADO POR TREMENDO STUDIO</div>
+    </div>
+  </div>
+  <div class="R"><div class="ip"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico">🖼</div><span class="lbl">Imagen de portada</span></div></div>
+</div>
+
+<!-- S02 MISIÓN & VISIÓN -->
+<div class="slide" id="s02">
+  <div class="sh"><span class="br">TREMENDO STUDIO ®</span><span class="sl">ADN DE LA MARCA</span><span class="yr">© 2025</span></div>
+  <div class="H left">
+    <div class="mvl">MISIÓN</div>
+    <div class="mvt" contenteditable="true">Escribe aquí la misión de la marca. Describe el propósito, a quién sirve y qué problema resuelve de manera auténtica y poderosa.</div>
+  </div>
+  <div class="H right r">
+    <div class="mvl">VISIÓN</div>
+    <div class="mvt" contenteditable="true">Escribe aquí la visión de la marca. ¿Dónde quiere estar en 5 años? ¿Qué impacto quiere dejar en su industria y en la vida de sus clientes?</div>
+  </div>
+</div>
+
+<!-- S03 PALABRAS CLAVE -->
+<div class="slide" id="s03">
+  <div class="sh"><span class="br">TREMENDO STUDIO ®</span><span class="sl">ADN DE LA MARCA</span><span class="yr">© 2025</span></div>
+  <div class="L"><div class="sb">PALABRAS<br>CLAVE</div><div class="ss" style="margin-top:8px;">Brand keywords</div></div>
+  <div class="R">
+    <div class="kr"><span class="kn">01.</span><div class="kt" contenteditable="true">Palabra clave</div></div>
+    <div class="kr"><span class="kn">02.</span><div class="kt" contenteditable="true">Palabra clave</div></div>
+    <div class="kr"><span class="kn">03.</span><div class="kt" contenteditable="true">Palabra clave</div></div>
+    <div class="kr"><span class="kn">04.</span><div class="kt" contenteditable="true">Palabra clave</div></div>
+    <div class="kr"><span class="kn">05.</span><div class="kt" contenteditable="true">Palabra clave</div></div>
+  </div>
+</div>
+
+<!-- S04 ARQUETIPO -->
+<div class="slide" id="s04">
+  <div class="sh"><span class="br">TREMENDO STUDIO ®</span><span class="sl">ADN DE LA MARCA</span><span class="yr">© 2025</span></div>
+  <div class="L">
+    <div class="al">ARQUETIPO</div>
+    <div class="an" contenteditable="true">EL REBELDE</div>
+    <div class="ad" contenteditable="true">Describe brevemente qué define a este arquetipo y por qué conecta con la esencia de esta marca.</div>
+    <div class="ag">
+      <div><div class="ail">ACTITUD</div><div class="aiv" contenteditable="true">Escribe la actitud.</div></div>
+      <div><div class="ail">MAYOR TEMOR</div><div class="aiv" contenteditable="true">Escribe el mayor temor.</div></div>
+      <div><div class="ail">ESTRATEGIA</div><div class="aiv" contenteditable="true">Escribe la estrategia.</div></div>
+      <div><div class="ail">MENSAJE</div><div class="aiv" contenteditable="true">Escribe el mensaje.</div></div>
+    </div>
+  </div>
+  <div class="R"><div class="ip"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico">🖼</div><span class="lbl">Imagen arquetipo</span></div></div>
+</div>
+
+<!-- S05 CONCEPTO -->
+<div class="slide" id="s05" style="background:#fff;">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">MOODBOARD</span><span class="yr">© 2025</span></div>
+  <div class="L"><div class="ip" style="border-color:rgba(0,0,0,.12);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.25);">Imagen / moodboard</span></div></div>
+  <div class="R" style="background:#fff;">
+    <div class="cl" style="color:rgba(0,0,0,.35);">CONCEPTO</div>
+    <div class="ct" contenteditable="true">CAMINO 1</div>
+    <div class="cti" style="color:#000;" contenteditable="true">NOMBRE DEL CONCEPTO</div>
+    <div class="cx" style="color:rgba(0,0,0,.55);" contenteditable="true">Describe aquí el concepto creativo de esta dirección visual. ¿Qué feeling transmite? ¿Qué referentes lo inspiran? ¿Por qué conecta con la marca?</div>
+  </div>
+</div>
+
+<!-- S06 PALETA DE COLOR -->
+<div class="slide" id="s06">
+  <div class="sh"><span class="br">TREMENDO STUDIO ®</span><span class="sl">PALETA DE COLOR</span><span class="yr">© 2025</span></div>
+  <div class="top">
+    <span style="font-family:var(--fd);font-weight:800;font-size:clamp(20px,3vw,38px);text-transform:uppercase;color:var(--blanco);">PALETA DE COLOR</span>
+    <button class="addbtn" onclick="addSwatch()">+ Agregar color</button>
+  </div>
+  <div class="sw" id="swc">
+    <div class="swb cs" id="sw1" style="background:#000;color:#fff;"><input type="color" value="#000000" onchange="updSw(this,'sw1')"><div class="swn" contenteditable="true">COLOR NEGRO</div><div class="swh" id="hx-sw1">#000000</div><div class="swrg" contenteditable="true">RGB 0, 0, 0</div></div>
+    <div class="swb cs" id="sw2" style="background:#E8502A;color:#fff;"><input type="color" value="#E8502A" onchange="updSw(this,'sw2')"><div class="swn" contenteditable="true">COLOR NARANJA</div><div class="swh" id="hx-sw2">#E8502A</div><div class="swrg" contenteditable="true">RGB 232, 80, 42</div></div>
+    <div class="swb cs" id="sw3" style="background:#FFF8EE;color:#000;"><input type="color" value="#FFF8EE" onchange="updSw(this,'sw3')"><div class="swn" contenteditable="true">COLOR CRUDO</div><div class="swh" id="hx-sw3">#FFF8EE</div><div class="swrg" contenteditable="true">RGB 255, 248, 238</div></div>
+    <div class="swb cs" id="sw4" style="background:#fff;color:#000;"><input type="color" value="#ffffff" onchange="updSw(this,'sw4')"><div class="swn" contenteditable="true">BLANCO</div><div class="swh" id="hx-sw4">#FFFFFF</div><div class="swrg" contenteditable="true">RGB 255, 255, 255</div></div>
+  </div>
+</div>
+
+<!-- FIX 3: S07 TIPOGRAFÍAS -->
+<div class="slide" id="s07">
+  <div class="sh"><span class="br">TREMENDO STUDIO ®</span><span class="sl">TIPOGRAFÍA</span><span class="yr">© 2025</span></div>
+  <div class="fc">
+    <div class="fsw"><div class="fst" contenteditable="true" style="font-weight:800;">Aa</div><div class="fiz ip"><input type="file" accept="image/*" onchange="loadFontImg(this)"><div class="ico">🖼</div><span class="lbl">Imagen tipografía</span></div></div>
+    <button class="tbtn" onclick="togFont(this)">Subir imagen</button>
+    <div class="fm"><div class="fn" contenteditable="true">FUTURA PT COND</div><div class="fr">Principal · Headlines</div><div class="fa">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz · 0123456789</div></div>
+  </div>
+  <div class="fc">
+    <div class="fsw"><div class="fst" contenteditable="true" style="font-weight:300;font-style:italic;">Aa</div><div class="fiz ip"><input type="file" accept="image/*" onchange="loadFontImg(this)"><div class="ico">🖼</div><span class="lbl">Imagen tipografía</span></div></div>
+    <button class="tbtn" onclick="togFont(this)">Subir imagen</button>
+    <div class="fm"><div class="fn" contenteditable="true">FUTURA PT BOOK</div><div class="fr">Secundaria · Cuerpo</div><div class="fa">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz · 0123456789</div></div>
+  </div>
+  <div class="fc">
+    <div class="fsw"><div class="fst" contenteditable="true" style="font-weight:400;letter-spacing:-1px;">Aa</div><div class="fiz ip"><input type="file" accept="image/*" onchange="loadFontImg(this)"><div class="ico">🖼</div><span class="lbl">Imagen tipografía</span></div></div>
+    <button class="tbtn" onclick="togFont(this)">Subir imagen</button>
+    <div class="fm"><div class="fn" contenteditable="true">BEBAS NEUE PRO</div><div class="fr">Apoyo · Display</div><div class="fa">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz · 0123456789</div></div>
+  </div>
+</div>
+
+<!-- FIX 4: S08 ESTILO GRÁFICO -->
+<div class="slide" id="s08" style="background:#fff;">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">ESTILO GRÁFICO</span><span class="yr">© 2025</span></div>
+  <div class="L" style="background:#fff;">
+    <div style="font-family:var(--fd);font-weight:800;font-size:clamp(22px,3vw,40px);text-transform:uppercase;color:#000;line-height:1;margin-bottom:16px;">ESTILO<br>GRÁFICO</div>
+    <div style="font-size:13px;color:rgba(0,0,0,.5);line-height:1.7;" contenteditable="true">Describe el estilo visual: referencias, composición, uso del espacio y feeling general.</div>
+  </div>
+  <div class="R">
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.25);">Ref. 1</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.25);">Ref. 2</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.25);">Ref. 3</span></div>
+  </div>
+</div>
+
+<!-- S09 FOTOGRAFÍA -->
+<div class="slide" id="s09" style="background:#fff;">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">ESTILO GRÁFICO</span><span class="yr">© 2025</span></div>
+  <div class="L" style="background:#fff;">
+    <div style="font-family:var(--fd);font-weight:800;font-size:clamp(22px,3vw,40px);text-transform:uppercase;color:#000;line-height:1;margin-bottom:16px;">ESTILO DE<br>FOTOGRAFÍA</div>
+    <div style="font-size:13px;color:rgba(0,0,0,.5);line-height:1.7;" contenteditable="true">Describe el estilo fotográfico: iluminación, paleta, ángulos y feeling general de las fotos.</div>
+  </div>
+  <div class="R">
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.25);">Foto 1</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.25);">Foto 2</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.25);">Foto 3</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.25);">Foto 4</span></div>
+  </div>
+</div>
+
+<!-- FIX 5: S10 MANIFIESTO overlay más oscuro -->
+<div class="slide" id="s10">
+  <div class="bgf"><div class="ip"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="font-size:34px;">🖼</div><span class="lbl">Imagen de fondo — clic para subir</span></div></div>
+  <div class="ov" style="background:rgba(0,0,0,.78);"></div>
+  <div class="co">
+    <div class="mtl">MANIFIESTO</div>
+    <div class="mtx" contenteditable="true">Escribe aquí el manifiesto de la marca.<br>Una declaración poderosa, auténtica y memorable<br>que capture la esencia, los valores y la promesa<br>de lo que esta marca representa para el mundo.</div>
+    <div class="mta" contenteditable="true">BIENVENIDO A DONDE TODO SE VUELVE TREMENDO.</div>
+  </div>
+</div>
+
+<!-- Fix 3: S11 LOGOTIPO NEGRO — fondo blanco -->
+<div class="slide ls" id="s11" style="background:#fff;">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">LOGOTIPO</span><span class="yr">© 2025</span></div>
+  <div class="L" style="background:#fff;"><div class="lvl">VERSIÓN PRINCIPAL</div><div class="lvn" style="color:#000;" contenteditable="true">LOGOTIPO<br>NEGRO</div><div class="lvd" style="color:rgba(0,0,0,.45);" contenteditable="true">Uso preferente sobre fondos claros y blancos. Versión primaria de la marca.</div></div>
+  <div class="R" style="background:#f4f4f4;"><div class="ip" style="border-color:rgba(0,0,0,.1);background:transparent;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Logo negro</span></div></div>
+</div>
+
+<!-- Fix 4: S11b LOGOTIPO BLANCO — fondo negro -->
+<div class="slide ls" id="s11b" style="background:#000;">
+  <div class="sh"><span class="br">TREMENDO STUDIO ®</span><span class="sl">LOGOTIPO</span><span class="yr">© 2025</span></div>
+  <div class="L"><div class="lvl">VERSIÓN BLANCA</div><div class="lvn" contenteditable="true">LOGOTIPO<br>BLANCO</div><div class="lvd" contenteditable="true">Uso sobre fondos oscuros y negros. Versión invertida de la marca.</div></div>
+  <div class="R"><div class="ip" style="background:rgba(255,255,255,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico">🖼</div><span class="lbl">Logo blanco</span></div></div>
+</div>
+
+<!-- FIX 7: S12 LOGOTIPO COLOR — fondo blanco -->
+<div class="slide ls" id="s12" style="background:#fff;">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">LOGOTIPO</span><span class="yr">© 2025</span></div>
+  <div class="L" style="background:#fff;"><div class="lvl">VERSIÓN COLOR</div><div class="lvn" style="color:#000;" contenteditable="true">LOGOTIPO<br>DE COLOR</div><div class="lvd" style="color:rgba(0,0,0,.45);" contenteditable="true">Uso sobre fondos blancos para máximo impacto visual del color.</div></div>
+  <div class="R" style="background:#f4f4f4;"><div class="ip" style="border-color:rgba(0,0,0,.1);background:transparent;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Logo de color</span></div></div>
+</div>
+
+<!-- Fix 5: S12b LOGOTIPO EN CALCA — fondo editable -->
+<div class="slide ls" id="s12b" style="background:#e8e8e8;">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">LOGOTIPO</span><span class="yr">© 2025</span></div>
+  <div class="L" id="calca-left" style="background:#e8e8e8;">
+    <div class="lvl">LOGOTIPO EN CALCA</div>
+    <div class="lvn" id="calca-title" style="color:#000;" contenteditable="true">LOGOTIPO<br>EN CALCA</div>
+    <div class="lvd" id="calca-desc" style="color:rgba(0,0,0,.45);" contenteditable="true">Versión en calca / transparente para uso sobre fondos de color. Cambia el fondo con el selector.</div>
+    <div style="margin-top:20px;display:flex;align-items:center;gap:10px;">
+      <label style="font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.4);">COLOR DE FONDO</label>
+      <input type="color" value="#e8e8e8" onchange="changeCalcaBg(this.value)" style="width:32px;height:32px;border:none;cursor:pointer;border-radius:0;padding:0;">
+    </div>
+  </div>
+  <div class="R" id="calca-right" style="background:#d8d8d8;"><div class="ip" style="border-color:rgba(0,0,0,.1);background:transparent;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" id="calca-ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" id="calca-lbl" style="color:rgba(0,0,0,.22);">Logo en calca / PNG transparente</span></div></div>
+</div>
+
+<!-- S13 LOGOTIPO CRUDO -->
+<div class="slide ls" id="s13" style="background:#FFF8EE;">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">LOGOTIPO</span><span class="yr">© 2025</span></div>
+  <div class="L" style="background:#FFF8EE;"><div class="lvl">VERSIÓN CRUDA</div><div class="lvn" style="color:#000;" contenteditable="true">LOGOTIPO<br>CRUDO</div><div class="lvd" style="color:rgba(0,0,0,.42);" contenteditable="true">Uso sobre fondos crudos y neutros. Transmite calidez y sofisticación.</div></div>
+  <div class="R" style="background:rgba(0,0,0,.03);"><div class="ip" style="border-color:rgba(0,0,0,.1);background:transparent;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Logo crudo</span></div></div>
+</div>
+
+<!-- S14 ISOTIPO — fondo blanco -->
+<div class="slide ls" id="s14" style="background:#fff;">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">LOGOTIPO</span><span class="yr">© 2025</span></div>
+  <div class="L" style="background:#fff;"><div class="lvl">VARIANTE REDUCIDA</div><div class="lvn" style="color:#000;" contenteditable="true">ISOTIPO</div><div class="lvd" style="color:rgba(0,0,0,.45);" contenteditable="true">Versión reducida para íconos, avatares y espacios donde el logotipo completo no cabe.</div></div>
+  <div class="R" style="background:#f4f4f4;"><div class="ip" style="border-color:rgba(0,0,0,.1);background:transparent;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Isotipo</span></div></div>
+</div>
+
+<!-- S15 LOGOTIPO HORIZONTAL — fondo blanco -->
+<div class="slide ls" id="s15" style="background:#fff;">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">LOGOTIPO</span><span class="yr">© 2025</span></div>
+  <div class="L" style="background:#fff;"><div class="lvl">VARIANTE HORIZONTAL</div><div class="lvn" style="color:#000;" contenteditable="true">LOGO<br>HORIZONTAL</div><div class="lvd" style="color:rgba(0,0,0,.45);" contenteditable="true">Versión horizontal para headers, firmas digitales y aplicaciones en formato apaisado.</div></div>
+  <div class="R" style="background:#f4f4f4;"><div class="ip" style="border-color:rgba(0,0,0,.1);background:transparent;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Logo horizontal</span></div></div>
+</div>
+
+<!-- FIX 9: S16 PROPORCIÓN -->
+<div class="slide" id="s16">
+  <div class="sh"><span class="br">TREMENDO STUDIO ®</span><span class="sl">PROPORCIÓN DE COLOR</span><span class="yr">© 2025</span></div>
+  <div class="top">
+    <span style="font-family:var(--fd);font-weight:800;font-size:clamp(20px,3vw,36px);text-transform:uppercase;color:var(--blanco);">PROPORCIÓN DE COLOR</span>
+    <button class="addbtn" onclick="addPropBar()">+ Agregar color</button>
+  </div>
+  <div class="bars" id="pb-cont">
+    <div class="pb" id="pb1" style="background:#000;color:#fff;flex:5.5;">
+      <div class="pb-color-btn"><input type="color" value="#000000" onchange="updPb(this,'pb1')"><div class="pb-color-dot" style="background:#000;"></div></div>
+      <div class="pbi"><span class="pbl" contenteditable="true">COLOR NEGRO</span><span class="pbp" contenteditable="true" onblur="recalc()">55%</span></div>
+    </div>
+    <div class="pb" id="pb2" style="background:#E8502A;color:#fff;flex:3.5;">
+      <div class="pb-color-btn"><input type="color" value="#E8502A" onchange="updPb(this,'pb2')"><div class="pb-color-dot" style="background:#E8502A;"></div></div>
+      <div class="pbi"><span class="pbl" contenteditable="true">COLOR NARANJA</span><span class="pbp" contenteditable="true" onblur="recalc()">35%</span></div>
+    </div>
+    <div class="pb" id="pb3" style="background:#FFF8EE;color:#000;flex:1;">
+      <div class="pb-color-btn"><input type="color" value="#FFF8EE" onchange="updPb(this,'pb3')"><div class="pb-color-dot" style="background:#FFF8EE;"></div></div>
+      <div class="pbi"><span class="pbl" contenteditable="true">COLOR CRUDO</span><span class="pbp" contenteditable="true" onblur="recalc()">10%</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- S17 APLICACIONES 1 — fondo blanco -->
+<div class="slide as" id="s17" style="background:#fff;">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">APLICACIONES</span><span class="yr">© 2025</span></div>
+  <div class="L" style="background:#fff;"><div class="apl">APLICACIONES</div><div class="apt" style="color:#000;" contenteditable="true">PAPELERÍA<br>CORPORATIVA</div><div class="apd" style="color:rgba(0,0,0,.4);" contenteditable="true">Tarjetas de presentación, hojas membretadas, sobres y papelería oficial.</div></div>
+  <div class="R" style="grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;">
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Mockup 1</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Mockup 2</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Mockup 3</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Mockup 4</span></div>
+  </div>
+</div>
+
+<!-- S18 APLICACIONES 2 — fondo blanco -->
+<div class="slide as" id="s18" style="background:#fff;">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">APLICACIONES</span><span class="yr">© 2025</span></div>
+  <div class="L" style="background:#fff;"><div class="apl">APLICACIONES</div><div class="apt" style="color:#000;" contenteditable="true">DIGITAL &<br>REDES</div><div class="apd" style="color:rgba(0,0,0,.4);" contenteditable="true">Aplicaciones en redes sociales, web y plataformas digitales.</div></div>
+  <div class="R" style="grid-template-columns:1fr 1fr 1fr;">
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">App 1</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">App 2</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">App 3</span></div>
+  </div>
+</div>
+
+<!-- S19 APLICACIONES 3 — fondo blanco -->
+<div class="slide as" id="s19" style="background:#fff;">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">APLICACIONES</span><span class="yr">© 2025</span></div>
+  <div class="L" style="background:#fff;"><div class="apl">APLICACIONES</div><div class="apt" style="color:#000;" contenteditable="true">MOCKUPS &<br>BRANDING</div><div class="apd" style="color:rgba(0,0,0,.4);" contenteditable="true">Mockups de producto, packaging, señalética y aplicaciones físicas de la identidad.</div></div>
+  <div class="R" style="grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;">
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Mockup A</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Mockup B</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Mockup C</span></div>
+    <div class="ip" style="border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.03);"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Mockup D</span></div>
+  </div>
+</div>
+
+<!-- CIERRE -->
+<div class="slide" id="sc">
+  <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iQ2FwYV8yIiBkYXRhLW5hbWU9IkNhcGEgMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgODk1LjA5IDI1NC40MiI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPGcgaWQ9IkNhcGFfMS0yIiBkYXRhLW5hbWU9IkNhcGEgMSI+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNjAuMiAxNzIuNDkgMjEuNDEgMTcyLjQ5IDIxLjQxIDYzLjI4IDAgNjMuMjggMCAyOC44NyA4Mi40MSAyOC44NyA4Mi40MSA2My4yOCA2MC4xNyA2My4yOCA2MC4xNyAxNzIuNDkgNjAuMiAxNzIuNDkiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTEzMy4xNiw5NS4zOGgyLjU5YzQuNDcsMCw4LjE4LTEuNywxMS4xNS01LjEzLDIuOTctMy40LDQuNDctNy43NSw0LjQ3LTEzLjAyLDAtMTAuNzItNS42Mi0xNi4xMS0xNi44My0xNi4xMWgtMS4zOHYzNC4yNlpNMTk2LjUzLDE3Mi40OWgtNDEuOTZsLTE5LjE2LTUxLjE4Yy0uMTctLjg2LS41Mi0yLjAyLS45OC0zLjQ2LS40Ni0xLjQxLTEuMDQtMy4xNC0xLjczLTUuMTNsLjI5LDkuNDh2NTAuMjNoLTM4LjYxVjI4Ljc5aDM5Ljc0YzE3LjQ5LDAsMzAuNTcsMy40NiwzOS4yNSwxMC4zMiwxMS4wNCw4LjgyLDE2LjU3LDIxLjMyLDE2LjU3LDM3LjU4LDAsMTcuMzgtNy40MSwyOS4zNi0yMi4yNSwzNS45OWwyOC44NSw1OS43NHYuMDlaIi8+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMjA2LjY0IDE3Mi40OSAyMDYuNjQgMjguODUgMjc4Ljc0IDI4Ljg1IDI3OC43NCA2Mi42MiAyNDUuNDMgNjIuNjIgMjQ1LjQzIDgzLjU0IDI3NS4yOCA4My41NCAyNzUuMjggMTE2LjAxIDI0NS40MyAxMTYuMDEgMjQ1LjQzIDEzNy45NyAyNzguNzQgMTM3Ljk3IDI3OC43NCAxNzIuNDkgMjA2LjY0IDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDI2LjkxLDE3Mi40OWgtMzguM2wtMi40OC02NS41LTEuMDQtMjYuMTRjLS4zNyw1LjAxLS44MSw5LjgzLTEuMjcsMTQuMzgtLjQ2LDQuNTUtMS4wNyw4Ljk2LTEuNzYsMTMuMjZsLTEwLjQzLDY0aC0yNy4xMmwtOC45My02NC4wOWMtLjUyLTMuNzItMS4yNC0xMC4xMS0yLjE2LTE5LjE2LS4xMi0xLjM1LS4zNS00LjE1LS43Mi04LjM2bC0uODEsMjYuNTEtMi45NCw2NS4xM2gtMzYuOTRWMjguODdoNTcuMjlsNi45NCw0OC4zOGMuNTgsMy45OCwxLjEsOC4yNywxLjU2LDEyLjk0LjQ2LDQuNjQuODYsOS43MSwxLjI0LDE1LjE2LjY5LTkuMTEsMS42NC0xNy4yNiwyLjg4LTI0LjQ3bDguNDQtNTIuMDFoNTYuNTd2MTQzLjY1bC0uMDMtLjAzWiIvPgogICAgPHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjQ0MS4wMSAxNzIuNDkgNDQxLjAxIDI4Ljg1IDUxMy4xIDI4Ljg1IDUxMy4xIDYyLjYyIDQ3OS43OSA2Mi42MiA0NzkuNzkgODMuNTQgNTA5LjY1IDgzLjU0IDUwOS42NSAxMTYuMDEgNDc5Ljc5IDExNi4wMSA0NzkuNzkgMTM3Ljk3IDUxMy4xIDEzNy45NyA1MTMuMSAxNzIuNDkgNDQxLjAxIDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTI5Ljg1LDE3Mi40OVYyOC44NWgzNy4wM2wxOS40NSw1MC40M2MxLjA3LDIuOTcsMi4yNSw2LjQsMy41NywxMC4yMywxLjMzLDMuODMsMi44LDguMjcsNC40MSwxMy4zMWw0LjAxLDEyLjY1Yy0xLjQ0LTEyLjQ4LTIuNTEtMjMuMTQtMy4yNi0zMi4wMS0uNzUtOC44OC0xLjEyLTE2LjMxLTEuMTItMjIuMzNWMjguODVoMzcuMDN2MTQzLjY1aC0zNy4wM2wtMTkuNTQtNTIuODVjLTIuMDUtNS42NS0zLjg5LTEwLjkyLTUuNTMtMTUuODVzLTMuMDgtOS42Mi00LjMyLTE0LjA5Yy44MSwxMC4xMSwxLjM4LDE4LjkzLDEuNzYsMjYuNDIuMzcsNy41Mi41NSwxNC4wOS41NSwxOS43MXYzNi42NWgtMzcuMDMuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik02ODYuNDYsMTM3LjhjMTMuODktLjY5LDIwLjgzLTEyLjY1LDIwLjgzLTM1LjkxLDAtMTEuNDctMS43Ni0yMC41Mi01LjMtMjcuMTctMy41NC02LjY5LTguMy0xMC4wNi0xNC4zMi0xMC4wNmgtMS4yMXY3My4xNFpNNjQ3LjY4LDE3Mi40OVYyOC44NWgzMy40OGMxOS4xNiwwLDM0LjA5LDUuMTYsNDQuNzUsMTUuNDUsMTQuMDMsMTMuNDYsMjEuMDQsMzIuMjcsMjEuMDQsNTYuNDhzLTUuOTEsNDIuMjItMTcuNzgsNTUuMTVjLTEwLjExLDExLjA0LTI1LjE5LDE2LjU3LTQ1LjIxLDE2LjU3aC0zNi4yOFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTgyNi4wNSwxMDEuNzVjMC0yNS4xOS00LjU4LTM3LjgxLTEzLjc3LTM3LjgxLTQuNTgsMC04LjI0LDMuMzEtMTAuOTgsOS45MS0yLjY4LDYuMTQtNC4wMSwxNS4xNi00LjAxLDI3LjA2czEuMjcsMjAuODMsMy43NywyNy4yOWMyLjUxLDYuNDUsNS45OSw5LjcxLDEwLjQ2LDkuNzFzOC4xMy0zLjIsMTAuNi05LjU3YzIuNTktNi4zNywzLjkyLTE1LjI0LDMuOTItMjYuNlpNODY2LjM0LDEwMS40NmMwLDIxLjI0LTQuOTksMzguNS0xNC45OCw1MS43OC05LjkxLDEzLjIzLTIyLjg1LDE5Ljg1LTM4Ljc5LDE5Ljg1LTE0LjE1LDAtMjYuMjUtNS4wNy0zNi4zNy0xNS4yNC0xMi43MS0xMi44OC0xOS4wOC0zMi4xNi0xOS4wOC01Ny45MnM2LjYzLTQzLjUxLDE5LjkxLTU2LjU3YzkuODYtOS42OCwyMS41NS0xNC41MiwzNS4wNy0xNC41MiwxNi41NywwLDI5Ljc0LDYuNTcsMzkuNTQsMTkuNjUsOS44LDEzLjExLDE0LjcsMzAuNzUsMTQuNyw1Mi45NloiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzNyAyMjkuOTUgMjUuODIgMjI5Ljk1IDI1LjgyIDIzNi42NyAzNi42OCAyMzYuNjcgMzYuNjggMjQwLjYyIDI1LjgyIDI0MC42MiAyNS44MiAyNDkuOTUgMzcgMjQ5Ljk1IDM3IDI1My45IDIxLjU4IDI1My45IDIxLjU4IDIyNS45OCAzNyAyMjUuOTggMzcgMjI5LjkzIDM3IDIyOS45NSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjAuMTcsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjA5LTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0czEuNTgsMi45NCwxLjU4LDQuODRjMCwyLjU2LS44Niw0LjctMi41Niw2LjM3LTEuNzMsMS43LTMuODYsMi41NC02LjQzLDIuNTQtMi40MiwwLTQuNDQtLjcyLTUuOTktMi4xNi0xLjU2LTEuNDQtMi41NC0zLjQ2LTIuOTEtNi4wNWw0LjI2LS45NWMuMiwxLjY0LjUyLDIuNzcsMS4wMSwzLjQuODYsMS4yMSwyLjEzLDEuODIsMy44LDEuODIsMS4zLDAsMi4zOS0uNDMsMy4yOS0xLjMzczEuMy0xLjk5LDEuMy0zLjM0YzAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zMi0xLjEyLS42My0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDEsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSI3Ni4wNSAyMjkuOTUgNzYuMDUgMjUzLjkgNzEuODQgMjUzLjkgNzEuODQgMjI5Ljk1IDY1LjQxIDIyOS45NSA2NS40MSAyMjYuMDEgODIuNDQgMjI2LjAxIDgyLjQ0IDIyOS45NSA3Ni4wNSAyMjkuOTUiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTkyLjI3LDI0OS45NWgxLjljMS45LDAsMy40Ni0uMiw0LjczLS42MSwxLjI3LS40MywyLjM5LTEuMSwzLjQtMi4wMiwyLjA3LTEuOSwzLjExLTQuMzUsMy4xMS03LjQxcy0xLjAxLTUuNTMtMy4wOC03LjQzYy0xLjg0LTEuNy00LjU1LTIuNTQtOC4xNi0yLjU0aC0xLjl2MjBaTTg4LjA2LDI1My45M3YtMjcuOTJoNS44NWMyLjgyLDAsNS4wMS4yOSw2LjY2Ljg0LDEuNzYuNTUsMy4zNCwxLjQ3LDQuNzUsMi43NywyLjg4LDIuNjIsNC4zMiw2LjA4LDQuMzIsMTAuMzVzLTEuNSw3Ljc1LTQuNSwxMC40Yy0xLjUsMS4zMy0zLjA4LDIuMjUtNC43MywyLjc3LTEuNTMuNTItMy43Mi43OC02LjU3Ljc4aC01Ljc5di4wM1oiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTExNi42NSwyNTEuODhjMC0uNjYuMjMtMS4yNy43NS0xLjc2LjQ5LS40OSwxLjEtLjc1LDEuNzYtLjc1czEuMjcuMjYsMS43Ni43NWMuNDkuNDkuNzUsMS4xLjc1LDEuNzZzLS4yNiwxLjMtLjc1LDEuNzktMS4wNy43Mi0xLjc2LjcyLTEuMy0uMjMtMS43OS0uNzJjLS40OS0uNDktLjcyLTEuMS0uNzItMS44MnYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik03ODEuNjIsMjQ5Ljk1aDEwLjR2My45NWgtMTguNzZsOS42OC0xMS43M2MuOTUtMS4xOCwxLjc2LTIuMTksMi4zOS0zLjAzLjYzLS44NCwxLjEyLTEuNTgsMS40Ny0yLjE2LjY5LTEuMTIsMS4wNC0yLjE2LDEuMDQtMy4wNSwwLTEuMy0uNDYtMi4zOS0xLjM4LTMuMjktLjkyLS44OS0yLjA1LTEuMzMtMy40LTEuMzMtMi44MiwwLTQuNDQsMS42Ny00Ljg0LDUuMDFoLTQuMjFjLjY2LTUuODgsMy42Ni04LjgyLDguOS04LjgyLDIuNTQsMCw0LjY3LjgxLDYuNCwyLjQyczIuNTksMy42LDIuNTksNS45OWMwLDEuNTMtLjQsMy0xLjIxLDQuNDctLjQuNzUtMS4wMSwxLjY3LTEuNzksMi43MS0uNzgsMS4wNC0xLjc5LDIuMjgtMywzLjY5bC00LjM1LDUuMTMuMDYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04MDIuNzQsMjM5LjgxYzAsMy4wOC41NSw1LjY4LDEuNjEsNy43MiwxLjA3LDIuMDIsMi40NSwzLjAzLDQuMDksMy4wM3MzLjAzLTEuMDEsNC4wOS0zLjAzYzEuMS0xLjk5LDEuNjEtNC41MiwxLjYxLTcuNThzLS41NS01LjU5LTEuNjEtNy41OGMtMS4xLTEuOTktMi40NS0zLTQuMDktM3MtMywxLjAxLTQuMDksM2MtMS4wOSwxLjk5LTEuNjEsNC40Ny0xLjYxLDcuNDNaTTc5OC42MiwyMzkuNzhjMC00LjQ0LDEuMDQtNy45OCwzLjExLTEwLjY2LDEuODQtMi4zOSw0LjA5LTMuNiw2Ljc0LTMuNnM0LjksMS4yMSw2Ljc0LDMuNmMyLjA3LDIuNjUsMy4xMSw2LjI1LDMuMTEsMTAuODNzLTEuMDQsOC4xNS0zLjExLDEwLjgxYy0xLjg0LDIuMzktNC4wOSwzLjYtNi43MSwzLjZzLTQuODctMS4yMS02Ljc3LTMuNmMtMi4wNy0yLjY1LTMuMTEtNi4zMS0zLjExLTEwLjk4WiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODMxLjAxLDI0OS45NWgxMC40djMuOTVoLTE4Ljc2bDkuNjgtMTEuNzNjLjk1LTEuMTgsMS43Ni0yLjE5LDIuMzktMy4wMy42My0uODQsMS4xMi0xLjU4LDEuNDctMi4xNi42OS0xLjEyLDEuMDQtMi4xNiwxLjA0LTMuMDUsMC0xLjMtLjQ2LTIuMzktMS4zOC0zLjI5cy0yLjA1LTEuMzMtMy40LTEuMzNjLTIuODIsMC00LjQ0LDEuNjctNC44NCw1LjAxaC00LjIxYy42Ni01Ljg4LDMuNjYtOC44Miw4LjktOC44MiwyLjU0LDAsNC42Ny44MSw2LjQsMi40MnMyLjU5LDMuNiwyLjU5LDUuOTljMCwxLjUzLS40LDMtMS4yMSw0LjQ3LS40Ljc1LTEuMDEsMS42Ny0xLjc5LDIuNzEtLjc4LDEuMDQtMS43OSwyLjI4LTMsMy42OWwtNC4zNSw1LjEzLjA2LjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODY1LjksMjI5Ljk1aC04LjYybC0xLjM4LDQuNjRjLjIsMCwuNC0uMDMuNTgtLjA2LjE3LS4wMy4zNSwwLC41MiwwLDIuNzEsMCw0LjkzLjkyLDYuNjYsMi43NCwxLjc2LDEuODIsMi42Miw0LjE1LDIuNjIsN3MtLjk4LDUuMzYtMi45Nyw3LjI2Yy0xLjk5LDEuOS00LjQ3LDIuODUtNy40NiwyLjg1LTMuNjksMC02LjYzLTEuNzMtOC43Ni01LjIybDMuMTctMi42OGMuODksMS41LDEuNzYsMi41NCwyLjY1LDMuMTcuODkuNjEsMS45OS44OSwzLjI4Ljg5LDEuNywwLDMuMTEtLjYxLDQuMjQtMS43NiwxLjE1LTEuMjEsMS43My0yLjY4LDEuNzMtNC40NHMtLjU4LTMuMjMtMS43LTQuMzhjLTEuMTItMS4xOC0yLjU0LTEuNzYtNC4yNC0xLjc2LTEuOSwwLTMuNTIuODQtNC45LDIuNDhoLTEuMzhsNC4zOC0xNC42N2gxMS41M3YzLjk1bC4wNi0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0zNzguNTYsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjEyLTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0LDEuMDcsMS4zLDEuNTgsMi45NCwxLjU4LDQuODQsMCwyLjU2LS44Niw0LjY3LTIuNTYsNi4zNy0xLjczLDEuNjctMy44NiwyLjU0LTYuNDMsMi41NC0yLjQyLDAtNC40NC0uNzItNS45OS0yLjE2LTEuNTYtMS40NC0yLjU0LTMuNDYtMi45MS02LjA1bDQuMjYtLjk1Yy4yLDEuNjQuNTIsMi43NywxLjAxLDMuNC44NiwxLjIxLDIuMTMsMS44MiwzLjgsMS44MiwxLjMsMCwyLjM5LS40MywzLjI5LTEuMzMuODYtLjg5LDEuMy0xLjk5LDEuMy0zLjM0LDAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zNS0xLjEyLS42Ni0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDQsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzOTQuNDQgMjI5Ljk4IDM5NC40NCAyNTMuOTMgMzkwLjIzIDI1My45MyAzOTAuMjMgMjI5Ljk4IDM4My44MSAyMjkuOTggMzgzLjgxIDIyNi4wNCA0MDAuODQgMjI2LjA0IDQwMC44NCAyMjkuOTggMzk0LjQ0IDIyOS45OCIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDEwLjY2LDIyNi4wMXYxNi44YzAsMi4zOS4zNyw0LjE1LDEuMTgsNS4yNywxLjE1LDEuNjEsMi44MiwyLjM5LDQuOTMsMi4zOXMzLjc3LS44MSw0Ljk2LTIuMzljLjc4LTEuMDcsMS4xOC0yLjgyLDEuMTgtNS4yN3YtMTYuOGg0LjIxdjE3Ljk4YzAsMi45NC0uOTIsNS4zNi0yLjc0LDcuMjYtMi4wNywyLjEtNC41OCwzLjE3LTcuNTgsMy4xN3MtNS41My0xLjA3LTcuNTgtMy4xN2MtMS44NC0xLjktMi43NC00LjMyLTIuNzQtNy4yNnYtMTcuOThoNC4yMS0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00MzkuODUsMjQ5Ljk1aDEuOWMxLjksMCwzLjQ2LS4yLDQuNzMtLjYxLDEuMjQtLjQzLDIuMzktMS4xLDMuNC0yLjAyLDIuMDctMS45LDMuMTEtNC4zNSwzLjExLTcuNDFzLTEuMDQtNS41Ni0zLjA4LTcuNDNjLTEuODQtMS43LTQuNTUtMi41NC04LjE2LTIuNTRoLTEuOXYyMFpNNDM1LjY1LDI1My45M3YtMjcuOTJoNS44NWMyLjgsMCw1LjAxLjI2LDYuNjYuODQsMS43Ni41NSwzLjM0LDEuNDcsNC43NSwyLjc3LDIuODgsMi42Miw0LjMyLDYuMDgsNC4zMiwxMC4zNXMtMS41LDcuNzUtNC41LDEwLjRjLTEuNSwxLjMzLTMuMDgsMi4yNS00LjczLDIuNzctMS41Ni41Mi0zLjc1Ljc4LTYuNTcuNzhoLTUuNzl2LjAzWiIvPgogICAgPHJlY3QgY2xhc3M9ImNscy0xIiB4PSI0NjQuMzgiIHk9IjIyNi4wMSIgd2lkdGg9IjQuMjEiIGhlaWdodD0iMjcuOTIiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQ4MC4wMiwyMzkuOWMwLDMuMDgsMS4wNCw1LjYyLDMuMTEsNy42MSwyLjA3LDEuOTksNC40NCwzLDcuMTUsMywyLjk0LDAsNS4zOS0xLjAxLDcuNDEtMy4wMywyLjAyLTIuMDUsMy4wMy00LjU1LDMuMDMtNy40OXMtMS4wMS01LjQ4LTMtNy40OWMtMS45OS0yLjAyLTQuNDQtMy4wMy03LjM1LTMuMDNzLTUuMzYsMS4wMS03LjM1LDMuMDNjLTEuOTksMS45OS0zLDQuNDctMyw3LjQxWk00NzUuNzYsMjM5Ljg0YzAtMy45MiwxLjQ0LTcuMjksNC4zMi0xMC4xMSwyLjg1LTIuODIsNi4zMS00LjI0LDEwLjM1LTQuMjRzNy4zOCwxLjQxLDEwLjIzLDQuMjZjMi44NSwyLjgyLDQuMjksNi4yNSw0LjI5LDEwLjI2cy0xLjQ0LDcuNDEtNC4yOSwxMC4yYy0yLjg4LDIuOC02LjM3LDQuMjEtMTAuNDMsNC4yMS0zLjYsMC02LjgzLTEuMjQtOS43MS0zLjc1LTMuMTctMi43Ny00LjczLTYuMzctNC43My0xMC44M2gtLjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODgwLjYsMi4xYy0zLjI5LDAtNi4wOCwxLjIxLTguNDQsMy42M3MtMy41NCw1LjMtMy41NCw4LjY0LDEuMTgsNi4zNCwzLjU0LDguNzZjMi4zMywyLjQyLDUuMTksMy42Myw4LjU2LDMuNjNzNi4xNC0xLjIxLDguNS0zLjZjMi4zMy0yLjQyLDMuNTItNS4zMywzLjUyLTguNzYsMC0xLjg0LS40Ni0zLjcyLTEuMzgtNS42OC0uOTItMS44NC0yLjEzLTMuMjktMy42My00LjM1LTIuMTMtMS41LTQuNS0yLjI1LTcuMTItMi4yNXYtLjAzWk04OTUuMDksMTQuNDFjMCw0LjAxLTEuNDEsNy40MS00LjIxLDEwLjIzLTIuOCwyLjgyLTYuMiw0LjIxLTEwLjE0LDQuMjFzLTcuMzgtMS40MS0xMC4yLTQuMjRjLTIuOC0yLjgyLTQuMjEtNi4yMi00LjIxLTEwLjI2LDAtMi4yMi40Ni00LjI2LDEuMzUtNi4wOC45Mi0xLjk2LDIuMTktMy42LDMuODMtNC45NiwyLjY4LTIuMjIsNS42OC0zLjMxLDkuMDItMy4zMSwyLjIyLDAsNC4yMS40Myw2LjAyLDEuMjcsMi41NCwxLjEyLDQuNjEsMi44OCw2LjE3LDUuMywxLjU2LDIuNDIsMi4zNiw1LjA0LDIuMzYsNy44NFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTg3OS4yNSwxMy41MWgtLjU1di00LjU1aC42M2MyLjE5LDAsMy4zMS43MiwzLjMxLDIuMTksMCwxLjU2LTEuMTUsMi4zNi0zLjQsMi4zNlpNODgyLjEzLDE1Ljc5bC4yMy0uMDZjLjk4LS4yOSwxLjc5LS44NiwyLjQyLTEuNzMuNjMtLjg5Ljk1LTEuODQuOTUtMi44OCwwLTEuNTYtLjYxLTIuOC0xLjc5LTMuNzUtMS4wNy0uODQtMi43Ny0xLjI0LTUuMDctMS4yNGgtMy4zMXYxNi42M2gzLjE3di02LjZsNC45Myw2LjZoMy44OWwtNS40Mi02Ljk0di0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04NzguODQsMTMuMzRoLjM3YzIuMTksMCwzLjI2LS43MiwzLjI2LTIuMTksMC0xLjM4LTEuMDQtMi4wNS0zLjE0LTIuMDVoLS40OXY0LjI0Wk04NzkuMjUsMTMuNjZoLS42OXYtNC44NGguODFjMi4zMSwwLDMuNDYuNzgsMy40NiwyLjMzLDAsMS42Ny0xLjIxLDIuNTEtMy41NywyLjUxWk04ODMuNzEsMjIuNTloMy40OWwtNS4zMy02Ljg2LjQzLS4xNGMuOTUtLjI5LDEuNzMtLjg0LDIuMzMtMS42Ny42MS0uODYuOTItMS43OS45Mi0yLjgsMC0xLjUtLjU1LTIuNzEtMS43My0zLjYzLTEuMDQtLjgxLTIuNzEtMS4yMS00Ljk5LTEuMjFoLTMuMTd2MTYuMzFoMi44NXYtNi44OWw1LjE2LDYuODloLjAzWk04ODcuODMsMjIuOTFoLTQuMjZsLTQuNy02LjI4djYuMjhoLTMuNDlWNS45OWgzLjQ5YzIuMzMsMCw0LjA5LjQzLDUuMTksMS4yNywxLjIxLjk4LDEuODQsMi4yOCwxLjg0LDMuODYsMCwxLjA3LS4zMiwyLjA3LS45OCwyLjk3cy0xLjUsMS41LTIuNTEsMS43OWw1LjQ4LDcuMDNoLS4wNloiLz4KICA8L2c+Cjwvc3ZnPg==" alt="Tremendo Studio" style="height:52px;object-fit:contain;">
+  <div class="cn2"></div>
+  <div class="ctg" contenteditable="true">SOMOS TRES, PERO SONAMOS COMO MIL.</div>
+  <div style="width:40px;height:1px;background:rgba(255,255,255,.12);margin:18px auto;"></div>
+  <div class="cco" contenteditable="true">CDMX · SOMOS@TREMENDO.COM<br>@SOMOSTREMENDO · 55.3727.8763</div>
+</div>
+
+</div>
+
+<script>
+var slides=document.querySelectorAll('.slide'),total=slides.length,cur=0,dotsEl=document.getElementById('dots');
+for(var i=0;i<total;i++){var d=document.createElement('div');d.className='dot'+(i===0?' active':'');(function(x){d.onclick=function(){goTo(x);};})(i);dotsEl.appendChild(d);}
+function goTo(n){slides[cur].classList.remove('active');dotsEl.children[cur].classList.remove('active');cur=(n+total)%total;slides[cur].classList.add('active');dotsEl.children[cur].classList.add('active');document.getElementById('slide-counter').textContent=(cur+1)+' / '+total;}
+function nextSlide(){goTo(cur+1);}function prevSlide(){goTo(cur-1);}
+document.addEventListener('keydown',function(e){if(document.activeElement&&document.activeElement.getAttribute('contenteditable')==='true')return;if(e.key==='ArrowRight'||e.key==='ArrowDown')nextSlide();if(e.key==='ArrowLeft'||e.key==='ArrowUp')prevSlide();});
+/* FIX 2: Paste sin formato */
+document.addEventListener('paste',function(e){if(!e.target||e.target.getAttribute('contenteditable')!=='true')return;e.preventDefault();var t=e.clipboardData.getData('text/plain');document.execCommand('insertText',false,t);});
+/* Cargar imagen */
+function loadImg(input){if(!input.files||!input.files[0])return;var r=new FileReader(),p=input.closest('.ip');r.onload=function(ev){var ex=p.querySelector('.li');if(ex)ex.remove();var img=document.createElement('img');img.className='li';img.src=ev.target.result;p.appendChild(img);var ic=p.querySelector('.ico'),lb=p.querySelector('.lbl');if(ic)ic.style.display='none';if(lb)lb.style.display='none';};r.readAsDataURL(input.files[0]);}
+/* FIX 3: Toggle tipografía */
+function togFont(btn){var col=btn.closest('.fc'),txt=col.querySelector('.fst'),zone=col.querySelector('.fiz'),showing=zone.style.display!=='none';if(showing){zone.style.display='none';txt.style.display='block';btn.textContent='Subir imagen';}else{zone.style.display='flex';txt.style.display='none';btn.textContent='Usar texto';}}
+function loadFontImg(input){if(!input.files||!input.files[0])return;var r=new FileReader(),z=input.closest('.fiz');r.onload=function(ev){var ex=z.querySelector('.li');if(ex)ex.remove();var img=document.createElement('img');img.className='li';img.src=ev.target.result;z.appendChild(img);var ic=z.querySelector('.ico'),lb=z.querySelector('.lbl');if(ic)ic.style.display='none';if(lb)lb.style.display='none';};r.readAsDataURL(input.files[0]);}
+/* Swatches S06 */
+var swCnt=4;
+function updSw(input,id){var b=document.getElementById(id),h=input.value;b.style.background=h;var hx=document.getElementById('hx-'+id);if(hx)hx.textContent=h.toUpperCase();var r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),bv=parseInt(h.slice(5,7),16);b.style.color=(0.299*r+0.587*g+0.114*bv)/255>0.55?'#000':'#fff';}
+function addSwatch(){swCnt++;var id='sw'+swCnt,div=document.createElement('div');div.className='swb cs';div.id=id;div.style.cssText='background:#888;color:#fff;flex:1;';div.innerHTML='<input type="color" value="#888888" onchange="updSw(this,\''+id+'\')">'+'<div class="swn" contenteditable="true">NUEVO COLOR</div>'+'<div class="swh" id="hx-'+id+'">#888888</div>'+'<div class="swrg" contenteditable="true">RGB —</div>';document.getElementById('swc').appendChild(div);}
+/* Proporción S16 */
+var pbCnt=3;
+function updPb(input,id){var b=document.getElementById(id),h=input.value;b.style.background=h;var dot=b.querySelector('.pb-color-dot');if(dot)dot.style.background=h;var r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),bv=parseInt(h.slice(5,7),16);b.style.color=(0.299*r+0.587*g+0.114*bv)/255>0.55?'#000':'#fff';}
+function recalc(){document.querySelectorAll('#pb-cont .pb').forEach(function(b){var p=b.querySelector('.pbp');if(!p)return;var v=parseFloat(p.textContent.replace('%','').trim())||10;b.style.flex=String(Math.max(v/10,0.3));});}
+function addPropBar(){pbCnt++;var id='pb'+pbCnt,div=document.createElement('div');div.className='pb';div.id=id;div.style.cssText='background:#666;color:#fff;flex:1;';div.innerHTML='<div class="pb-color-btn"><input type="color" value="#666666" onchange="updPb(this,\''+id+'\')"><div class="pb-color-dot" style="background:#666;"></div></div>'+'<div class="pbi"><span class="pbl" contenteditable="true">NUEVO COLOR</span><span class="pbp" contenteditable="true" onblur="recalc()">10%</span></div>';document.getElementById('pb-cont').appendChild(div);}
+function changeCalcaBg(hex){var s=document.getElementById('s12b');if(!s)return;s.style.background=hex;var l=document.getElementById('calca-left'),r=document.getElementById('calca-right');if(l)l.style.background=hex;if(r)r.style.background=hex;var lum=(function(h){var r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return(0.299*r+0.587*g+0.114*b)/255;})(hex);var dark=lum>0.55;var t=document.getElementById('calca-title'),d=document.getElementById('calca-desc');if(t)t.style.color=dark?'#000':'#fff';if(d)d.style.color=dark?'rgba(0,0,0,.45)':'rgba(255,255,255,.45)';var ico=document.getElementById('calca-ico'),lbl=document.getElementById('calca-lbl');if(ico)ico.style.color=dark?'rgba(0,0,0,.2)':'rgba(255,255,255,.2)';if(lbl)lbl.style.color=dark?'rgba(0,0,0,.22)':'rgba(255,255,255,.22)';}
+document.getElementById('slide-counter').textContent='1 / '+total;
+
+async function exportPDF(){
+  var btn=document.querySelector(".pdf-btn")||document.querySelector(".pb");
+  if(btn){btn.textContent="Generando PDF...";btn.disabled=true;}
+  var allSlides=document.querySelectorAll(".slide");
+  var savedCur=cur;
+  var pdf=null;
+  for(var i=0;i<allSlides.length;i++){
+    allSlides.forEach(function(s){s.style.display="none";});
+    allSlides[i].style.display="flex";
+    await new Promise(function(r){setTimeout(r,180);});
+    var bg=window.getComputedStyle(allSlides[i]).backgroundColor||"#000000";
+    var canvas=await html2canvas(allSlides[i],{
+      scale:1.5,useCORS:true,allowTaint:true,
+      backgroundColor:bg,logging:false,
+      width:window.innerWidth,height:window.innerHeight
+    });
+    var imgData=canvas.toDataURL("image/jpeg",0.93);
+    var w=canvas.width,h=canvas.height;
+    if(!pdf){
+      pdf=new window.jspdf.jsPDF({orientation:w>h?"landscape":"portrait",unit:"px",format:[w,h],compress:true});
+    } else {
+      pdf.addPage([w,h],w>h?"landscape":"portrait");
+    }
+    pdf.addImage(imgData,"JPEG",0,0,w,h,undefined,"FAST");
+  }
+  allSlides.forEach(function(s,i){s.style.display=i===savedCur?"flex":"none";});
+  pdf.save("tremendo-studio.pdf");
+  if(btn){btn.textContent="Generando... 100%";setTimeout(function(){btn.textContent="↓ Guardar PDF";btn.disabled=false;},800);}
+}
+
+</script>
+</body>
+</html>

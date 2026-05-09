@@ -1,5 +1,19 @@
 {
-  "buildCommand": null,
-  "outputDirectory": ".",
-  "framework": null
+  "rewrites": [
+    { "source": "/docs/brief", "destination": "/docs/01_brief_cliente_tremendo.html" },
+    { "source": "/docs/contratos", "destination": "/docs/02_contratos_tremendo.html" },
+    { "source": "/docs/propuesta", "destination": "/docs/03_propuesta_comercial_tremendo.html" },
+    { "source": "/docs/branding", "destination": "/docs/04_branding_proposal_tremendo.html" },
+    { "source": "/docs/social-plan", "destination": "/docs/05_social_media_plan_tremendo.html" },
+    { "source": "/docs/content-strategy", "destination": "/docs/06_content_strategy_tremendo.html" }
+  ],
+  "headers": [
+    {
+      "source": "/docs/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
+  ]
 }

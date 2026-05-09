@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media Plan — Tremendo Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,800;1,400&family=Barlow:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--n:#000;--o:#E8502A;--w:#fff;--g:#F2F2F0;--fd:'Barlow Condensed',sans-serif;--fb:'Barlow',sans-serif;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:radial-gradient(ellipse at 80% 50%,#7a2210 0%,#3a0f05 35%,#000 70%);font-family:var(--fb);overflow:hidden;height:100vh;width:100vw;color:var(--w);}
+
+  [contenteditable]{outline:none;cursor:text;transition:background .15s;color:inherit;}
+  [contenteditable]:hover{background:rgba(232,80,42,.07);}
+  [contenteditable]:focus{background:rgba(232,80,42,.12);outline:1px dashed rgba(232,80,42,.5);}
+
+  /* NAV */
+  #nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.88);padding:9px 16px;z-index:1000;backdrop-filter:blur(8px);}
+  .nb{background:transparent;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:6px 13px;cursor:pointer;transition:all .2s;}
+  .nb:hover{border-color:var(--o);color:var(--o);}
+  .pb{background:var(--o);border:none;color:#fff;font-family:var(--fd);font-weight:800;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:6px 13px;cursor:pointer;transition:opacity .2s;}
+  .pb:hover{opacity:.85;}
+  #sc{font-family:var(--fd);font-weight:700;font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.1em;min-width:54px;text-align:center;}
+  #dots{display:flex;gap:5px;align-items:center;}
+  .dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .2s;}
+  .dot.active{background:var(--o);width:18px;border-radius:3px;}
+
+  /* SLIDES */
+  #sw{width:100vw;height:100vh;overflow:hidden;position:relative;}
+  .slide{position:absolute;top:0;left:0;width:100vw;height:100vh;display:none;overflow:hidden;}
+  .slide.active{display:flex;}
+
+  /* IMG PLACEHOLDER */
+  .ip{background:rgba(255,255,255,.05);border:2px dashed rgba(255,255,255,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;width:100%;height:100%;}
+  .ip:hover{border-color:var(--o);background:rgba(232,80,42,.07);}
+  .ip input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:2;}
+  .ip .ico{font-size:20px;color:rgba(255,255,255,.2);pointer-events:none;z-index:1;}
+  .ip .lbl{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.22);pointer-events:none;z-index:1;text-align:center;}
+  .ip .li{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:3;pointer-events:none;}
+  /* placeholder claro para slides blancas */
+  .ip.light{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.12);}
+  .ip.light .ico{color:rgba(0,0,0,.2);}
+  .ip.light .lbl{color:rgba(0,0,0,.22);}
+  .ip.light:hover{border-color:var(--o);background:rgba(232,80,42,.06);}
+
+  /* HEADER */
+  .sh{position:absolute;top:0;left:0;right:0;height:44px;background:var(--n);display:flex;align-items:center;justify-content:space-between;padding:0 48px;z-index:10;}
+  .sh .br{font-family:var(--fd);font-weight:800;font-size:13px;letter-spacing:.1em;color:rgba(255,255,255,.5);text-transform:uppercase;}
+  .sh .sl{font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.2em;color:rgba(255,255,255,.28);text-transform:uppercase;}
+  .sh .yr{font-family:var(--fd);font-size:11px;color:rgba(255,255,255,.18);letter-spacing:.1em;}
+
+  /* BANDA NARANJA */
+  .banda{background:var(--o);padding:10px 48px;display:flex;align-items:center;justify-content:space-between;}
+  .banda p{font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#fff;}
+
+  /* LAYOUT HELPERS */
+  .L{display:flex;flex-direction:column;justify-content:flex-end;padding:40px 44px;}
+  .R{position:relative;overflow:hidden;}
+  .sec-tag{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--o);margin-bottom:8px;}
+  .sec-title{font-family:var(--fd);font-weight:800;font-size:clamp(22px,3vw,42px);text-transform:uppercase;color:inherit;line-height:1;margin-bottom:14px;min-height:44px;}
+  .sec-body{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7;min-height:36px;}
+  .sec-body.dark{color:rgba(0,0,0,.5);}
+  .sec-title.dark{color:#000;}
+
+  /* ══ S01 PORTADA ══ */
+  #s01{background:var(--n);flex-direction:row;}
+  #s01 .L{width:50%;height:100%;justify-content:space-between;padding:48px;}
+  #s01 .R{width:50%;height:100%;}
+  .port-brand{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+  .port-marca{font-family:var(--fd);font-weight:800;font-size:clamp(28px,4vw,54px);line-height:.95;text-transform:uppercase;color:#fff;min-height:54px;}
+  .port-sub{font-family:var(--fd);font-weight:300;font-size:clamp(10px,1.1vw,14px);letter-spacing:.25em;text-transform:uppercase;color:var(--o);margin-top:10px;}
+  .port-meta{font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;line-height:1.8;}
+
+  /* ══ S02 OBJETIVOS ══ */
+  #s02{background:#fff;padding-top:44px;flex-direction:column;}
+  #s02 .inner{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:0;padding:36px 52px;gap:24px;}
+  .obj-card{background:var(--g);padding:24px 28px;border-left:3px solid var(--o);display:flex;flex-direction:column;gap:8px;}
+  .obj-num{font-family:var(--fd);font-weight:800;font-size:32px;color:var(--o);line-height:1;}
+  .obj-label{font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);}
+  .obj-val{font-family:var(--fd);font-weight:800;font-size:clamp(16px,2vw,26px);text-transform:uppercase;color:#000;min-height:30px;}
+  .obj-desc{font-size:12px;color:rgba(0,0,0,.45);line-height:1.6;min-height:28px;}
+
+  /* ══ S03 INTRODUCCIÓN ══ */
+  #s03{background:#fff;padding-top:44px;flex-direction:row;}
+  #s03 .L{width:45%;height:calc(100% - 44px);background:#fff;}
+  #s03 .R{width:55%;height:calc(100% - 44px);}
+
+  /* ══ S04 IMAGEN DE PERFIL ══ */
+  #s04{background:#fff;padding-top:44px;flex-direction:row;}
+  #s04 .L{width:35%;height:calc(100% - 44px);background:#fff;}
+  #s04 .R{width:65%;height:calc(100% - 44px);display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center;padding:40px;}
+  .profile-mock{width:160px;height:160px;border-radius:50%;overflow:hidden;border:3px solid var(--o);flex-shrink:0;position:relative;}
+  .profile-mock .ip{border-radius:50%;}
+  .profile-info{display:flex;flex-direction:column;gap:10px;}
+  .profile-username{font-family:var(--fd);font-weight:800;font-size:clamp(16px,2vw,28px);text-transform:uppercase;color:#000;min-height:32px;}
+  .profile-bio{font-size:13px;color:rgba(0,0,0,.5);line-height:1.7;min-height:48px;}
+  .profile-tag{display:inline-block;background:var(--n);color:#fff;font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;margin-top:4px;}
+
+  /* ══ S05 HISTORIAS DESTACADAS ══ */
+  #s05{background:#fff;padding-top:44px;flex-direction:row;}
+  #s05 .L{width:32%;height:calc(100% - 44px);background:#fff;}
+  #s05 .R{width:68%;height:calc(100% - 44px);display:flex;align-items:center;justify-content:center;gap:20px;padding:32px;}
+  .highlight-item{display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;max-width:120px;}
+  .highlight-circle{width:clamp(64px,8vw,100px);height:clamp(64px,8vw,100px);border-radius:50%;overflow:hidden;border:2px solid rgba(0,0,0,.1);position:relative;flex-shrink:0;}
+  .highlight-circle .ip.light{border-radius:50%;}
+  .highlight-name{font-family:var(--fd);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#000;text-align:center;min-height:16px;}
+
+  /* ══ S06 FEED INSTAGRAM ══ */
+  #s06{background:#fff;padding-top:44px;flex-direction:row;}
+  #s06 .L{width:28%;height:calc(100% - 44px);background:#fff;}
+  #s06 .R{width:72%;height:calc(100% - 44px);padding:24px;display:flex;align-items:center;justify-content:center;}
+  .feed-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:100%;max-height:100%;}
+  .feed-cell{aspect-ratio:1;position:relative;overflow:hidden;}
+  .feed-cell .ip.light{aspect-ratio:1;}
+
+  /* ══ S07 ESTÁTICOS ══ */
+  #s07{background:#fff;padding-top:44px;flex-direction:row;}
+  #s07 .L{width:28%;height:calc(100% - 44px);background:#fff;}
+  #s07 .R{width:72%;height:calc(100% - 44px);display:grid;grid-template-columns:repeat(4,1fr);gap:3px;}
+  #s07 .R .ip.light{height:100%;}
+
+  /* ══ S08 VIDEOS ══ */
+  #s08{background:#000;padding-top:44px;flex-direction:row;}
+  #s08 .L{width:28%;height:calc(100% - 44px);}
+  #s08 .R{width:72%;height:calc(100% - 44px);display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
+  #s08 .R .ip{height:100%;}
+  /* simulación formato vertical reels */
+  .reel-cell{position:relative;overflow:hidden;}
+  .reel-cell .ip{aspect-ratio:9/16;max-height:100%;}
+
+  /* ══ S09 STORIES ══ */
+  #s09{background:#fff;padding-top:44px;flex-direction:row;}
+  #s09 .L{width:28%;height:calc(100% - 44px);background:#fff;}
+  #s09 .R{width:72%;height:calc(100% - 44px);display:grid;grid-template-columns:repeat(4,1fr);gap:3px;padding:16px;}
+  .story-cell{position:relative;overflow:hidden;border-radius:12px;}
+  .story-cell .ip.light{border-radius:12px;}
+
+  /* ══ S10 CALENDARIO ══ */
+  #s10{background:#fff;padding-top:44px;flex-direction:column;}
+  #s10 .cal-header{height:56px;display:flex;align-items:flex-end;padding:0 52px 10px;justify-content:space-between;}
+  #s10 .cal-body{flex:1;overflow:auto;padding:0 52px 24px;}
+  .cal-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .cal-table th{background:var(--n);color:#fff;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:10px 12px;text-align:left;border-right:1px solid rgba(255,255,255,.1);}
+  .cal-table th:last-child{border-right:none;}
+  .cal-table td{padding:9px 12px;border-bottom:1px solid #eee;border-right:1px solid #f0f0f0;color:#333;vertical-align:top;}
+  .cal-table td:last-child{border-right:none;}
+  .cal-table tr:nth-child(even) td{background:#fafafa;}
+  .cal-table td[contenteditable]:empty:before{content:attr(data-ph);color:#bbb;}
+  .tipo-badge{display:inline-block;font-family:var(--fd);font-weight:700;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:0;}
+  .tipo-estatico{background:var(--n);color:#fff;}
+  .tipo-video{background:var(--o);color:#fff;}
+  .tipo-story{background:#e0e0e0;color:#333;}
+  .add-row-btn{background:transparent;border:1px dashed rgba(0,0,0,.2);color:rgba(0,0,0,.35);font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;cursor:pointer;margin-top:10px;transition:all .2s;width:100%;}
+  .add-row-btn:hover{border-color:var(--o);color:var(--o);}
+
+  /* ══ S11 ESTRATEGIA ══ */
+  #s11{background:var(--n);padding-top:44px;flex-direction:row;}
+  #s11 .L{width:40%;height:calc(100% - 44px);}
+  #s11 .R{width:60%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:center;padding:40px 52px;gap:24px;}
+  .estrategia-item{border-left:3px solid var(--o);padding:12px 20px;}
+  .est-label{font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:6px;}
+  .est-val{font-size:14px;color:rgba(255,255,255,.8);line-height:1.6;min-height:32px;}
+
+  /* ══ S12 CIERRE ══ */
+  #s12{background:var(--n);flex-direction:column;align-items:center;justify-content:center;}
+  .cierre-line{width:60px;height:3px;background:var(--o);margin:20px auto;}
+  .cierre-title{font-family:var(--fd);font-weight:800;font-size:clamp(18px,2.5vw,32px);letter-spacing:.1em;text-transform:uppercase;color:#fff;text-align:center;min-height:36px;max-width:580px;}
+  .cierre-contact{font-size:12px;color:rgba(255,255,255,.28);letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:2;min-height:40px;}
+
+  @media print{body{overflow:visible;height:auto;background:white;}.slide{position:relative!important;display:flex!important;page-break-after:always;width:100vw;height:100vh;}#nav{display:none!important;}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<div id="nav">
+  <button class="nb" onclick="prev()">← Ant.</button>
+  <div id="dots"></div>
+  <span id="sc">1 / 12</span>
+  <button class="nb" onclick="next()">Sig. →</button>
+  <button class="nb" id="dup-btn" onclick="duplicateSlide()" title="Duplicar slide actual" style="border-color:rgba(255,255,255,.2);">⊕ Duplicar</button>
+  <button class="pb" onclick="exportPDF()">↓ PDF</button>
+</div>
+
+<div id="sw">
+
+<!-- ══ S01 PORTADA ══ -->
+<div class="slide active" id="s01">
+  <div class="L">
+    <div>
+      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iQ2FwYV8yIiBkYXRhLW5hbWU9IkNhcGEgMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgODk1LjA5IDI1NC40MiI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPGcgaWQ9IkNhcGFfMS0yIiBkYXRhLW5hbWU9IkNhcGEgMSI+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNjAuMiAxNzIuNDkgMjEuNDEgMTcyLjQ5IDIxLjQxIDYzLjI4IDAgNjMuMjggMCAyOC44NyA4Mi40MSAyOC44NyA4Mi40MSA2My4yOCA2MC4xNyA2My4yOCA2MC4xNyAxNzIuNDkgNjAuMiAxNzIuNDkiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTEzMy4xNiw5NS4zOGgyLjU5YzQuNDcsMCw4LjE4LTEuNywxMS4xNS01LjEzLDIuOTctMy40LDQuNDctNy43NSw0LjQ3LTEzLjAyLDAtMTAuNzItNS42Mi0xNi4xMS0xNi44My0xNi4xMWgtMS4zOHYzNC4yNlpNMTk2LjUzLDE3Mi40OWgtNDEuOTZsLTE5LjE2LTUxLjE4Yy0uMTctLjg2LS41Mi0yLjAyLS45OC0zLjQ2LS40Ni0xLjQxLTEuMDQtMy4xNC0xLjczLTUuMTNsLjI5LDkuNDh2NTAuMjNoLTM4LjYxVjI4Ljc5aDM5Ljc0YzE3LjQ5LDAsMzAuNTcsMy40NiwzOS4yNSwxMC4zMiwxMS4wNCw4LjgyLDE2LjU3LDIxLjMyLDE2LjU3LDM3LjU4LDAsMTcuMzgtNy40MSwyOS4zNi0yMi4yNSwzNS45OWwyOC44NSw1OS43NHYuMDlaIi8+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMjA2LjY0IDE3Mi40OSAyMDYuNjQgMjguODUgMjc4Ljc0IDI4Ljg1IDI3OC43NCA2Mi42MiAyNDUuNDMgNjIuNjIgMjQ1LjQzIDgzLjU0IDI3NS4yOCA4My41NCAyNzUuMjggMTE2LjAxIDI0NS40MyAxMTYuMDEgMjQ1LjQzIDEzNy45NyAyNzguNzQgMTM3Ljk3IDI3OC43NCAxNzIuNDkgMjA2LjY0IDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDI2LjkxLDE3Mi40OWgtMzguM2wtMi40OC02NS41LTEuMDQtMjYuMTRjLS4zNyw1LjAxLS44MSw5LjgzLTEuMjcsMTQuMzgtLjQ2LDQuNTUtMS4wNyw4Ljk2LTEuNzYsMTMuMjZsLTEwLjQzLDY0aC0yNy4xMmwtOC45My02NC4wOWMtLjUyLTMuNzItMS4yNC0xMC4xMS0yLjE2LTE5LjE2LS4xMi0xLjM1LS4zNS00LjE1LS43Mi04LjM2bC0uODEsMjYuNTEtMi45NCw2NS4xM2gtMzYuOTRWMjguODdoNTcuMjlsNi45NCw0OC4zOGMuNTgsMy45OCwxLjEsOC4yNywxLjU2LDEyLjk0LjQ2LDQuNjQuODYsOS43MSwxLjI0LDE1LjE2LjY5LTkuMTEsMS42NC0xNy4yNiwyLjg4LTI0LjQ3bDguNDQtNTIuMDFoNTYuNTd2MTQzLjY1bC0uMDMtLjAzWiIvPgogICAgPHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjQ0MS4wMSAxNzIuNDkgNDQxLjAxIDI4Ljg1IDUxMy4xIDI4Ljg1IDUxMy4xIDYyLjYyIDQ3OS43OSA2Mi42MiA0NzkuNzkgODMuNTQgNTA5LjY1IDgzLjU0IDUwOS42NSAxMTYuMDEgNDc5Ljc5IDExNi4wMSA0NzkuNzkgMTM3Ljk3IDUxMy4xIDEzNy45NyA1MTMuMSAxNzIuNDkgNDQxLjAxIDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTI5Ljg1LDE3Mi40OVYyOC44NWgzNy4wM2wxOS40NSw1MC40M2MxLjA3LDIuOTcsMi4yNSw2LjQsMy41NywxMC4yMywxLjMzLDMuODMsMi44LDguMjcsNC40MSwxMy4zMWw0LjAxLDEyLjY1Yy0xLjQ0LTEyLjQ4LTIuNTEtMjMuMTQtMy4yNi0zMi4wMS0uNzUtOC44OC0xLjEyLTE2LjMxLTEuMTItMjIuMzNWMjguODVoMzcuMDN2MTQzLjY1aC0zNy4wM2wtMTkuNTQtNTIuODVjLTIuMDUtNS42NS0zLjg5LTEwLjkyLTUuNTMtMTUuODVzLTMuMDgtOS42Mi00LjMyLTE0LjA5Yy44MSwxMC4xMSwxLjM4LDE4LjkzLDEuNzYsMjYuNDIuMzcsNy41Mi41NSwxNC4wOS41NSwxOS43MXYzNi42NWgtMzcuMDMuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik02ODYuNDYsMTM3LjhjMTMuODktLjY5LDIwLjgzLTEyLjY1LDIwLjgzLTM1LjkxLDAtMTEuNDctMS43Ni0yMC41Mi01LjMtMjcuMTctMy41NC02LjY5LTguMy0xMC4wNi0xNC4zMi0xMC4wNmgtMS4yMXY3My4xNFpNNjQ3LjY4LDE3Mi40OVYyOC44NWgzMy40OGMxOS4xNiwwLDM0LjA5LDUuMTYsNDQuNzUsMTUuNDUsMTQuMDMsMTMuNDYsMjEuMDQsMzIuMjcsMjEuMDQsNTYuNDhzLTUuOTEsNDIuMjItMTcuNzgsNTUuMTVjLTEwLjExLDExLjA0LTI1LjE5LDE2LjU3LTQ1LjIxLDE2LjU3aC0zNi4yOFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTgyNi4wNSwxMDEuNzVjMC0yNS4xOS00LjU4LTM3LjgxLTEzLjc3LTM3LjgxLTQuNTgsMC04LjI0LDMuMzEtMTAuOTgsOS45MS0yLjY4LDYuMTQtNC4wMSwxNS4xNi00LjAxLDI3LjA2czEuMjcsMjAuODMsMy43NywyNy4yOWMyLjUxLDYuNDUsNS45OSw5LjcxLDEwLjQ2LDkuNzFzOC4xMy0zLjIsMTAuNi05LjU3YzIuNTktNi4zNywzLjkyLTE1LjI0LDMuOTItMjYuNlpNODY2LjM0LDEwMS40NmMwLDIxLjI0LTQuOTksMzguNS0xNC45OCw1MS43OC05LjkxLDEzLjIzLTIyLjg1LDE5Ljg1LTM4Ljc5LDE5Ljg1LTE0LjE1LDAtMjYuMjUtNS4wNy0zNi4zNy0xNS4yNC0xMi43MS0xMi44OC0xOS4wOC0zMi4xNi0xOS4wOC01Ny45MnM2LjYzLTQzLjUxLDE5LjkxLTU2LjU3YzkuODYtOS42OCwyMS41NS0xNC41MiwzNS4wNy0xNC41MiwxNi41NywwLDI5Ljc0LDYuNTcsMzkuNTQsMTkuNjUsOS44LDEzLjExLDE0LjcsMzAuNzUsMTQuNyw1Mi45NloiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzNyAyMjkuOTUgMjUuODIgMjI5Ljk1IDI1LjgyIDIzNi42NyAzNi42OCAyMzYuNjcgMzYuNjggMjQwLjYyIDI1LjgyIDI0MC42MiAyNS44MiAyNDkuOTUgMzcgMjQ5Ljk1IDM3IDI1My45IDIxLjU4IDI1My45IDIxLjU4IDIyNS45OCAzNyAyMjUuOTggMzcgMjI5LjkzIDM3IDIyOS45NSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjAuMTcsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjA5LTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0czEuNTgsMi45NCwxLjU4LDQuODRjMCwyLjU2LS44Niw0LjctMi41Niw2LjM3LTEuNzMsMS43LTMuODYsMi41NC02LjQzLDIuNTQtMi40MiwwLTQuNDQtLjcyLTUuOTktMi4xNi0xLjU2LTEuNDQtMi41NC0zLjQ2LTIuOTEtNi4wNWw0LjI2LS45NWMuMiwxLjY0LjUyLDIuNzcsMS4wMSwzLjQuODYsMS4yMSwyLjEzLDEuODIsMy44LDEuODIsMS4zLDAsMi4zOS0uNDMsMy4yOS0xLjMzczEuMy0xLjk5LDEuMy0zLjM0YzAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zMi0xLjEyLS42My0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDEsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSI3Ni4wNSAyMjkuOTUgNzYuMDUgMjUzLjkgNzEuODQgMjUzLjkgNzEuODQgMjI5Ljk1IDY1LjQxIDIyOS45NSA2NS40MSAyMjYuMDEgODIuNDQgMjI2LjAxIDgyLjQ0IDIyOS45NSA3Ni4wNSAyMjkuOTUiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTkyLjI3LDI0OS45NWgxLjljMS45LDAsMy40Ni0uMiw0LjczLS42MSwxLjI3LS40MywyLjM5LTEuMSwzLjQtMi4wMiwyLjA3LTEuOSwzLjExLTQuMzUsMy4xMS03LjQxcy0xLjAxLTUuNTMtMy4wOC03LjQzYy0xLjg0LTEuNy00LjU1LTIuNTQtOC4xNi0yLjU0aC0xLjl2MjBaTTg4LjA2LDI1My45M3YtMjcuOTJoNS44NWMyLjgyLDAsNS4wMS4yOSw2LjY2Ljg0LDEuNzYuNTUsMy4zNCwxLjQ3LDQuNzUsMi43NywyLjg4LDIuNjIsNC4zMiw2LjA4LDQuMzIsMTAuMzVzLTEuNSw3Ljc1LTQuNSwxMC40Yy0xLjUsMS4zMy0zLjA4LDIuMjUtNC43MywyLjc3LTEuNTMuNTItMy43Mi43OC02LjU3Ljc4aC01Ljc5di4wM1oiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTExNi42NSwyNTEuODhjMC0uNjYuMjMtMS4yNy43NS0xLjc2LjQ5LS40OSwxLjEtLjc1LDEuNzYtLjc1czEuMjcuMjYsMS43Ni43NWMuNDkuNDkuNzUsMS4xLjc1LDEuNzZzLS4yNiwxLjMtLjc1LDEuNzktMS4wNy43Mi0xLjc2LjcyLTEuMy0uMjMtMS43OS0uNzJjLS40OS0uNDktLjcyLTEuMS0uNzItMS44MnYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik03ODEuNjIsMjQ5Ljk1aDEwLjR2My45NWgtMTguNzZsOS42OC0xMS43M2MuOTUtMS4xOCwxLjc2LTIuMTksMi4zOS0zLjAzLjYzLS44NCwxLjEyLTEuNTgsMS40Ny0yLjE2LjY5LTEuMTIsMS4wNC0yLjE2LDEuMDQtMy4wNSwwLTEuMy0uNDYtMi4zOS0xLjM4LTMuMjktLjkyLS44OS0yLjA1LTEuMzMtMy40LTEuMzMtMi44MiwwLTQuNDQsMS42Ny00Ljg0LDUuMDFoLTQuMjFjLjY2LTUuODgsMy42Ni04LjgyLDguOS04LjgyLDIuNTQsMCw0LjY3LjgxLDYuNCwyLjQyczIuNTksMy42LDIuNTksNS45OWMwLDEuNTMtLjQsMy0xLjIxLDQuNDctLjQuNzUtMS4wMSwxLjY3LTEuNzksMi43MS0uNzgsMS4wNC0xLjc5LDIuMjgtMywzLjY5bC00LjM1LDUuMTMuMDYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04MDIuNzQsMjM5LjgxYzAsMy4wOC41NSw1LjY4LDEuNjEsNy43MiwxLjA3LDIuMDIsMi40NSwzLjAzLDQuMDksMy4wM3MzLjAzLTEuMDEsNC4wOS0zLjAzYzEuMS0xLjk5LDEuNjEtNC41MiwxLjYxLTcuNThzLS41NS01LjU5LTEuNjEtNy41OGMtMS4xLTEuOTktMi40NS0zLTQuMDktM3MtMywxLjAxLTQuMDksM2MtMS4wOSwxLjk5LTEuNjEsNC40Ny0xLjYxLDcuNDNaTTc5OC42MiwyMzkuNzhjMC00LjQ0LDEuMDQtNy45OCwzLjExLTEwLjY2LDEuODQtMi4zOSw0LjA5LTMuNiw2Ljc0LTMuNnM0LjksMS4yMSw2Ljc0LDMuNmMyLjA3LDIuNjUsMy4xMSw2LjI1LDMuMTEsMTAuODNzLTEuMDQsOC4xNS0zLjExLDEwLjgxYy0xLjg0LDIuMzktNC4wOSwzLjYtNi43MSwzLjZzLTQuODctMS4yMS02Ljc3LTMuNmMtMi4wNy0yLjY1LTMuMTEtNi4zMS0zLjExLTEwLjk4WiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODMxLjAxLDI0OS45NWgxMC40djMuOTVoLTE4Ljc2bDkuNjgtMTEuNzNjLjk1LTEuMTgsMS43Ni0yLjE5LDIuMzktMy4wMy42My0uODQsMS4xMi0xLjU4LDEuNDctMi4xNi42OS0xLjEyLDEuMDQtMi4xNiwxLjA0LTMuMDUsMC0xLjMtLjQ2LTIuMzktMS4zOC0zLjI5cy0yLjA1LTEuMzMtMy40LTEuMzNjLTIuODIsMC00LjQ0LDEuNjctNC44NCw1LjAxaC00LjIxYy42Ni01Ljg4LDMuNjYtOC44Miw4LjktOC44MiwyLjU0LDAsNC42Ny44MSw2LjQsMi40MnMyLjU5LDMuNiwyLjU5LDUuOTljMCwxLjUzLS40LDMtMS4yMSw0LjQ3LS40Ljc1LTEuMDEsMS42Ny0xLjc5LDIuNzEtLjc4LDEuMDQtMS43OSwyLjI4LTMsMy42OWwtNC4zNSw1LjEzLjA2LjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODY1LjksMjI5Ljk1aC04LjYybC0xLjM4LDQuNjRjLjIsMCwuNC0uMDMuNTgtLjA2LjE3LS4wMy4zNSwwLC41MiwwLDIuNzEsMCw0LjkzLjkyLDYuNjYsMi43NCwxLjc2LDEuODIsMi42Miw0LjE1LDIuNjIsN3MtLjk4LDUuMzYtMi45Nyw3LjI2Yy0xLjk5LDEuOS00LjQ3LDIuODUtNy40NiwyLjg1LTMuNjksMC02LjYzLTEuNzMtOC43Ni01LjIybDMuMTctMi42OGMuODksMS41LDEuNzYsMi41NCwyLjY1LDMuMTcuODkuNjEsMS45OS44OSwzLjI4Ljg5LDEuNywwLDMuMTEtLjYxLDQuMjQtMS43NiwxLjE1LTEuMjEsMS43My0yLjY4LDEuNzMtNC40NHMtLjU4LTMuMjMtMS43LTQuMzhjLTEuMTItMS4xOC0yLjU0LTEuNzYtNC4yNC0xLjc2LTEuOSwwLTMuNTIuODQtNC45LDIuNDhoLTEuMzhsNC4zOC0xNC42N2gxMS41M3YzLjk1bC4wNi0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0zNzguNTYsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjEyLTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0LDEuMDcsMS4zLDEuNTgsMi45NCwxLjU4LDQuODQsMCwyLjU2LS44Niw0LjY3LTIuNTYsNi4zNy0xLjczLDEuNjctMy44NiwyLjU0LTYuNDMsMi41NC0yLjQyLDAtNC40NC0uNzItNS45OS0yLjE2LTEuNTYtMS40NC0yLjU0LTMuNDYtMi45MS02LjA1bDQuMjYtLjk1Yy4yLDEuNjQuNTIsMi43NywxLjAxLDMuNC44NiwxLjIxLDIuMTMsMS44MiwzLjgsMS44MiwxLjMsMCwyLjM5LS40MywzLjI5LTEuMzMuODYtLjg5LDEuMy0xLjk5LDEuMy0zLjM0LDAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zNS0xLjEyLS42Ni0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDQsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzOTQuNDQgMjI5Ljk4IDM5NC40NCAyNTMuOTMgMzkwLjIzIDI1My45MyAzOTAuMjMgMjI5Ljk4IDM4My44MSAyMjkuOTggMzgzLjgxIDIyNi4wNCA0MDAuODQgMjI2LjA0IDQwMC44NCAyMjkuOTggMzk0LjQ0IDIyOS45OCIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDEwLjY2LDIyNi4wMXYxNi44YzAsMi4zOS4zNyw0LjE1LDEuMTgsNS4yNywxLjE1LDEuNjEsMi44MiwyLjM5LDQuOTMsMi4zOXMzLjc3LS44MSw0Ljk2LTIuMzljLjc4LTEuMDcsMS4xOC0yLjgyLDEuMTgtNS4yN3YtMTYuOGg0LjIxdjE3Ljk4YzAsMi45NC0uOTIsNS4zNi0yLjc0LDcuMjYtMi4wNywyLjEtNC41OCwzLjE3LTcuNTgsMy4xN3MtNS41My0xLjA3LTcuNTgtMy4xN2MtMS44NC0xLjktMi43NC00LjMyLTIuNzQtNy4yNnYtMTcuOThoNC4yMS0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00MzkuODUsMjQ5Ljk1aDEuOWMxLjksMCwzLjQ2LS4yLDQuNzMtLjYxLDEuMjQtLjQzLDIuMzktMS4xLDMuNC0yLjAyLDIuMDctMS45LDMuMTEtNC4zNSwzLjExLTcuNDFzLTEuMDQtNS41Ni0zLjA4LTcuNDNjLTEuODQtMS43LTQuNTUtMi41NC04LjE2LTIuNTRoLTEuOXYyMFpNNDM1LjY1LDI1My45M3YtMjcuOTJoNS44NWMyLjgsMCw1LjAxLjI2LDYuNjYuODQsMS43Ni41NSwzLjM0LDEuNDcsNC43NSwyLjc3LDIuODgsMi42Miw0LjMyLDYuMDgsNC4zMiwxMC4zNXMtMS41LDcuNzUtNC41LDEwLjRjLTEuNSwxLjMzLTMuMDgsMi4yNS00LjczLDIuNzctMS41Ni41Mi0zLjc1Ljc4LTYuNTcuNzhoLTUuNzl2LjAzWiIvPgogICAgPHJlY3QgY2xhc3M9ImNscy0xIiB4PSI0NjQuMzgiIHk9IjIyNi4wMSIgd2lkdGg9IjQuMjEiIGhlaWdodD0iMjcuOTIiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQ4MC4wMiwyMzkuOWMwLDMuMDgsMS4wNCw1LjYyLDMuMTEsNy42MSwyLjA3LDEuOTksNC40NCwzLDcuMTUsMywyLjk0LDAsNS4zOS0xLjAxLDcuNDEtMy4wMywyLjAyLTIuMDUsMy4wMy00LjU1LDMuMDMtNy40OXMtMS4wMS01LjQ4LTMtNy40OWMtMS45OS0yLjAyLTQuNDQtMy4wMy03LjM1LTMuMDNzLTUuMzYsMS4wMS03LjM1LDMuMDNjLTEuOTksMS45OS0zLDQuNDctMyw3LjQxWk00NzUuNzYsMjM5Ljg0YzAtMy45MiwxLjQ0LTcuMjksNC4zMi0xMC4xMSwyLjg1LTIuODIsNi4zMS00LjI0LDEwLjM1LTQuMjRzNy4zOCwxLjQxLDEwLjIzLDQuMjZjMi44NSwyLjgyLDQuMjksNi4yNSw0LjI5LDEwLjI2cy0xLjQ0LDcuNDEtNC4yOSwxMC4yYy0yLjg4LDIuOC02LjM3LDQuMjEtMTAuNDMsNC4yMS0zLjYsMC02LjgzLTEuMjQtOS43MS0zLjc1LTMuMTctMi43Ny00LjczLTYuMzctNC43My0xMC44M2gtLjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODgwLjYsMi4xYy0zLjI5LDAtNi4wOCwxLjIxLTguNDQsMy42M3MtMy41NCw1LjMtMy41NCw4LjY0LDEuMTgsNi4zNCwzLjU0LDguNzZjMi4zMywyLjQyLDUuMTksMy42Myw4LjU2LDMuNjNzNi4xNC0xLjIxLDguNS0zLjZjMi4zMy0yLjQyLDMuNTItNS4zMywzLjUyLTguNzYsMC0xLjg0LS40Ni0zLjcyLTEuMzgtNS42OC0uOTItMS44NC0yLjEzLTMuMjktMy42My00LjM1LTIuMTMtMS41LTQuNS0yLjI1LTcuMTItMi4yNXYtLjAzWk04OTUuMDksMTQuNDFjMCw0LjAxLTEuNDEsNy40MS00LjIxLDEwLjIzLTIuOCwyLjgyLTYuMiw0LjIxLTEwLjE0LDQuMjFzLTcuMzgtMS40MS0xMC4yLTQuMjRjLTIuOC0yLjgyLTQuMjEtNi4yMi00LjIxLTEwLjI2LDAtMi4yMi40Ni00LjI2LDEuMzUtNi4wOC45Mi0xLjk2LDIuMTktMy42LDMuODMtNC45NiwyLjY4LTIuMjIsNS42OC0zLjMxLDkuMDItMy4zMSwyLjIyLDAsNC4yMS40Myw2LjAyLDEuMjcsMi41NCwxLjEyLDQuNjEsMi44OCw2LjE3LDUuMywxLjU2LDIuNDIsMi4zNiw1LjA0LDIuMzYsNy44NFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTg3OS4yNSwxMy41MWgtLjU1di00LjU1aC42M2MyLjE5LDAsMy4zMS43MiwzLjMxLDIuMTksMCwxLjU2LTEuMTUsMi4zNi0zLjQsMi4zNlpNODgyLjEzLDE1Ljc5bC4yMy0uMDZjLjk4LS4yOSwxLjc5LS44NiwyLjQyLTEuNzMuNjMtLjg5Ljk1LTEuODQuOTUtMi44OCwwLTEuNTYtLjYxLTIuOC0xLjc5LTMuNzUtMS4wNy0uODQtMi43Ny0xLjI0LTUuMDctMS4yNGgtMy4zMXYxNi42M2gzLjE3di02LjZsNC45Myw2LjZoMy44OWwtNS40Mi02Ljk0di0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04NzguODQsMTMuMzRoLjM3YzIuMTksMCwzLjI2LS43MiwzLjI2LTIuMTksMC0xLjM4LTEuMDQtMi4wNS0zLjE0LTIuMDVoLS40OXY0LjI0Wk04NzkuMjUsMTMuNjZoLS42OXYtNC44NGguODFjMi4zMSwwLDMuNDYuNzgsMy40NiwyLjMzLDAsMS42Ny0xLjIxLDIuNTEtMy41NywyLjUxWk04ODMuNzEsMjIuNTloMy40OWwtNS4zMy02Ljg2LjQzLS4xNGMuOTUtLjI5LDEuNzMtLjg0LDIuMzMtMS42Ny42MS0uODYuOTItMS43OS45Mi0yLjgsMC0xLjUtLjU1LTIuNzEtMS43My0zLjYzLTEuMDQtLjgxLTIuNzEtMS4yMS00Ljk5LTEuMjFoLTMuMTd2MTYuMzFoMi44NXYtNi44OWw1LjE2LDYuODloLjAzWk04ODcuODMsMjIuOTFoLTQuMjZsLTQuNy02LjI4djYuMjhoLTMuNDlWNS45OWgzLjQ5YzIuMzMsMCw0LjA5LjQzLDUuMTksMS4yNywxLjIxLjk4LDEuODQsMi4yOCwxLjg0LDMuODYsMCwxLjA3LS4zMiwyLjA3LS45OCwyLjk3cy0xLjUsMS41LTIuNTEsMS43OWw1LjQ4LDcuMDNoLS4wNloiLz4KICA8L2c+Cjwvc3ZnPg==" alt="Tremendo Studio" style="height:48px;display:block;margin-bottom:24px;">
+      <p class="port-brand">SOCIAL MEDIA PLAN · 2025</p>
+    </div>
+    <div>
+      <div class="port-marca" contenteditable="true">NOMBRE DE LA MARCA</div>
+      <div class="port-sub" contenteditable="true">MES · AÑO · BY TREMENDO STUDIO</div>
+    </div>
+    <div class="port-meta">
+      <div contenteditable="true">CONTENIDO PARA INSTAGRAM</div>
+      <div contenteditable="true">DISEÑADO POR TREMENDO STUDIO · CDMX</div>
+    </div>
+  </div>
+  <div class="R" style="width:50%;height:100%;">
+    <div class="ip"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico">🖼</div><span class="lbl">Imagen de portada</span></div>
+  </div>
+</div>
+
+<!-- ══ S02 OBJETIVOS DEL MES ══ -->
+<div class="slide" id="s02">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">SOCIAL MEDIA PLAN</span><span class="yr">© 2025</span></div>
+  <div style="padding-top:44px;flex:1;display:flex;flex-direction:column;background:#fff;">
+    <div style="padding:28px 52px 16px;border-bottom:1px solid #eee;display:flex;align-items:baseline;justify-content:space-between;">
+      <span style="font-family:var(--fd);font-weight:800;font-size:clamp(20px,3vw,38px);text-transform:uppercase;color:#000;">OBJETIVOS DEL MES</span>
+      <span style="font-family:var(--fd);font-size:11px;color:rgba(0,0,0,.3);letter-spacing:.15em;text-transform:uppercase;" contenteditable="true">MAYO 2025</span>
+    </div>
+    <div class="inner">
+      <div class="obj-card">
+        <div class="obj-label">Objetivo 01</div>
+        <div class="obj-val" contenteditable="true">AUMENTAR ALCANCE</div>
+        <div class="obj-num" contenteditable="true">+20%</div>
+        <div class="obj-desc" contenteditable="true">Incrementar el alcance orgánico mensual mediante contenido de valor y mayor frecuencia de publicación.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-label">Objetivo 02</div>
+        <div class="obj-val" contenteditable="true">ENGAGEMENT</div>
+        <div class="obj-num" contenteditable="true">+15%</div>
+        <div class="obj-desc" contenteditable="true">Aumentar las interacciones promedio por publicación a través de contenido más dinámico y llamadas a la acción.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-label">Objetivo 03</div>
+        <div class="obj-val" contenteditable="true">NUEVOS SEGUIDORES</div>
+        <div class="obj-num" contenteditable="true">+500</div>
+        <div class="obj-desc" contenteditable="true">Crecer la comunidad con seguidores de calidad que coincidan con el perfil del cliente ideal de la marca.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-label">Objetivo 04</div>
+        <div class="obj-val" contenteditable="true">CONVERSIÓN</div>
+        <div class="obj-num" contenteditable="true">Meta</div>
+        <div class="obj-desc" contenteditable="true">Dirigir tráfico hacia el sitio web o punto de venta mediante contenido estratégico de conversión.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S03 INTRODUCCIÓN ══ -->
+<div class="slide" id="s03">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">SOCIAL MEDIA PLAN</span><span class="yr">© 2025</span></div>
+  <div class="L" style="width:45%;height:calc(100% - 44px);background:#fff;padding-top:44px;">
+    <div class="sec-tag" style="color:var(--o);">INTRODUCCIÓN</div>
+    <div class="sec-title dark" contenteditable="true">¿POR QUÉ COMUNICAMOS ASÍ?</div>
+    <div class="sec-body dark" contenteditable="true">Describe aquí la razón detrás de la estrategia de comunicación propuesta para este mes. ¿Qué insight del cliente, del mercado o de la marca llevó a elegir este enfoque? ¿Qué queremos lograr con este tono y esta dirección visual?</div>
+    <div style="margin-top:24px;padding:16px 20px;background:var(--g);border-left:3px solid var(--o);">
+      <div style="font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:8px;">CONCEPTO DEL MES</div>
+      <div style="font-family:var(--fd);font-weight:800;font-size:clamp(18px,2.5vw,32px);text-transform:uppercase;color:#000;min-height:36px;" contenteditable="true">NOMBRE DEL CONCEPTO</div>
+    </div>
+  </div>
+  <div class="R" style="width:55%;height:calc(100% - 44px);padding-top:44px;">
+    <div class="ip"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico">🖼</div><span class="lbl">Imagen / moodboard del mes</span></div>
+  </div>
+</div>
+
+<!-- ══ S04 IMAGEN DE PERFIL ══ -->
+<div class="slide" id="s04">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">SOCIAL MEDIA PLAN</span><span class="yr">© 2025</span></div>
+  <div class="L" style="width:35%;height:calc(100% - 44px);background:#fff;padding-top:44px;">
+    <div class="sec-tag" style="color:var(--o);">PERFIL</div>
+    <div class="sec-title dark" contenteditable="true">IMAGEN<br>DE PERFIL</div>
+    <div class="sec-body dark" contenteditable="true">Propuesta de imagen de perfil para el mes. Describe el concepto, el objetivo visual y las especificaciones técnicas.</div>
+    <div style="margin-top:16px;font-size:11px;color:rgba(0,0,0,.3);line-height:1.8;font-family:var(--fd);letter-spacing:.05em;text-transform:uppercase;">
+      <div>Formato: JPG / PNG</div>
+      <div>Tamaño: 320 × 320 px</div>
+      <div>Plataforma: Instagram</div>
+    </div>
+  </div>
+  <div class="R" style="width:65%;height:calc(100% - 44px);background:#f8f8f8;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;padding-top:44px;">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <div class="profile-mock">
+        <div class="ip light" style="border-radius:50%;"><input type="file" accept="image/*" onchange="loadImgContain(this)"><div class="ico" style="color:rgba(0,0,0,.2);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.22);">Foto de perfil</span></div>
+      </div>
+      <div style="font-family:var(--fd);font-weight:800;font-size:18px;color:#000;text-transform:uppercase;" contenteditable="true">@NOMBREDEUSUARIO</div>
+      <div style="font-size:12px;color:rgba(0,0,0,.45);text-align:center;max-width:280px;" contenteditable="true">Descripción del perfil / bio propuesta para la marca este mes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S05 HISTORIAS DESTACADAS ══ -->
+<div class="slide" id="s05">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">SOCIAL MEDIA PLAN</span><span class="yr">© 2025</span></div>
+  <div class="L" style="width:32%;height:calc(100% - 44px);background:#fff;padding-top:44px;">
+    <div class="sec-tag" style="color:var(--o);">HIGHLIGHTS</div>
+    <div class="sec-title dark" contenteditable="true">HISTORIAS<br>DESTACADAS</div>
+    <div class="sec-body dark" contenteditable="true">Propuesta de covers para las historias destacadas. Cada ícono representa una categoría de contenido fijo en el perfil.</div>
+  </div>
+  <div class="R" style="width:68%;height:calc(100% - 44px);background:#f8f8f8;display:flex;align-items:center;padding:32px 40px;gap:20px;flex-wrap:wrap;padding-top:calc(44px + 32px);">
+    <div class="highlight-item">
+      <div class="highlight-circle"><div class="ip light" style="border-radius:50%;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="highlight-name" style="color:#000;" contenteditable="true">CATEGORÍA</div>
+    </div>
+    <div class="highlight-item">
+      <div class="highlight-circle"><div class="ip light" style="border-radius:50%;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="highlight-name" style="color:#000;" contenteditable="true">CATEGORÍA</div>
+    </div>
+    <div class="highlight-item">
+      <div class="highlight-circle"><div class="ip light" style="border-radius:50%;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="highlight-name" style="color:#000;" contenteditable="true">CATEGORÍA</div>
+    </div>
+    <div class="highlight-item">
+      <div class="highlight-circle"><div class="ip light" style="border-radius:50%;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="highlight-name" style="color:#000;" contenteditable="true">CATEGORÍA</div>
+    </div>
+    <div class="highlight-item">
+      <div class="highlight-circle"><div class="ip light" style="border-radius:50%;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="highlight-name" style="color:#000;" contenteditable="true">CATEGORÍA</div>
+    </div>
+    <div class="highlight-item">
+      <div class="highlight-circle"><div class="ip light" style="border-radius:50%;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="highlight-name" style="color:#000;" contenteditable="true">CATEGORÍA</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S06 FEED INSTAGRAM ══ -->
+<div class="slide" id="s06" data-duplicable="true">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">SOCIAL MEDIA PLAN</span><span class="yr">© 2025</span></div>
+  <div class="L" style="width:28%;height:calc(100% - 44px);background:#fff;padding-top:44px;">
+    <div class="sec-tag" style="color:var(--o);">FEED</div>
+    <div class="sec-title dark" contenteditable="true">VISTA DEL<br>FEED</div>
+    <div class="sec-body dark" contenteditable="true">Propuesta visual de cómo se verá el feed de Instagram con el contenido del mes. Los cuadritos representan el orden y tipo de piezas.</div>
+    <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(0,0,0,.45);"><span style="width:12px;height:12px;background:var(--n);display:inline-block;flex-shrink:0;"></span> Arte estático</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(0,0,0,.45);"><span style="width:12px;height:12px;background:var(--o);display:inline-block;flex-shrink:0;"></span> Video / Reel</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(0,0,0,.45);"><span style="width:12px;height:12px;background:#ddd;display:inline-block;flex-shrink:0;"></span> Carrusel</div>
+    </div>
+  </div>
+  <div class="R" style="width:72%;height:calc(100% - 44px);padding:24px;display:flex;align-items:center;justify-content:center;background:#f8f8f8;padding-top:calc(44px + 24px);">
+    <div class="feed-grid" style="max-width:520px;">
+      <div class="feed-cell"><div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="feed-cell"><div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="feed-cell"><div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="feed-cell"><div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="feed-cell"><div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="feed-cell"><div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="feed-cell"><div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="feed-cell"><div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+      <div class="feed-cell"><div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);font-size:16px;">🖼</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S07 PIEZAS ESTÁTICAS ══ -->
+<div class="slide" id="s07" data-duplicable="true">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">SOCIAL MEDIA PLAN</span><span class="yr">© 2025</span></div>
+  <div class="L" style="width:28%;height:calc(100% - 44px);background:#fff;padding-top:44px;">
+    <div class="sec-tag" style="color:var(--o);">CONTENIDO</div>
+    <div class="sec-title dark" contenteditable="true">ARTES<br>ESTÁTICOS</div>
+    <div class="sec-body dark" contenteditable="true">Propuesta de artes estáticos para el feed del mes. Cada pieza tiene un tema y objetivo comunicativo específico.</div>
+    <div style="margin-top:16px;font-family:var(--fd);font-weight:800;font-size:28px;color:var(--o);" contenteditable="true">10</div>
+    <div style="font-family:var(--fd);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.35);">piezas este mes</div>
+  </div>
+  <div class="R" style="width:72%;height:calc(100% - 44px);display:grid;grid-template-columns:repeat(4,1fr);gap:3px;padding-top:44px;">
+    <div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.2);">Arte 1</span></div>
+    <div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.2);">Arte 2</span></div>
+    <div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.2);">Arte 3</span></div>
+    <div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.2);">Arte 4</span></div>
+    <div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.2);">Arte 5</span></div>
+    <div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.2);">Arte 6</span></div>
+    <div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.2);">Arte 7</span></div>
+    <div class="ip light"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.2);">Arte 8</span></div>
+  </div>
+</div>
+
+<!-- ══ S08 VIDEOS / REELS ══ -->
+<div class="slide" id="s08" data-duplicable="true">
+  <div class="sh"><span class="br">TREMENDO STUDIO ®</span><span class="sl">SOCIAL MEDIA PLAN</span><span class="yr">© 2025</span></div>
+  <div class="L" style="width:28%;height:calc(100% - 44px);">
+    <div class="sec-tag">CONTENIDO</div>
+    <div class="sec-title" contenteditable="true">VIDEOS<br>& REELS</div>
+    <div class="sec-body" contenteditable="true">Propuesta de videos y reels para el mes. Formato vertical 9:16 optimizado para Instagram Reels y Stories.</div>
+    <div style="margin-top:16px;font-family:var(--fd);font-weight:800;font-size:28px;color:var(--o);" contenteditable="true">4</div>
+    <div style="font-family:var(--fd);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);">videos este mes</div>
+  </div>
+  <div class="R" style="width:72%;height:calc(100% - 44px);display:grid;grid-template-columns:repeat(4,1fr);gap:3px;padding:24px;align-items:center;">
+    <div style="aspect-ratio:9/16;position:relative;overflow:hidden;"><div class="ip"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico">🖼</div><span class="lbl">Reel 1</span></div></div>
+    <div style="aspect-ratio:9/16;position:relative;overflow:hidden;"><div class="ip"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico">🖼</div><span class="lbl">Reel 2</span></div></div>
+    <div style="aspect-ratio:9/16;position:relative;overflow:hidden;"><div class="ip"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico">🖼</div><span class="lbl">Reel 3</span></div></div>
+    <div style="aspect-ratio:9/16;position:relative;overflow:hidden;"><div class="ip"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico">🖼</div><span class="lbl">Reel 4</span></div></div>
+  </div>
+</div>
+
+<!-- ══ S09 STORIES ══ -->
+<div class="slide" id="s09" data-duplicable="true">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">SOCIAL MEDIA PLAN</span><span class="yr">© 2025</span></div>
+  <div class="L" style="width:28%;height:calc(100% - 44px);background:#fff;padding-top:44px;">
+    <div class="sec-tag" style="color:var(--o);">CONTENIDO</div>
+    <div class="sec-title dark" contenteditable="true">HISTORIAS<br>/ STORIES</div>
+    <div class="sec-body dark" contenteditable="true">Propuesta de stories para el mes. Formato vertical 9:16 con interacciones, encuestas y llamadas a la acción.</div>
+    <div style="margin-top:16px;font-family:var(--fd);font-weight:800;font-size:28px;color:var(--o);" contenteditable="true">6</div>
+    <div style="font-family:var(--fd);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.35);">stories este mes</div>
+  </div>
+  <!-- FIX 2: align-items:center para centrar verticalmente los stories -->
+  <div class="R" style="width:72%;height:calc(100% - 44px);display:flex;align-items:center;justify-content:center;gap:16px;padding:16px 32px;background:#f8f8f8;padding-top:calc(44px + 16px);">
+    <div style="aspect-ratio:9/16;height:85%;position:relative;overflow:hidden;border-radius:10px;flex-shrink:0;"><div class="ip light" style="border-radius:10px;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.2);">Story 1</span></div></div>
+    <div style="aspect-ratio:9/16;height:85%;position:relative;overflow:hidden;border-radius:10px;flex-shrink:0;"><div class="ip light" style="border-radius:10px;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.2);">Story 2</span></div></div>
+    <div style="aspect-ratio:9/16;height:85%;position:relative;overflow:hidden;border-radius:10px;flex-shrink:0;"><div class="ip light" style="border-radius:10px;"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico" style="color:rgba(0,0,0,.15);">🖼</div><span class="lbl" style="color:rgba(0,0,0,.2);">Story 3</span></div></div>
+  </div>
+</div>
+
+<!-- ══ S10 CALENDARIO ══ -->
+<div class="slide" id="s10">
+  <div class="sh" style="background:rgba(0,0,0,.9);"><span class="br">TREMENDO STUDIO ®</span><span class="sl">SOCIAL MEDIA PLAN</span><span class="yr">© 2025</span></div>
+  <div style="padding-top:44px;flex:1;display:flex;flex-direction:column;background:#fff;">
+    <div style="padding:18px 52px 12px;display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid #eee;">
+      <span style="font-family:var(--fd);font-weight:800;font-size:clamp(20px,3vw,36px);text-transform:uppercase;color:#000;">CALENDARIO DE PUBLICACIÓN</span>
+      <span style="font-family:var(--fd);font-size:11px;color:rgba(0,0,0,.3);letter-spacing:.15em;text-transform:uppercase;" contenteditable="true">MAYO 2025</span>
+    </div>
+    <div style="flex:1;overflow:auto;padding:16px 52px 24px;">
+      <table class="cal-table" id="cal">
+        <thead>
+          <tr>
+            <th style="width:90px;">Fecha</th>
+            <th style="width:80px;">Día</th>
+            <th style="width:100px;">Tipo</th>
+            <th>Tema / Concepto</th>
+            <th style="width:130px;">Plataforma</th>
+            <th style="width:140px;">Hashtags</th>
+          </tr>
+        </thead>
+        <tbody id="cal-body">
+          <tr>
+            <td contenteditable="true" data-ph="01/05">01/05</td>
+            <td contenteditable="true" data-ph="Jueves">Jueves</td>
+            <td><span class="tipo-badge tipo-estatico">Estático</span></td>
+            <td contenteditable="true" data-ph="Tema...">Lanzamiento del mes</td>
+            
+            <td contenteditable="true">No aplica</td><td contenteditable="true" data-ph="#hashtag">#marca</td>
+            
+          </tr>
+          <tr>
+            <td contenteditable="true">05/05</td>
+            <td contenteditable="true">Lunes</td>
+            <td><span class="tipo-badge tipo-video">Video</span></td>
+            <td contenteditable="true">Behind the scenes</td>
+            
+            <td contenteditable="true">Instagram</td><td contenteditable="true">#reel</td>
+            
+          </tr>
+          <tr>
+            <td contenteditable="true">08/05</td>
+            <td contenteditable="true">Jueves</td>
+            <td><span class="tipo-badge tipo-estatico">Estático</span></td>
+            <td contenteditable="true">Producto destacado</td>
+            
+            <td contenteditable="true">Instagram</td><td contenteditable="true">#producto</td>
+            
+          </tr>
+          <tr>
+            <td contenteditable="true">12/05</td>
+            <td contenteditable="true">Lunes</td>
+            <td><span class="tipo-badge tipo-story">Story</span></td>
+            <td contenteditable="true">Encuesta / interacción</td>
+            
+            <td contenteditable="true">Instagram</td><td contenteditable="true">—</td>
+            
+          </tr>
+          <tr>
+            <td contenteditable="true">15/05</td>
+            <td contenteditable="true">Jueves</td>
+            <td><span class="tipo-badge tipo-video">Video</span></td>
+            <td contenteditable="true">Reel de tendencia</td>
+            
+            <td contenteditable="true">Instagram · Facebook</td><td contenteditable="true">#trending</td>
+            
+          </tr>
+          <tr>
+            <td contenteditable="true">19/05</td>
+            <td contenteditable="true">Lunes</td>
+            <td><span class="tipo-badge tipo-estatico">Estático</span></td>
+            <td contenteditable="true">Testimonio / reseña</td>
+            
+            <td contenteditable="true">Instagram</td><td contenteditable="true">#review</td>
+            
+          </tr>
+          <tr>
+            <td contenteditable="true">22/05</td>
+            <td contenteditable="true">Jueves</td>
+            <td><span class="tipo-badge tipo-estatico">Estático</span></td>
+            <td contenteditable="true">Contenido educativo</td>
+            
+            <td contenteditable="true">Instagram · Facebook</td><td contenteditable="true">#tips</td>
+            
+          </tr>
+          <tr>
+            <td contenteditable="true">26/05</td>
+            <td contenteditable="true">Lunes</td>
+            <td><span class="tipo-badge tipo-video">Video</span></td>
+            <td contenteditable="true">Cierre del mes</td>
+            
+            <td contenteditable="true">Instagram · Facebook</td><td contenteditable="true">#mes</td>
+            
+          </tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRow()">+ Agregar publicación</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S11 ESTRATEGIA ══ -->
+<div class="slide" id="s11">
+  <div class="sh"><span class="br">TREMENDO STUDIO ®</span><span class="sl">SOCIAL MEDIA PLAN</span><span class="yr">© 2025</span></div>
+  <div class="L" style="width:40%;height:calc(100% - 44px);">
+    <div class="ip"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico">🖼</div><span class="lbl">Imagen estrategia</span></div>
+  </div>
+  <div class="R" style="width:60%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:center;padding:40px 52px;gap:20px;">
+    <div style="font-family:var(--fd);font-weight:800;font-size:clamp(22px,3vw,40px);text-transform:uppercase;color:#fff;margin-bottom:8px;">ESTRATEGIA</div>
+    <div class="estrategia-item">
+      <div class="est-label">Tono de comunicación</div>
+      <div class="est-val" contenteditable="true">Directo, auténtico y con actitud. Hablamos de tú a tú con nuestra comunidad.</div>
+    </div>
+    <div class="estrategia-item">
+      <div class="est-label">Pilares de contenido</div>
+      <div class="est-val" contenteditable="true">Inspiración · Producto · Comunidad · Educación · Behind the scenes</div>
+    </div>
+    <div class="estrategia-item">
+      <div class="est-label">Frecuencia de publicación</div>
+      <div class="est-val" contenteditable="true">3 veces por semana en feed + stories diarios cuando aplique.</div>
+    </div>
+    <div class="estrategia-item">
+      <div class="est-label">Mejor horario</div>
+      <div class="est-val" contenteditable="true">Lunes y jueves de 10:00 a 12:00 hrs · Sábados de 18:00 a 20:00 hrs.</div>
+    </div>
+    <div class="estrategia-item">
+      <div class="est-label">CTA principal del mes</div>
+      <div class="est-val" contenteditable="true">Escribe aquí el llamado a la acción principal que vamos a impulsar este mes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S AVISO ══ -->
+<div class="slide" id="saviso" style="background:var(--n);flex-direction:column;align-items:center;justify-content:center;">
+  <div style="font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:32px;">IMPORTANTE · ALCANCE DEL SERVICIO</div>
+  <div style="border:1.5px solid var(--o);padding:36px 44px;max-width:680px;text-align:center;">
+    <div style="font-family:var(--fd);font-weight:800;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--o);margin-bottom:16px;">✦ TREMENDO STUDIO ®</div>
+    <div style="font-family:var(--fd);font-weight:800;font-size:clamp(18px,2.5vw,30px);text-transform:uppercase;color:#fff;line-height:1.1;margin-bottom:16px;">DISEÑAMOS EL CONTENIDO.<br>TÚ LO PUBLICAS.</div>
+    <div style="font-size:14px;color:rgba(255,255,255,.6);line-height:1.8;min-height:60px;" contenteditable="true">Tremendo Studio es un estudio de diseño y producción de contenido visual. Nuestro servicio incluye la planeación estratégica, la dirección creativa, la producción de todas las piezas de este plan.<br><br>No realizamos gestión de comunidades (community management), no publicamos en tus redes sociales, no creamos captions o copies para publicaciones, ni gestionamos campañas de publicidad pagada. Estos servicios corren por cuenta del cliente o de un especialista externo.</div>
+  </div>
+  <div style="margin-top:28px;font-size:12px;color:rgba(255,255,255,.22);letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.8;" contenteditable="true">¿Tienes dudas? Escríbenos a somos@tremendo.com</div>
+</div>
+
+<!-- ══ S12 CIERRE ══ -->
+<div class="slide" id="s12">
+  <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iQ2FwYV8yIiBkYXRhLW5hbWU9IkNhcGEgMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgODk1LjA5IDI1NC40MiI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPGcgaWQ9IkNhcGFfMS0yIiBkYXRhLW5hbWU9IkNhcGEgMSI+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNjAuMiAxNzIuNDkgMjEuNDEgMTcyLjQ5IDIxLjQxIDYzLjI4IDAgNjMuMjggMCAyOC44NyA4Mi40MSAyOC44NyA4Mi40MSA2My4yOCA2MC4xNyA2My4yOCA2MC4xNyAxNzIuNDkgNjAuMiAxNzIuNDkiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTEzMy4xNiw5NS4zOGgyLjU5YzQuNDcsMCw4LjE4LTEuNywxMS4xNS01LjEzLDIuOTctMy40LDQuNDctNy43NSw0LjQ3LTEzLjAyLDAtMTAuNzItNS42Mi0xNi4xMS0xNi44My0xNi4xMWgtMS4zOHYzNC4yNlpNMTk2LjUzLDE3Mi40OWgtNDEuOTZsLTE5LjE2LTUxLjE4Yy0uMTctLjg2LS41Mi0yLjAyLS45OC0zLjQ2LS40Ni0xLjQxLTEuMDQtMy4xNC0xLjczLTUuMTNsLjI5LDkuNDh2NTAuMjNoLTM4LjYxVjI4Ljc5aDM5Ljc0YzE3LjQ5LDAsMzAuNTcsMy40NiwzOS4yNSwxMC4zMiwxMS4wNCw4LjgyLDE2LjU3LDIxLjMyLDE2LjU3LDM3LjU4LDAsMTcuMzgtNy40MSwyOS4zNi0yMi4yNSwzNS45OWwyOC44NSw1OS43NHYuMDlaIi8+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMjA2LjY0IDE3Mi40OSAyMDYuNjQgMjguODUgMjc4Ljc0IDI4Ljg1IDI3OC43NCA2Mi42MiAyNDUuNDMgNjIuNjIgMjQ1LjQzIDgzLjU0IDI3NS4yOCA4My41NCAyNzUuMjggMTE2LjAxIDI0NS40MyAxMTYuMDEgMjQ1LjQzIDEzNy45NyAyNzguNzQgMTM3Ljk3IDI3OC43NCAxNzIuNDkgMjA2LjY0IDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDI2LjkxLDE3Mi40OWgtMzguM2wtMi40OC02NS41LTEuMDQtMjYuMTRjLS4zNyw1LjAxLS44MSw5LjgzLTEuMjcsMTQuMzgtLjQ2LDQuNTUtMS4wNyw4Ljk2LTEuNzYsMTMuMjZsLTEwLjQzLDY0aC0yNy4xMmwtOC45My02NC4wOWMtLjUyLTMuNzItMS4yNC0xMC4xMS0yLjE2LTE5LjE2LS4xMi0xLjM1LS4zNS00LjE1LS43Mi04LjM2bC0uODEsMjYuNTEtMi45NCw2NS4xM2gtMzYuOTRWMjguODdoNTcuMjlsNi45NCw0OC4zOGMuNTgsMy45OCwxLjEsOC4yNywxLjU2LDEyLjk0LjQ2LDQuNjQuODYsOS43MSwxLjI0LDE1LjE2LjY5LTkuMTEsMS42NC0xNy4yNiwyLjg4LTI0LjQ3bDguNDQtNTIuMDFoNTYuNTd2MTQzLjY1bC0uMDMtLjAzWiIvPgogICAgPHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjQ0MS4wMSAxNzIuNDkgNDQxLjAxIDI4Ljg1IDUxMy4xIDI4Ljg1IDUxMy4xIDYyLjYyIDQ3OS43OSA2Mi42MiA0NzkuNzkgODMuNTQgNTA5LjY1IDgzLjU0IDUwOS42NSAxMTYuMDEgNDc5Ljc5IDExNi4wMSA0NzkuNzkgMTM3Ljk3IDUxMy4xIDEzNy45NyA1MTMuMSAxNzIuNDkgNDQxLjAxIDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTI5Ljg1LDE3Mi40OVYyOC44NWgzNy4wM2wxOS40NSw1MC40M2MxLjA3LDIuOTcsMi4yNSw2LjQsMy41NywxMC4yMywxLjMzLDMuODMsMi44LDguMjcsNC40MSwxMy4zMWw0LjAxLDEyLjY1Yy0xLjQ0LTEyLjQ4LTIuNTEtMjMuMTQtMy4yNi0zMi4wMS0uNzUtOC44OC0xLjEyLTE2LjMxLTEuMTItMjIuMzNWMjguODVoMzcuMDN2MTQzLjY1aC0zNy4wM2wtMTkuNTQtNTIuODVjLTIuMDUtNS42NS0zLjg5LTEwLjkyLTUuNTMtMTUuODVzLTMuMDgtOS42Mi00LjMyLTE0LjA5Yy44MSwxMC4xMSwxLjM4LDE4LjkzLDEuNzYsMjYuNDIuMzcsNy41Mi41NSwxNC4wOS41NSwxOS43MXYzNi42NWgtMzcuMDMuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik02ODYuNDYsMTM3LjhjMTMuODktLjY5LDIwLjgzLTEyLjY1LDIwLjgzLTM1LjkxLDAtMTEuNDctMS43Ni0yMC41Mi01LjMtMjcuMTctMy41NC02LjY5LTguMy0xMC4wNi0xNC4zMi0xMC4wNmgtMS4yMXY3My4xNFpNNjQ3LjY4LDE3Mi40OVYyOC44NWgzMy40OGMxOS4xNiwwLDM0LjA5LDUuMTYsNDQuNzUsMTUuNDUsMTQuMDMsMTMuNDYsMjEuMDQsMzIuMjcsMjEuMDQsNTYuNDhzLTUuOTEsNDIuMjItMTcuNzgsNTUuMTVjLTEwLjExLDExLjA0LTI1LjE5LDE2LjU3LTQ1LjIxLDE2LjU3aC0zNi4yOFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTgyNi4wNSwxMDEuNzVjMC0yNS4xOS00LjU4LTM3LjgxLTEzLjc3LTM3LjgxLTQuNTgsMC04LjI0LDMuMzEtMTAuOTgsOS45MS0yLjY4LDYuMTQtNC4wMSwxNS4xNi00LjAxLDI3LjA2czEuMjcsMjAuODMsMy43NywyNy4yOWMyLjUxLDYuNDUsNS45OSw5LjcxLDEwLjQ2LDkuNzFzOC4xMy0zLjIsMTAuNi05LjU3YzIuNTktNi4zNywzLjkyLTE1LjI0LDMuOTItMjYuNlpNODY2LjM0LDEwMS40NmMwLDIxLjI0LTQuOTksMzguNS0xNC45OCw1MS43OC05LjkxLDEzLjIzLTIyLjg1LDE5Ljg1LTM4Ljc5LDE5Ljg1LTE0LjE1LDAtMjYuMjUtNS4wNy0zNi4zNy0xNS4yNC0xMi43MS0xMi44OC0xOS4wOC0zMi4xNi0xOS4wOC01Ny45MnM2LjYzLTQzLjUxLDE5LjkxLTU2LjU3YzkuODYtOS42OCwyMS41NS0xNC41MiwzNS4wNy0xNC41MiwxNi41NywwLDI5Ljc0LDYuNTcsMzkuNTQsMTkuNjUsOS44LDEzLjExLDE0LjcsMzAuNzUsMTQuNyw1Mi45NloiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzNyAyMjkuOTUgMjUuODIgMjI5Ljk1IDI1LjgyIDIzNi42NyAzNi42OCAyMzYuNjcgMzYuNjggMjQwLjYyIDI1LjgyIDI0MC42MiAyNS44MiAyNDkuOTUgMzcgMjQ5Ljk1IDM3IDI1My45IDIxLjU4IDI1My45IDIxLjU4IDIyNS45OCAzNyAyMjUuOTggMzcgMjI5LjkzIDM3IDIyOS45NSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjAuMTcsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjA5LTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0czEuNTgsMi45NCwxLjU4LDQuODRjMCwyLjU2LS44Niw0LjctMi41Niw2LjM3LTEuNzMsMS43LTMuODYsMi41NC02LjQzLDIuNTQtMi40MiwwLTQuNDQtLjcyLTUuOTktMi4xNi0xLjU2LTEuNDQtMi41NC0zLjQ2LTIuOTEtNi4wNWw0LjI2LS45NWMuMiwxLjY0LjUyLDIuNzcsMS4wMSwzLjQuODYsMS4yMSwyLjEzLDEuODIsMy44LDEuODIsMS4zLDAsMi4zOS0uNDMsMy4yOS0xLjMzczEuMy0xLjk5LDEuMy0zLjM0YzAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zMi0xLjEyLS42My0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDEsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSI3Ni4wNSAyMjkuOTUgNzYuMDUgMjUzLjkgNzEuODQgMjUzLjkgNzEuODQgMjI5Ljk1IDY1LjQxIDIyOS45NSA2NS40MSAyMjYuMDEgODIuNDQgMjI2LjAxIDgyLjQ0IDIyOS45NSA3Ni4wNSAyMjkuOTUiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTkyLjI3LDI0OS45NWgxLjljMS45LDAsMy40Ni0uMiw0LjczLS42MSwxLjI3LS40MywyLjM5LTEuMSwzLjQtMi4wMiwyLjA3LTEuOSwzLjExLTQuMzUsMy4xMS03LjQxcy0xLjAxLTUuNTMtMy4wOC03LjQzYy0xLjg0LTEuNy00LjU1LTIuNTQtOC4xNi0yLjU0aC0xLjl2MjBaTTg4LjA2LDI1My45M3YtMjcuOTJoNS44NWMyLjgyLDAsNS4wMS4yOSw2LjY2Ljg0LDEuNzYuNTUsMy4zNCwxLjQ3LDQuNzUsMi43NywyLjg4LDIuNjIsNC4zMiw2LjA4LDQuMzIsMTAuMzVzLTEuNSw3Ljc1LTQuNSwxMC40Yy0xLjUsMS4zMy0zLjA4LDIuMjUtNC43MywyLjc3LTEuNTMuNTItMy43Mi43OC02LjU3Ljc4aC01Ljc5di4wM1oiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTExNi42NSwyNTEuODhjMC0uNjYuMjMtMS4yNy43NS0xLjc2LjQ5LS40OSwxLjEtLjc1LDEuNzYtLjc1czEuMjcuMjYsMS43Ni43NWMuNDkuNDkuNzUsMS4xLjc1LDEuNzZzLS4yNiwxLjMtLjc1LDEuNzktMS4wNy43Mi0xLjc2LjcyLTEuMy0uMjMtMS43OS0uNzJjLS40OS0uNDktLjcyLTEuMS0uNzItMS44MnYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik03ODEuNjIsMjQ5Ljk1aDEwLjR2My45NWgtMTguNzZsOS42OC0xMS43M2MuOTUtMS4xOCwxLjc2LTIuMTksMi4zOS0zLjAzLjYzLS44NCwxLjEyLTEuNTgsMS40Ny0yLjE2LjY5LTEuMTIsMS4wNC0yLjE2LDEuMDQtMy4wNSwwLTEuMy0uNDYtMi4zOS0xLjM4LTMuMjktLjkyLS44OS0yLjA1LTEuMzMtMy40LTEuMzMtMi44MiwwLTQuNDQsMS42Ny00Ljg0LDUuMDFoLTQuMjFjLjY2LTUuODgsMy42Ni04LjgyLDguOS04LjgyLDIuNTQsMCw0LjY3LjgxLDYuNCwyLjQyczIuNTksMy42LDIuNTksNS45OWMwLDEuNTMtLjQsMy0xLjIxLDQuNDctLjQuNzUtMS4wMSwxLjY3LTEuNzksMi43MS0uNzgsMS4wNC0xLjc5LDIuMjgtMywzLjY5bC00LjM1LDUuMTMuMDYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04MDIuNzQsMjM5LjgxYzAsMy4wOC41NSw1LjY4LDEuNjEsNy43MiwxLjA3LDIuMDIsMi40NSwzLjAzLDQuMDksMy4wM3MzLjAzLTEuMDEsNC4wOS0zLjAzYzEuMS0xLjk5LDEuNjEtNC41MiwxLjYxLTcuNThzLS41NS01LjU5LTEuNjEtNy41OGMtMS4xLTEuOTktMi40NS0zLTQuMDktM3MtMywxLjAxLTQuMDksM2MtMS4wOSwxLjk5LTEuNjEsNC40Ny0xLjYxLDcuNDNaTTc5OC42MiwyMzkuNzhjMC00LjQ0LDEuMDQtNy45OCwzLjExLTEwLjY2LDEuODQtMi4zOSw0LjA5LTMuNiw2Ljc0LTMuNnM0LjksMS4yMSw2Ljc0LDMuNmMyLjA3LDIuNjUsMy4xMSw2LjI1LDMuMTEsMTAuODNzLTEuMDQsOC4xNS0zLjExLDEwLjgxYy0xLjg0LDIuMzktNC4wOSwzLjYtNi43MSwzLjZzLTQuODctMS4yMS02Ljc3LTMuNmMtMi4wNy0yLjY1LTMuMTEtNi4zMS0zLjExLTEwLjk4WiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODMxLjAxLDI0OS45NWgxMC40djMuOTVoLTE4Ljc2bDkuNjgtMTEuNzNjLjk1LTEuMTgsMS43Ni0yLjE5LDIuMzktMy4wMy42My0uODQsMS4xMi0xLjU4LDEuNDctMi4xNi42OS0xLjEyLDEuMDQtMi4xNiwxLjA0LTMuMDUsMC0xLjMtLjQ2LTIuMzktMS4zOC0zLjI5cy0yLjA1LTEuMzMtMy40LTEuMzNjLTIuODIsMC00LjQ0LDEuNjctNC44NCw1LjAxaC00LjIxYy42Ni01Ljg4LDMuNjYtOC44Miw4LjktOC44MiwyLjU0LDAsNC42Ny44MSw2LjQsMi40MnMyLjU5LDMuNiwyLjU5LDUuOTljMCwxLjUzLS40LDMtMS4yMSw0LjQ3LS40Ljc1LTEuMDEsMS42Ny0xLjc5LDIuNzEtLjc4LDEuMDQtMS43OSwyLjI4LTMsMy42OWwtNC4zNSw1LjEzLjA2LjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODY1LjksMjI5Ljk1aC04LjYybC0xLjM4LDQuNjRjLjIsMCwuNC0uMDMuNTgtLjA2LjE3LS4wMy4zNSwwLC41MiwwLDIuNzEsMCw0LjkzLjkyLDYuNjYsMi43NCwxLjc2LDEuODIsMi42Miw0LjE1LDIuNjIsN3MtLjk4LDUuMzYtMi45Nyw3LjI2Yy0xLjk5LDEuOS00LjQ3LDIuODUtNy40NiwyLjg1LTMuNjksMC02LjYzLTEuNzMtOC43Ni01LjIybDMuMTctMi42OGMuODksMS41LDEuNzYsMi41NCwyLjY1LDMuMTcuODkuNjEsMS45OS44OSwzLjI4Ljg5LDEuNywwLDMuMTEtLjYxLDQuMjQtMS43NiwxLjE1LTEuMjEsMS43My0yLjY4LDEuNzMtNC40NHMtLjU4LTMuMjMtMS43LTQuMzhjLTEuMTItMS4xOC0yLjU0LTEuNzYtNC4yNC0xLjc2LTEuOSwwLTMuNTIuODQtNC45LDIuNDhoLTEuMzhsNC4zOC0xNC42N2gxMS41M3YzLjk1bC4wNi0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0zNzguNTYsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjEyLTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0LDEuMDcsMS4zLDEuNTgsMi45NCwxLjU4LDQuODQsMCwyLjU2LS44Niw0LjY3LTIuNTYsNi4zNy0xLjczLDEuNjctMy44NiwyLjU0LTYuNDMsMi41NC0yLjQyLDAtNC40NC0uNzItNS45OS0yLjE2LTEuNTYtMS40NC0yLjU0LTMuNDYtMi45MS02LjA1bDQuMjYtLjk1Yy4yLDEuNjQuNTIsMi43NywxLjAxLDMuNC44NiwxLjIxLDIuMTMsMS44MiwzLjgsMS44MiwxLjMsMCwyLjM5LS40MywzLjI5LTEuMzMuODYtLjg5LDEuMy0xLjk5LDEuMy0zLjM0LDAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zNS0xLjEyLS42Ni0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDQsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzOTQuNDQgMjI5Ljk4IDM5NC40NCAyNTMuOTMgMzkwLjIzIDI1My45MyAzOTAuMjMgMjI5Ljk4IDM4My44MSAyMjkuOTggMzgzLjgxIDIyNi4wNCA0MDAuODQgMjI2LjA0IDQwMC44NCAyMjkuOTggMzk0LjQ0IDIyOS45OCIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDEwLjY2LDIyNi4wMXYxNi44YzAsMi4zOS4zNyw0LjE1LDEuMTgsNS4yNywxLjE1LDEuNjEsMi44MiwyLjM5LDQuOTMsMi4zOXMzLjc3LS44MSw0Ljk2LTIuMzljLjc4LTEuMDcsMS4xOC0yLjgyLDEuMTgtNS4yN3YtMTYuOGg0LjIxdjE3Ljk4YzAsMi45NC0uOTIsNS4zNi0yLjc0LDcuMjYtMi4wNywyLjEtNC41OCwzLjE3LTcuNTgsMy4xN3MtNS41My0xLjA3LTcuNTgtMy4xN2MtMS44NC0xLjktMi43NC00LjMyLTIuNzQtNy4yNnYtMTcuOThoNC4yMS0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00MzkuODUsMjQ5Ljk1aDEuOWMxLjksMCwzLjQ2LS4yLDQuNzMtLjYxLDEuMjQtLjQzLDIuMzktMS4xLDMuNC0yLjAyLDIuMDctMS45LDMuMTEtNC4zNSwzLjExLTcuNDFzLTEuMDQtNS41Ni0zLjA4LTcuNDNjLTEuODQtMS43LTQuNTUtMi41NC04LjE2LTIuNTRoLTEuOXYyMFpNNDM1LjY1LDI1My45M3YtMjcuOTJoNS44NWMyLjgsMCw1LjAxLjI2LDYuNjYuODQsMS43Ni41NSwzLjM0LDEuNDcsNC43NSwyLjc3LDIuODgsMi42Miw0LjMyLDYuMDgsNC4zMiwxMC4zNXMtMS41LDcuNzUtNC41LDEwLjRjLTEuNSwxLjMzLTMuMDgsMi4yNS00LjczLDIuNzctMS41Ni41Mi0zLjc1Ljc4LTYuNTcuNzhoLTUuNzl2LjAzWiIvPgogICAgPHJlY3QgY2xhc3M9ImNscy0xIiB4PSI0NjQuMzgiIHk9IjIyNi4wMSIgd2lkdGg9IjQuMjEiIGhlaWdodD0iMjcuOTIiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQ4MC4wMiwyMzkuOWMwLDMuMDgsMS4wNCw1LjYyLDMuMTEsNy42MSwyLjA3LDEuOTksNC40NCwzLDcuMTUsMywyLjk0LDAsNS4zOS0xLjAxLDcuNDEtMy4wMywyLjAyLTIuMDUsMy4wMy00LjU1LDMuMDMtNy40OXMtMS4wMS01LjQ4LTMtNy40OWMtMS45OS0yLjAyLTQuNDQtMy4wMy03LjM1LTMuMDNzLTUuMzYsMS4wMS03LjM1LDMuMDNjLTEuOTksMS45OS0zLDQuNDctMyw3LjQxWk00NzUuNzYsMjM5Ljg0YzAtMy45MiwxLjQ0LTcuMjksNC4zMi0xMC4xMSwyLjg1LTIuODIsNi4zMS00LjI0LDEwLjM1LTQuMjRzNy4zOCwxLjQxLDEwLjIzLDQuMjZjMi44NSwyLjgyLDQuMjksNi4yNSw0LjI5LDEwLjI2cy0xLjQ0LDcuNDEtNC4yOSwxMC4yYy0yLjg4LDIuOC02LjM3LDQuMjEtMTAuNDMsNC4yMS0zLjYsMC02LjgzLTEuMjQtOS43MS0zLjc1LTMuMTctMi43Ny00LjczLTYuMzctNC43My0xMC44M2gtLjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODgwLjYsMi4xYy0zLjI5LDAtNi4wOCwxLjIxLTguNDQsMy42M3MtMy41NCw1LjMtMy41NCw4LjY0LDEuMTgsNi4zNCwzLjU0LDguNzZjMi4zMywyLjQyLDUuMTksMy42Myw4LjU2LDMuNjNzNi4xNC0xLjIxLDguNS0zLjZjMi4zMy0yLjQyLDMuNTItNS4zMywzLjUyLTguNzYsMC0xLjg0LS40Ni0zLjcyLTEuMzgtNS42OC0uOTItMS44NC0yLjEzLTMuMjktMy42My00LjM1LTIuMTMtMS41LTQuNS0yLjI1LTcuMTItMi4yNXYtLjAzWk04OTUuMDksMTQuNDFjMCw0LjAxLTEuNDEsNy40MS00LjIxLDEwLjIzLTIuOCwyLjgyLTYuMiw0LjIxLTEwLjE0LDQuMjFzLTcuMzgtMS40MS0xMC4yLTQuMjRjLTIuOC0yLjgyLTQuMjEtNi4yMi00LjIxLTEwLjI2LDAtMi4yMi40Ni00LjI2LDEuMzUtNi4wOC45Mi0xLjk2LDIuMTktMy42LDMuODMtNC45NiwyLjY4LTIuMjIsNS42OC0zLjMxLDkuMDItMy4zMSwyLjIyLDAsNC4yMS40Myw2LjAyLDEuMjcsMi41NCwxLjEyLDQuNjEsMi44OCw2LjE3LDUuMywxLjU2LDIuNDIsMi4zNiw1LjA0LDIuMzYsNy44NFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTg3OS4yNSwxMy41MWgtLjU1di00LjU1aC42M2MyLjE5LDAsMy4zMS43MiwzLjMxLDIuMTksMCwxLjU2LTEuMTUsMi4zNi0zLjQsMi4zNlpNODgyLjEzLDE1Ljc5bC4yMy0uMDZjLjk4LS4yOSwxLjc5LS44NiwyLjQyLTEuNzMuNjMtLjg5Ljk1LTEuODQuOTUtMi44OCwwLTEuNTYtLjYxLTIuOC0xLjc5LTMuNzUtMS4wNy0uODQtMi43Ny0xLjI0LTUuMDctMS4yNGgtMy4zMXYxNi42M2gzLjE3di02LjZsNC45Myw2LjZoMy44OWwtNS40Mi02Ljk0di0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04NzguODQsMTMuMzRoLjM3YzIuMTksMCwzLjI2LS43MiwzLjI2LTIuMTksMC0xLjM4LTEuMDQtMi4wNS0zLjE0LTIuMDVoLS40OXY0LjI0Wk04NzkuMjUsMTMuNjZoLS42OXYtNC44NGguODFjMi4zMSwwLDMuNDYuNzgsMy40NiwyLjMzLDAsMS42Ny0xLjIxLDIuNTEtMy41NywyLjUxWk04ODMuNzEsMjIuNTloMy40OWwtNS4zMy02Ljg2LjQzLS4xNGMuOTUtLjI5LDEuNzMtLjg0LDIuMzMtMS42Ny42MS0uODYuOTItMS43OS45Mi0yLjgsMC0xLjUtLjU1LTIuNzEtMS43My0zLjYzLTEuMDQtLjgxLTIuNzEtMS4yMS00Ljk5LTEuMjFoLTMuMTd2MTYuMzFoMi44NXYtNi44OWw1LjE2LDYuODloLjAzWk04ODcuODMsMjIuOTFoLTQuMjZsLTQuNy02LjI4djYuMjhoLTMuNDlWNS45OWgzLjQ5YzIuMzMsMCw0LjA5LjQzLDUuMTksMS4yNywxLjIxLjk4LDEuODQsMi4yOCwxLjg0LDMuODYsMCwxLjA3LS4zMiwyLjA3LS45OCwyLjk3cy0xLjUsMS41LTIuNTEsMS43OWw1LjQ4LDcuMDNoLS4wNloiLz4KICA8L2c+Cjwvc3ZnPg==" alt="Tremendo Studio" style="height:50px;object-fit:contain;">
+  <div class="cierre-line"></div>
+  <div class="cierre-title" contenteditable="true">HAGÁMOSLO TREMENDO.</div>
+  <div style="width:40px;height:1px;background:rgba(255,255,255,.12);margin:18px auto;"></div>
+  <div class="cierre-contact" contenteditable="true">CDMX · SOMOS@TREMENDO.COM<br>@SOMOSTREMENDO · 55.3727.8763</div>
+</div>
+
+</div><!-- end sw -->
+
+<script>
+var slides,total,cur=0,dotsEl=document.getElementById('dots');
+
+function rebuildDots(){
+  slides=document.querySelectorAll('.slide');
+  total=slides.length;
+  dotsEl.innerHTML='';
+  for(var i=0;i<total;i++){
+    var d=document.createElement('div');
+    d.className='dot'+(i===cur?' active':'');
+    (function(x){d.onclick=function(){goTo(x);};})(i);
+    dotsEl.appendChild(d);
+  }
+  document.getElementById('sc').textContent=(cur+1)+' / '+total;
+  /* mostrar/ocultar botón duplicar */
+  var dupBtn=document.getElementById('dup-btn');
+  if(dupBtn) dupBtn.style.opacity=slides[cur].hasAttribute('data-duplicable')?'1':'0.3';
+}
+
+rebuildDots();
+
+function goTo(n){
+  slides[cur].classList.remove('active');
+  cur=(n+total)%total;
+  slides[cur].classList.add('active');
+  rebuildDots();
+}
+function next(){goTo(cur+1);}
+function prev(){goTo(cur-1);}
+
+document.addEventListener('keydown',function(e){
+  if(document.activeElement&&document.activeElement.getAttribute('contenteditable')==='true')return;
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')next();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')prev();
+});
+document.addEventListener('paste',function(e){
+  if(!e.target||e.target.getAttribute('contenteditable')!=='true')return;
+  e.preventDefault();
+  document.execCommand('insertText',false,e.clipboardData.getData('text/plain'));
+});
+
+function loadImg(input){
+  if(!input.files||!input.files[0])return;
+  var r=new FileReader(),p=input.closest('.ip');
+  r.onload=function(ev){
+    var ex=p.querySelector('.li');if(ex)ex.remove();
+    var img=document.createElement('img');img.className='li';img.src=ev.target.result;
+    p.appendChild(img);
+    var ic=p.querySelector('.ico'),lb=p.querySelector('.lbl');
+    if(ic)ic.style.display='none';if(lb)lb.style.display='none';
+  };
+  r.readAsDataURL(input.files[0]);
+}
+function loadImgContain(input){loadImg(input);}
+
+/* FIX 1: Duplicar slide */
+function duplicateSlide(){
+  var current=slides[cur];
+  if(!current.hasAttribute('data-duplicable'))return;
+  var clone=current.cloneNode(true);
+  clone.classList.remove('active');
+  clone.removeAttribute('id');
+  /* limpiar imágenes del clon */
+  clone.querySelectorAll('.li').forEach(function(img){img.remove();});
+  clone.querySelectorAll('.ico').forEach(function(el){el.style.display='';});
+  clone.querySelectorAll('.lbl').forEach(function(el){el.style.display='';});
+  clone.querySelectorAll('input[type="file"]').forEach(function(inp){inp.value='';});
+  current.after(clone);
+  rebuildDots();
+  goTo(cur+1);
+}
+
+/* FIX 3: Calendario con 5 columnas */
+var tipos=['tipo-estatico','tipo-video','tipo-story'];
+var tipoNombres=['Estático','Video','Story'];
+function addRow(){
+  var tr=document.createElement('tr');
+  tr.innerHTML='<td contenteditable="true"></td>'
+    +'<td contenteditable="true"></td>'
+    +'<td onclick="cycleTipo(this)" style="cursor:pointer;"><span class="tipo-badge '+tipos[0]+'">'+tipoNombres[0]+'</span></td>'
+    +'<td contenteditable="true"></td>'
+    +'<td contenteditable="true">No aplica</td>'
+    +'<td contenteditable="true"></td>';
+  document.getElementById('cal-body').appendChild(tr);
+}
+function cycleTipo(td){
+  var badge=td.querySelector('.tipo-badge');
+  var c=tipos.findIndex(function(t){return badge.classList.contains(t);});
+  var nx=(c+1)%tipos.length;
+  tipos.forEach(function(t){badge.classList.remove(t);});
+  badge.classList.add(tipos[nx]);
+  badge.textContent=tipoNombres[nx];
+}
+document.addEventListener('click',function(e){
+  var td=e.target.closest('td');
+  if(!td)return;
+  var badge=td.querySelector('.tipo-badge');
+  if(!badge||td.hasAttribute('contenteditable'))return;
+  cycleTipo(td);
+});
+
+async function exportPDF(){
+  var btn=document.querySelector(".pdf-btn")||document.querySelector(".pb");
+  if(btn){btn.textContent="Generando PDF...";btn.disabled=true;}
+  var allSlides=document.querySelectorAll(".slide");
+  var savedCur=cur;
+  var pdf=null;
+  for(var i=0;i<allSlides.length;i++){
+    allSlides.forEach(function(s){s.style.display="none";});
+    allSlides[i].style.display="flex";
+    await new Promise(function(r){setTimeout(r,180);});
+    var bg=window.getComputedStyle(allSlides[i]).backgroundColor||"#000000";
+    var canvas=await html2canvas(allSlides[i],{
+      scale:1.5,useCORS:true,allowTaint:true,
+      backgroundColor:bg,logging:false,
+      width:window.innerWidth,height:window.innerHeight
+    });
+    var imgData=canvas.toDataURL("image/jpeg",0.93);
+    var w=canvas.width,h=canvas.height;
+    if(!pdf){
+      pdf=new window.jspdf.jsPDF({orientation:w>h?"landscape":"portrait",unit:"px",format:[w,h],compress:true});
+    } else {
+      pdf.addPage([w,h],w>h?"landscape":"portrait");
+    }
+    pdf.addImage(imgData,"JPEG",0,0,w,h,undefined,"FAST");
+  }
+  allSlides.forEach(function(s,i){s.style.display=i===savedCur?"flex":"none";});
+  pdf.save("tremendo-studio.pdf");
+  if(btn){btn.textContent="Generando... 100%";setTimeout(function(){btn.textContent="↓ Guardar PDF";btn.disabled=false;},800);}
+}
+
+</script>
+</body>
+</html>

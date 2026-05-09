@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media Content Strategy — Tremendo Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,800;1,400&family=Barlow:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--n:#000;--o:#E8502A;--w:#fff;--g:#F2F2F0;--g2:#fafafa;--fd:'Barlow Condensed',sans-serif;--fb:'Barlow',sans-serif;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:radial-gradient(ellipse at 80% 50%,#7a2210 0%,#3a0f05 35%,#000 70%);font-family:var(--fb);overflow:hidden;height:100vh;width:100vw;color:var(--w);}
+  [contenteditable]{outline:none;cursor:text;transition:background .15s;color:inherit;}
+  [contenteditable]:hover{background:rgba(232,80,42,.07);}
+  [contenteditable]:focus{background:rgba(232,80,42,.12);outline:1px dashed rgba(232,80,42,.5);}
+
+  /* NAV */
+  #nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.9);padding:9px 16px;z-index:1000;backdrop-filter:blur(8px);}
+  .nb{background:transparent;border:1px solid rgba(255,255,255,.28);color:rgba(255,255,255,.65);font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:all .2s;}
+  .nb:hover{border-color:var(--o);color:var(--o);}
+  .pb{background:var(--o);border:none;color:#fff;font-family:var(--fd);font-weight:800;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:6px 13px;cursor:pointer;}
+  .pb:hover{opacity:.85;}
+  #sc{font-family:var(--fd);font-weight:700;font-size:12px;color:rgba(255,255,255,.38);letter-spacing:.1em;min-width:54px;text-align:center;}
+  #dots{display:flex;gap:5px;align-items:center;}
+  .dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .2s;}
+  .dot.active{background:var(--o);width:18px;border-radius:3px;}
+
+  /* SLIDES */
+  #sw{width:100vw;height:100vh;overflow:hidden;position:relative;}
+  .slide{position:absolute;top:0;left:0;width:100vw;height:100vh;display:none;overflow:hidden;}
+  .slide.active{display:flex;}
+
+  /* IMG PLACEHOLDER */
+  .ip{background:rgba(255,255,255,.05);border:2px dashed rgba(255,255,255,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;position:relative;overflow:hidden;width:100%;height:100%;transition:all .2s;cursor:pointer;}
+  .ip:hover{border-color:var(--o);}
+  .ip input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:2;}
+  .ip .ico{font-size:20px;color:rgba(255,255,255,.18);pointer-events:none;z-index:1;}
+  .ip .lbl{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.2);pointer-events:none;z-index:1;text-align:center;}
+  .ip .li{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:3;pointer-events:none;}
+  .ip.lt{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.11);}
+  .ip.lt .ico{color:rgba(0,0,0,.18);}
+  .ip.lt .lbl{color:rgba(0,0,0,.2);}
+  .ip.lt:hover{border-color:var(--o);}
+
+  /* SLIDE HEADER */
+  .sh{position:absolute;top:0;left:0;right:0;height:44px;background:var(--n);display:flex;align-items:center;justify-content:space-between;padding:0 48px;z-index:10;}
+  .sh.light{background:rgba(0,0,0,.9);}
+  .sh .br{font-family:var(--fd);font-weight:800;font-size:13px;letter-spacing:.1em;color:rgba(255,255,255,.48);text-transform:uppercase;}
+  .sh .sl{font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.2em;color:rgba(255,255,255,.26);text-transform:uppercase;}
+  .sh .yr{font-family:var(--fd);font-size:11px;color:rgba(255,255,255,.16);letter-spacing:.1em;}
+
+  /* LAYOUT HELPERS */
+  .col-l{display:flex;flex-direction:column;justify-content:flex-end;padding:40px 44px;}
+  .col-r{position:relative;overflow:hidden;}
+  .tag{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--o);margin-bottom:8px;}
+  .ttl{font-family:var(--fd);font-weight:800;font-size:clamp(20px,2.8vw,40px);text-transform:uppercase;line-height:1.05;margin-bottom:14px;min-height:42px;}
+  .ttl.dk{color:#000;}
+  .body{font-size:13px;line-height:1.75;min-height:36px;}
+  .body.lt{color:rgba(0,0,0,.52);}
+  .body.dk{color:rgba(255,255,255,.52);}
+
+  /* STAT CARDS */
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .stat-card{background:var(--g);padding:20px 22px;border-left:3px solid var(--o);}
+  .stat-label{font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:6px;}
+  .stat-num{font-family:var(--fd);font-weight:800;font-size:clamp(24px,3.5vw,44px);color:var(--o);line-height:1;min-height:44px;}
+  .stat-sub{font-size:11px;color:rgba(0,0,0,.4);margin-top:4px;min-height:18px;}
+
+  /* KPI TABLE */
+  .kpi-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+  .kpi-table th{background:var(--n);color:#fff;font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:9px 14px;text-align:left;}
+  .kpi-table td{padding:9px 14px;border-bottom:1px solid #eee;color:#333;vertical-align:top;}
+  .kpi-table tr:nth-child(even) td{background:#fafafa;}
+  .kpi-table td[contenteditable]:empty:before{content:attr(data-ph);color:#bbb;}
+
+  /* PILAR CARDS */
+  .pilar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .pilar-card{background:var(--g);padding:22px;border-top:3px solid var(--o);}
+  .pilar-num{font-family:var(--fd);font-weight:800;font-size:32px;color:var(--o);line-height:1;margin-bottom:8px;}
+  .pilar-name{font-family:var(--fd);font-weight:800;font-size:clamp(14px,1.6vw,20px);text-transform:uppercase;color:#000;margin-bottom:8px;min-height:24px;}
+  .pilar-desc{font-size:12px;color:rgba(0,0,0,.5);line-height:1.6;min-height:36px;}
+
+  /* SWOT */
+  .swot-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px;width:100%;height:100%;}
+  .swot-cell{padding:24px 28px;display:flex;flex-direction:column;gap:8px;}
+  .swot-label{font-family:var(--fd);font-weight:800;font-size:clamp(18px,2vw,28px);text-transform:uppercase;letter-spacing:.05em;opacity:.9;}
+  .swot-sub{font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;opacity:.5;margin-bottom:4px;}
+  .swot-items{font-size:12px;line-height:1.8;min-height:60px;opacity:.85;}
+
+  /* VOZ MARCA */
+  .voz-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .voz-si{background:var(--g);border-left:3px solid #2ecc71;padding:20px;}
+  .voz-no{background:var(--g);border-left:3px solid #e74c3c;padding:20px;}
+  .voz-label{font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;}
+  .voz-label.si{color:#27ae60;}
+  .voz-label.no{color:#c0392b;}
+  .voz-items{font-size:13px;color:rgba(0,0,0,.6);line-height:1.8;min-height:80px;}
+
+  /* PLATAFORMA */
+  .plat-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+  .plat-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+  .plat-name{font-family:var(--fd);font-weight:800;font-size:clamp(20px,2.5vw,36px);text-transform:uppercase;color:#000;line-height:1;}
+  .plat-handle{font-family:var(--fd);font-size:12px;letter-spacing:.1em;color:rgba(0,0,0,.35);text-transform:uppercase;min-height:18px;}
+  .plat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .plat-item{background:var(--g);padding:16px 18px;}
+  .plat-item-label{font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:6px;}
+  .plat-item-val{font-size:13px;color:#000;line-height:1.6;min-height:32px;}
+
+  /* PAUTA */
+  .pauta-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  .pauta-card{padding:20px 22px;background:var(--g);border-top:3px solid var(--o);}
+  .pauta-label{font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:8px;}
+  .pauta-val{font-size:13px;color:#000;line-height:1.6;min-height:48px;}
+
+  /* BUYER PERSONA */
+  .persona-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .persona-item{background:var(--g);padding:18px;border-left:3px solid var(--o);}
+  .persona-label{font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:6px;}
+  .persona-val{font-size:13px;color:#000;line-height:1.6;min-height:32px;}
+
+  /* CALENDARIO */
+  .cal-freq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .freq-card{background:var(--g);padding:20px;border-top:3px solid var(--o);display:flex;flex-direction:column;gap:8px;}
+  .freq-plat{font-family:var(--fd);font-weight:800;font-size:clamp(14px,1.8vw,22px);text-transform:uppercase;color:#000;}
+  .freq-num{font-family:var(--fd);font-weight:800;font-size:clamp(24px,3vw,40px);color:var(--o);line-height:1;}
+  .freq-label{font-size:11px;color:rgba(0,0,0,.38);letter-spacing:.05em;}
+  .freq-tipos{font-size:12px;color:rgba(0,0,0,.5);line-height:1.6;min-height:36px;}
+
+  /* NOTA IMPORTANTE */
+  #s15{background:var(--n);}
+  .nota-box{border:1.5px solid var(--o);padding:36px 44px;max-width:680px;text-align:center;}
+  .nota-icon{font-family:var(--fd);font-weight:800;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--o);margin-bottom:16px;}
+  .nota-title{font-family:var(--fd);font-weight:800;font-size:clamp(20px,2.5vw,34px);text-transform:uppercase;color:#fff;line-height:1.1;margin-bottom:16px;}
+  .nota-text{font-size:14px;color:rgba(255,255,255,.6);line-height:1.8;min-height:60px;}
+
+  /* CARDS OBJETIVOS */
+  .obj-floating-card{background:var(--g);border-top:3px solid var(--o);padding:20px;position:relative;}
+  .ofc-num{font-family:var(--fd);font-weight:800;font-size:32px;color:var(--o);line-height:1;margin-bottom:10px;}
+  .ofc-body{display:flex;flex-direction:column;gap:4px;}
+  .ofc-label{font-family:var(--fd);font-weight:700;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);}
+  .ofc-val{font-size:13px;color:#000;line-height:1.5;min-height:22px;border-bottom:1px solid rgba(0,0,0,.08);padding-bottom:4px;}
+  .ofc-del{position:absolute;top:10px;right:12px;background:transparent;border:none;color:rgba(0,0,0,.25);cursor:pointer;font-size:18px;line-height:1;}
+  .ofc-del:hover{color:var(--o);}
+  /* PAUTA FIELDS */
+  .pf-row{margin-bottom:8px;}
+  .pf-label{font-family:var(--fd);font-weight:700;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);display:block;margin-bottom:2px;}
+  .pf-val{font-size:13px;color:#000;line-height:1.5;min-height:20px;border-bottom:1px solid rgba(0,0,0,.08);padding-bottom:3px;}
+
+  /* CIERRE */
+  #s16{background:var(--n);flex-direction:column;align-items:center;justify-content:center;}
+  .cierre-line{width:60px;height:3px;background:var(--o);margin:20px auto;}
+  .cierre-ttl{font-family:var(--fd);font-weight:800;font-size:clamp(18px,2.5vw,32px);letter-spacing:.1em;text-transform:uppercase;color:#fff;text-align:center;min-height:36px;max-width:560px;}
+  .cierre-ct{font-size:12px;color:rgba(255,255,255,.28);letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:2;min-height:40px;}
+
+  @media print{body{overflow:visible;height:auto;background:white;}.slide{position:relative!important;display:flex!important;page-break-after:always;width:100vw;height:100vh;}#nav{display:none!important;}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<div id="nav">
+  <button class="nb" onclick="prev()">← Ant.</button>
+  <div id="dots"></div>
+  <span id="sc">1 / 16</span>
+  <button class="nb" onclick="next()">Sig. →</button>
+  <button class="pb" onclick="exportPDF()">↓ PDF</button>
+</div>
+
+<div id="sw">
+
+<!-- S01 PORTADA -->
+<div class="slide active" id="s01" style="background:var(--n);flex-direction:row;">
+  <div style="width:50%;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:48px;">
+    <div>
+      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iQ2FwYV8yIiBkYXRhLW5hbWU9IkNhcGEgMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgODk1LjA5IDI1NC40MiI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPGcgaWQ9IkNhcGFfMS0yIiBkYXRhLW5hbWU9IkNhcGEgMSI+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNjAuMiAxNzIuNDkgMjEuNDEgMTcyLjQ5IDIxLjQxIDYzLjI4IDAgNjMuMjggMCAyOC44NyA4Mi40MSAyOC44NyA4Mi40MSA2My4yOCA2MC4xNyA2My4yOCA2MC4xNyAxNzIuNDkgNjAuMiAxNzIuNDkiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTEzMy4xNiw5NS4zOGgyLjU5YzQuNDcsMCw4LjE4LTEuNywxMS4xNS01LjEzLDIuOTctMy40LDQuNDctNy43NSw0LjQ3LTEzLjAyLDAtMTAuNzItNS42Mi0xNi4xMS0xNi44My0xNi4xMWgtMS4zOHYzNC4yNlpNMTk2LjUzLDE3Mi40OWgtNDEuOTZsLTE5LjE2LTUxLjE4Yy0uMTctLjg2LS41Mi0yLjAyLS45OC0zLjQ2LS40Ni0xLjQxLTEuMDQtMy4xNC0xLjczLTUuMTNsLjI5LDkuNDh2NTAuMjNoLTM4LjYxVjI4Ljc5aDM5Ljc0YzE3LjQ5LDAsMzAuNTcsMy40NiwzOS4yNSwxMC4zMiwxMS4wNCw4LjgyLDE2LjU3LDIxLjMyLDE2LjU3LDM3LjU4LDAsMTcuMzgtNy40MSwyOS4zNi0yMi4yNSwzNS45OWwyOC44NSw1OS43NHYuMDlaIi8+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMjA2LjY0IDE3Mi40OSAyMDYuNjQgMjguODUgMjc4Ljc0IDI4Ljg1IDI3OC43NCA2Mi42MiAyNDUuNDMgNjIuNjIgMjQ1LjQzIDgzLjU0IDI3NS4yOCA4My41NCAyNzUuMjggMTE2LjAxIDI0NS40MyAxMTYuMDEgMjQ1LjQzIDEzNy45NyAyNzguNzQgMTM3Ljk3IDI3OC43NCAxNzIuNDkgMjA2LjY0IDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDI2LjkxLDE3Mi40OWgtMzguM2wtMi40OC02NS41LTEuMDQtMjYuMTRjLS4zNyw1LjAxLS44MSw5LjgzLTEuMjcsMTQuMzgtLjQ2LDQuNTUtMS4wNyw4Ljk2LTEuNzYsMTMuMjZsLTEwLjQzLDY0aC0yNy4xMmwtOC45My02NC4wOWMtLjUyLTMuNzItMS4yNC0xMC4xMS0yLjE2LTE5LjE2LS4xMi0xLjM1LS4zNS00LjE1LS43Mi04LjM2bC0uODEsMjYuNTEtMi45NCw2NS4xM2gtMzYuOTRWMjguODdoNTcuMjlsNi45NCw0OC4zOGMuNTgsMy45OCwxLjEsOC4yNywxLjU2LDEyLjk0LjQ2LDQuNjQuODYsOS43MSwxLjI0LDE1LjE2LjY5LTkuMTEsMS42NC0xNy4yNiwyLjg4LTI0LjQ3bDguNDQtNTIuMDFoNTYuNTd2MTQzLjY1bC0uMDMtLjAzWiIvPgogICAgPHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjQ0MS4wMSAxNzIuNDkgNDQxLjAxIDI4Ljg1IDUxMy4xIDI4Ljg1IDUxMy4xIDYyLjYyIDQ3OS43OSA2Mi42MiA0NzkuNzkgODMuNTQgNTA5LjY1IDgzLjU0IDUwOS42NSAxMTYuMDEgNDc5Ljc5IDExNi4wMSA0NzkuNzkgMTM3Ljk3IDUxMy4xIDEzNy45NyA1MTMuMSAxNzIuNDkgNDQxLjAxIDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTI5Ljg1LDE3Mi40OVYyOC44NWgzNy4wM2wxOS40NSw1MC40M2MxLjA3LDIuOTcsMi4yNSw2LjQsMy41NywxMC4yMywxLjMzLDMuODMsMi44LDguMjcsNC40MSwxMy4zMWw0LjAxLDEyLjY1Yy0xLjQ0LTEyLjQ4LTIuNTEtMjMuMTQtMy4yNi0zMi4wMS0uNzUtOC44OC0xLjEyLTE2LjMxLTEuMTItMjIuMzNWMjguODVoMzcuMDN2MTQzLjY1aC0zNy4wM2wtMTkuNTQtNTIuODVjLTIuMDUtNS42NS0zLjg5LTEwLjkyLTUuNTMtMTUuODVzLTMuMDgtOS42Mi00LjMyLTE0LjA5Yy44MSwxMC4xMSwxLjM4LDE4LjkzLDEuNzYsMjYuNDIuMzcsNy41Mi41NSwxNC4wOS41NSwxOS43MXYzNi42NWgtMzcuMDMuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik02ODYuNDYsMTM3LjhjMTMuODktLjY5LDIwLjgzLTEyLjY1LDIwLjgzLTM1LjkxLDAtMTEuNDctMS43Ni0yMC41Mi01LjMtMjcuMTctMy41NC02LjY5LTguMy0xMC4wNi0xNC4zMi0xMC4wNmgtMS4yMXY3My4xNFpNNjQ3LjY4LDE3Mi40OVYyOC44NWgzMy40OGMxOS4xNiwwLDM0LjA5LDUuMTYsNDQuNzUsMTUuNDUsMTQuMDMsMTMuNDYsMjEuMDQsMzIuMjcsMjEuMDQsNTYuNDhzLTUuOTEsNDIuMjItMTcuNzgsNTUuMTVjLTEwLjExLDExLjA0LTI1LjE5LDE2LjU3LTQ1LjIxLDE2LjU3aC0zNi4yOFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTgyNi4wNSwxMDEuNzVjMC0yNS4xOS00LjU4LTM3LjgxLTEzLjc3LTM3LjgxLTQuNTgsMC04LjI0LDMuMzEtMTAuOTgsOS45MS0yLjY4LDYuMTQtNC4wMSwxNS4xNi00LjAxLDI3LjA2czEuMjcsMjAuODMsMy43NywyNy4yOWMyLjUxLDYuNDUsNS45OSw5LjcxLDEwLjQ2LDkuNzFzOC4xMy0zLjIsMTAuNi05LjU3YzIuNTktNi4zNywzLjkyLTE1LjI0LDMuOTItMjYuNlpNODY2LjM0LDEwMS40NmMwLDIxLjI0LTQuOTksMzguNS0xNC45OCw1MS43OC05LjkxLDEzLjIzLTIyLjg1LDE5Ljg1LTM4Ljc5LDE5Ljg1LTE0LjE1LDAtMjYuMjUtNS4wNy0zNi4zNy0xNS4yNC0xMi43MS0xMi44OC0xOS4wOC0zMi4xNi0xOS4wOC01Ny45MnM2LjYzLTQzLjUxLDE5LjkxLTU2LjU3YzkuODYtOS42OCwyMS41NS0xNC41MiwzNS4wNy0xNC41MiwxNi41NywwLDI5Ljc0LDYuNTcsMzkuNTQsMTkuNjUsOS44LDEzLjExLDE0LjcsMzAuNzUsMTQuNyw1Mi45NloiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzNyAyMjkuOTUgMjUuODIgMjI5Ljk1IDI1LjgyIDIzNi42NyAzNi42OCAyMzYuNjcgMzYuNjggMjQwLjYyIDI1LjgyIDI0MC42MiAyNS44MiAyNDkuOTUgMzcgMjQ5Ljk1IDM3IDI1My45IDIxLjU4IDI1My45IDIxLjU4IDIyNS45OCAzNyAyMjUuOTggMzcgMjI5LjkzIDM3IDIyOS45NSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjAuMTcsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjA5LTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0czEuNTgsMi45NCwxLjU4LDQuODRjMCwyLjU2LS44Niw0LjctMi41Niw2LjM3LTEuNzMsMS43LTMuODYsMi41NC02LjQzLDIuNTQtMi40MiwwLTQuNDQtLjcyLTUuOTktMi4xNi0xLjU2LTEuNDQtMi41NC0zLjQ2LTIuOTEtNi4wNWw0LjI2LS45NWMuMiwxLjY0LjUyLDIuNzcsMS4wMSwzLjQuODYsMS4yMSwyLjEzLDEuODIsMy44LDEuODIsMS4zLDAsMi4zOS0uNDMsMy4yOS0xLjMzczEuMy0xLjk5LDEuMy0zLjM0YzAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zMi0xLjEyLS42My0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDEsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSI3Ni4wNSAyMjkuOTUgNzYuMDUgMjUzLjkgNzEuODQgMjUzLjkgNzEuODQgMjI5Ljk1IDY1LjQxIDIyOS45NSA2NS40MSAyMjYuMDEgODIuNDQgMjI2LjAxIDgyLjQ0IDIyOS45NSA3Ni4wNSAyMjkuOTUiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTkyLjI3LDI0OS45NWgxLjljMS45LDAsMy40Ni0uMiw0LjczLS42MSwxLjI3LS40MywyLjM5LTEuMSwzLjQtMi4wMiwyLjA3LTEuOSwzLjExLTQuMzUsMy4xMS03LjQxcy0xLjAxLTUuNTMtMy4wOC03LjQzYy0xLjg0LTEuNy00LjU1LTIuNTQtOC4xNi0yLjU0aC0xLjl2MjBaTTg4LjA2LDI1My45M3YtMjcuOTJoNS44NWMyLjgyLDAsNS4wMS4yOSw2LjY2Ljg0LDEuNzYuNTUsMy4zNCwxLjQ3LDQuNzUsMi43NywyLjg4LDIuNjIsNC4zMiw2LjA4LDQuMzIsMTAuMzVzLTEuNSw3Ljc1LTQuNSwxMC40Yy0xLjUsMS4zMy0zLjA4LDIuMjUtNC43MywyLjc3LTEuNTMuNTItMy43Mi43OC02LjU3Ljc4aC01Ljc5di4wM1oiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTExNi42NSwyNTEuODhjMC0uNjYuMjMtMS4yNy43NS0xLjc2LjQ5LS40OSwxLjEtLjc1LDEuNzYtLjc1czEuMjcuMjYsMS43Ni43NWMuNDkuNDkuNzUsMS4xLjc1LDEuNzZzLS4yNiwxLjMtLjc1LDEuNzktMS4wNy43Mi0xLjc2LjcyLTEuMy0uMjMtMS43OS0uNzJjLS40OS0uNDktLjcyLTEuMS0uNzItMS44MnYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik03ODEuNjIsMjQ5Ljk1aDEwLjR2My45NWgtMTguNzZsOS42OC0xMS43M2MuOTUtMS4xOCwxLjc2LTIuMTksMi4zOS0zLjAzLjYzLS44NCwxLjEyLTEuNTgsMS40Ny0yLjE2LjY5LTEuMTIsMS4wNC0yLjE2LDEuMDQtMy4wNSwwLTEuMy0uNDYtMi4zOS0xLjM4LTMuMjktLjkyLS44OS0yLjA1LTEuMzMtMy40LTEuMzMtMi44MiwwLTQuNDQsMS42Ny00Ljg0LDUuMDFoLTQuMjFjLjY2LTUuODgsMy42Ni04LjgyLDguOS04LjgyLDIuNTQsMCw0LjY3LjgxLDYuNCwyLjQyczIuNTksMy42LDIuNTksNS45OWMwLDEuNTMtLjQsMy0xLjIxLDQuNDctLjQuNzUtMS4wMSwxLjY3LTEuNzksMi43MS0uNzgsMS4wNC0xLjc5LDIuMjgtMywzLjY5bC00LjM1LDUuMTMuMDYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04MDIuNzQsMjM5LjgxYzAsMy4wOC41NSw1LjY4LDEuNjEsNy43MiwxLjA3LDIuMDIsMi40NSwzLjAzLDQuMDksMy4wM3MzLjAzLTEuMDEsNC4wOS0zLjAzYzEuMS0xLjk5LDEuNjEtNC41MiwxLjYxLTcuNThzLS41NS01LjU5LTEuNjEtNy41OGMtMS4xLTEuOTktMi40NS0zLTQuMDktM3MtMywxLjAxLTQuMDksM2MtMS4wOSwxLjk5LTEuNjEsNC40Ny0xLjYxLDcuNDNaTTc5OC42MiwyMzkuNzhjMC00LjQ0LDEuMDQtNy45OCwzLjExLTEwLjY2LDEuODQtMi4zOSw0LjA5LTMuNiw2Ljc0LTMuNnM0LjksMS4yMSw2Ljc0LDMuNmMyLjA3LDIuNjUsMy4xMSw2LjI1LDMuMTEsMTAuODNzLTEuMDQsOC4xNS0zLjExLDEwLjgxYy0xLjg0LDIuMzktNC4wOSwzLjYtNi43MSwzLjZzLTQuODctMS4yMS02Ljc3LTMuNmMtMi4wNy0yLjY1LTMuMTEtNi4zMS0zLjExLTEwLjk4WiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODMxLjAxLDI0OS45NWgxMC40djMuOTVoLTE4Ljc2bDkuNjgtMTEuNzNjLjk1LTEuMTgsMS43Ni0yLjE5LDIuMzktMy4wMy42My0uODQsMS4xMi0xLjU4LDEuNDctMi4xNi42OS0xLjEyLDEuMDQtMi4xNiwxLjA0LTMuMDUsMC0xLjMtLjQ2LTIuMzktMS4zOC0zLjI5cy0yLjA1LTEuMzMtMy40LTEuMzNjLTIuODIsMC00LjQ0LDEuNjctNC44NCw1LjAxaC00LjIxYy42Ni01Ljg4LDMuNjYtOC44Miw4LjktOC44MiwyLjU0LDAsNC42Ny44MSw2LjQsMi40MnMyLjU5LDMuNiwyLjU5LDUuOTljMCwxLjUzLS40LDMtMS4yMSw0LjQ3LS40Ljc1LTEuMDEsMS42Ny0xLjc5LDIuNzEtLjc4LDEuMDQtMS43OSwyLjI4LTMsMy42OWwtNC4zNSw1LjEzLjA2LjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODY1LjksMjI5Ljk1aC04LjYybC0xLjM4LDQuNjRjLjIsMCwuNC0uMDMuNTgtLjA2LjE3LS4wMy4zNSwwLC41MiwwLDIuNzEsMCw0LjkzLjkyLDYuNjYsMi43NCwxLjc2LDEuODIsMi42Miw0LjE1LDIuNjIsN3MtLjk4LDUuMzYtMi45Nyw3LjI2Yy0xLjk5LDEuOS00LjQ3LDIuODUtNy40NiwyLjg1LTMuNjksMC02LjYzLTEuNzMtOC43Ni01LjIybDMuMTctMi42OGMuODksMS41LDEuNzYsMi41NCwyLjY1LDMuMTcuODkuNjEsMS45OS44OSwzLjI4Ljg5LDEuNywwLDMuMTEtLjYxLDQuMjQtMS43NiwxLjE1LTEuMjEsMS43My0yLjY4LDEuNzMtNC40NHMtLjU4LTMuMjMtMS43LTQuMzhjLTEuMTItMS4xOC0yLjU0LTEuNzYtNC4yNC0xLjc2LTEuOSwwLTMuNTIuODQtNC45LDIuNDhoLTEuMzhsNC4zOC0xNC42N2gxMS41M3YzLjk1bC4wNi0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0zNzguNTYsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjEyLTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0LDEuMDcsMS4zLDEuNTgsMi45NCwxLjU4LDQuODQsMCwyLjU2LS44Niw0LjY3LTIuNTYsNi4zNy0xLjczLDEuNjctMy44NiwyLjU0LTYuNDMsMi41NC0yLjQyLDAtNC40NC0uNzItNS45OS0yLjE2LTEuNTYtMS40NC0yLjU0LTMuNDYtMi45MS02LjA1bDQuMjYtLjk1Yy4yLDEuNjQuNTIsMi43NywxLjAxLDMuNC44NiwxLjIxLDIuMTMsMS44MiwzLjgsMS44MiwxLjMsMCwyLjM5LS40MywzLjI5LTEuMzMuODYtLjg5LDEuMy0xLjk5LDEuMy0zLjM0LDAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zNS0xLjEyLS42Ni0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDQsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzOTQuNDQgMjI5Ljk4IDM5NC40NCAyNTMuOTMgMzkwLjIzIDI1My45MyAzOTAuMjMgMjI5Ljk4IDM4My44MSAyMjkuOTggMzgzLjgxIDIyNi4wNCA0MDAuODQgMjI2LjA0IDQwMC44NCAyMjkuOTggMzk0LjQ0IDIyOS45OCIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDEwLjY2LDIyNi4wMXYxNi44YzAsMi4zOS4zNyw0LjE1LDEuMTgsNS4yNywxLjE1LDEuNjEsMi44MiwyLjM5LDQuOTMsMi4zOXMzLjc3LS44MSw0Ljk2LTIuMzljLjc4LTEuMDcsMS4xOC0yLjgyLDEuMTgtNS4yN3YtMTYuOGg0LjIxdjE3Ljk4YzAsMi45NC0uOTIsNS4zNi0yLjc0LDcuMjYtMi4wNywyLjEtNC41OCwzLjE3LTcuNTgsMy4xN3MtNS41My0xLjA3LTcuNTgtMy4xN2MtMS44NC0xLjktMi43NC00LjMyLTIuNzQtNy4yNnYtMTcuOThoNC4yMS0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00MzkuODUsMjQ5Ljk1aDEuOWMxLjksMCwzLjQ2LS4yLDQuNzMtLjYxLDEuMjQtLjQzLDIuMzktMS4xLDMuNC0yLjAyLDIuMDctMS45LDMuMTEtNC4zNSwzLjExLTcuNDFzLTEuMDQtNS41Ni0zLjA4LTcuNDNjLTEuODQtMS43LTQuNTUtMi41NC04LjE2LTIuNTRoLTEuOXYyMFpNNDM1LjY1LDI1My45M3YtMjcuOTJoNS44NWMyLjgsMCw1LjAxLjI2LDYuNjYuODQsMS43Ni41NSwzLjM0LDEuNDcsNC43NSwyLjc3LDIuODgsMi42Miw0LjMyLDYuMDgsNC4zMiwxMC4zNXMtMS41LDcuNzUtNC41LDEwLjRjLTEuNSwxLjMzLTMuMDgsMi4yNS00LjczLDIuNzctMS41Ni41Mi0zLjc1Ljc4LTYuNTcuNzhoLTUuNzl2LjAzWiIvPgogICAgPHJlY3QgY2xhc3M9ImNscy0xIiB4PSI0NjQuMzgiIHk9IjIyNi4wMSIgd2lkdGg9IjQuMjEiIGhlaWdodD0iMjcuOTIiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQ4MC4wMiwyMzkuOWMwLDMuMDgsMS4wNCw1LjYyLDMuMTEsNy42MSwyLjA3LDEuOTksNC40NCwzLDcuMTUsMywyLjk0LDAsNS4zOS0xLjAxLDcuNDEtMy4wMywyLjAyLTIuMDUsMy4wMy00LjU1LDMuMDMtNy40OXMtMS4wMS01LjQ4LTMtNy40OWMtMS45OS0yLjAyLTQuNDQtMy4wMy03LjM1LTMuMDNzLTUuMzYsMS4wMS03LjM1LDMuMDNjLTEuOTksMS45OS0zLDQuNDctMyw3LjQxWk00NzUuNzYsMjM5Ljg0YzAtMy45MiwxLjQ0LTcuMjksNC4zMi0xMC4xMSwyLjg1LTIuODIsNi4zMS00LjI0LDEwLjM1LTQuMjRzNy4zOCwxLjQxLDEwLjIzLDQuMjZjMi44NSwyLjgyLDQuMjksNi4yNSw0LjI5LDEwLjI2cy0xLjQ0LDcuNDEtNC4yOSwxMC4yYy0yLjg4LDIuOC02LjM3LDQuMjEtMTAuNDMsNC4yMS0zLjYsMC02LjgzLTEuMjQtOS43MS0zLjc1LTMuMTctMi43Ny00LjczLTYuMzctNC43My0xMC44M2gtLjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODgwLjYsMi4xYy0zLjI5LDAtNi4wOCwxLjIxLTguNDQsMy42M3MtMy41NCw1LjMtMy41NCw4LjY0LDEuMTgsNi4zNCwzLjU0LDguNzZjMi4zMywyLjQyLDUuMTksMy42Myw4LjU2LDMuNjNzNi4xNC0xLjIxLDguNS0zLjZjMi4zMy0yLjQyLDMuNTItNS4zMywzLjUyLTguNzYsMC0xLjg0LS40Ni0zLjcyLTEuMzgtNS42OC0uOTItMS44NC0yLjEzLTMuMjktMy42My00LjM1LTIuMTMtMS41LTQuNS0yLjI1LTcuMTItMi4yNXYtLjAzWk04OTUuMDksMTQuNDFjMCw0LjAxLTEuNDEsNy40MS00LjIxLDEwLjIzLTIuOCwyLjgyLTYuMiw0LjIxLTEwLjE0LDQuMjFzLTcuMzgtMS40MS0xMC4yLTQuMjRjLTIuOC0yLjgyLTQuMjEtNi4yMi00LjIxLTEwLjI2LDAtMi4yMi40Ni00LjI2LDEuMzUtNi4wOC45Mi0xLjk2LDIuMTktMy42LDMuODMtNC45NiwyLjY4LTIuMjIsNS42OC0zLjMxLDkuMDItMy4zMSwyLjIyLDAsNC4yMS40Myw2LjAyLDEuMjcsMi41NCwxLjEyLDQuNjEsMi44OCw2LjE3LDUuMywxLjU2LDIuNDIsMi4zNiw1LjA0LDIuMzYsNy44NFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTg3OS4yNSwxMy41MWgtLjU1di00LjU1aC42M2MyLjE5LDAsMy4zMS43MiwzLjMxLDIuMTksMCwxLjU2LTEuMTUsMi4zNi0zLjQsMi4zNlpNODgyLjEzLDE1Ljc5bC4yMy0uMDZjLjk4LS4yOSwxLjc5LS44NiwyLjQyLTEuNzMuNjMtLjg5Ljk1LTEuODQuOTUtMi44OCwwLTEuNTYtLjYxLTIuOC0xLjc5LTMuNzUtMS4wNy0uODQtMi43Ny0xLjI0LTUuMDctMS4yNGgtMy4zMXYxNi42M2gzLjE3di02LjZsNC45Myw2LjZoMy44OWwtNS40Mi02Ljk0di0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04NzguODQsMTMuMzRoLjM3YzIuMTksMCwzLjI2LS43MiwzLjI2LTIuMTksMC0xLjM4LTEuMDQtMi4wNS0zLjE0LTIuMDVoLS40OXY0LjI0Wk04NzkuMjUsMTMuNjZoLS42OXYtNC44NGguODFjMi4zMSwwLDMuNDYuNzgsMy40NiwyLjMzLDAsMS42Ny0xLjIxLDIuNTEtMy41NywyLjUxWk04ODMuNzEsMjIuNTloMy40OWwtNS4zMy02Ljg2LjQzLS4xNGMuOTUtLjI5LDEuNzMtLjg0LDIuMzMtMS42Ny42MS0uODYuOTItMS43OS45Mi0yLjgsMC0xLjUtLjU1LTIuNzEtMS43My0zLjYzLTEuMDQtLjgxLTIuNzEtMS4yMS00Ljk5LTEuMjFoLTMuMTd2MTYuMzFoMi44NXYtNi44OWw1LjE2LDYuODloLjAzWk04ODcuODMsMjIuOTFoLTQuMjZsLTQuNy02LjI4djYuMjhoLTMuNDlWNS45OWgzLjQ5YzIuMzMsMCw0LjA5LjQzLDUuMTksMS4yNywxLjIxLjk4LDEuODQsMi4yOCwxLjg0LDMuODYsMCwxLjA3LS4zMiwyLjA3LS45OCwyLjk3cy0xLjUsMS41LTIuNTEsMS43OWw1LjQ4LDcuMDNoLS4wNloiLz4KICA8L2c+Cjwvc3ZnPg==" alt="Tremendo Studio" style="height:48px;display:block;margin-bottom:24px;">
+      <p style="font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);">SOCIAL MEDIA CONTENT STRATEGY · 2025</p>
+    </div>
+    <div>
+      <div style="font-family:var(--fd);font-weight:800;font-size:clamp(28px,4vw,54px);line-height:.95;text-transform:uppercase;color:#fff;min-height:54px;" contenteditable="true">NOMBRE DE LA MARCA</div>
+      <div style="font-family:var(--fd);font-weight:300;font-size:clamp(10px,1.1vw,14px);letter-spacing:.25em;text-transform:uppercase;color:var(--o);margin-top:10px;" contenteditable="true">PERÍODO · AÑO · BY TREMENDO STUDIO</div>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;line-height:1.8;">
+      <div contenteditable="true">ESTRATEGIA DE CONTENIDO PARA REDES SOCIALES</div>
+      <div contenteditable="true">DISEÑADO POR TREMENDO STUDIO · CDMX</div>
+    </div>
+  </div>
+  <div style="width:50%;height:100%;">
+    <div class="ip"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico">🖼</div><span class="lbl">Imagen de portada</span></div>
+  </div>
+</div>
+
+<!-- S02 RESUMEN EJECUTIVO -->
+<div class="slide" id="s02" style="background:#fff;flex-direction:row;padding-top:44px;">
+  <div class="sh light"><span class="br">TREMENDO STUDIO ®</span><span class="sl">CONTENT STRATEGY</span><span class="yr">© 2025</span></div>
+  <div class="col-l" style="width:42%;height:calc(100% - 44px);background:#fff;">
+    <div class="tag">RESUMEN EJECUTIVO</div>
+    <div class="ttl dk" contenteditable="true">CONTEXTO Y SITUACIÓN ACTUAL</div>
+    <div class="body lt" contenteditable="true">Describe aquí el contexto de la marca: en qué momento se encuentra, qué ha hecho hasta ahora en redes, cuáles son sus principales retos y por qué necesita una estrategia de contenido sólida.</div>
+    <div style="margin-top:20px;padding:16px 20px;background:var(--g);border-left:3px solid var(--o);">
+      <div style="font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:6px;">PERÍODO DE LA ESTRATEGIA</div>
+      <div style="font-family:var(--fd);font-weight:800;font-size:clamp(16px,2vw,26px);text-transform:uppercase;color:#000;min-height:30px;" contenteditable="true">MAYO — JULIO 2025</div>
+    </div>
+  </div>
+  <div style="width:58%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:center;padding:40px 52px;gap:20px;background:#fff;">
+    <div style="font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.3);margin-bottom:8px;">PLATAFORMAS ACTIVAS</div>
+    <div id="plat-tags" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <div class="plat-tag-item"><span style="background:var(--n);color:#fff;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;display:inline-flex;align-items:center;gap:8px;" contenteditable="true">Instagram</span><button onclick="this.parentElement.remove()" style="background:transparent;border:none;color:rgba(0,0,0,.3);cursor:pointer;font-size:14px;padding:0 2px;line-height:1;" title="Eliminar">×</button></div>
+      <div class="plat-tag-item"><span style="background:var(--n);color:#fff;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;display:inline-flex;align-items:center;gap:8px;" contenteditable="true">Facebook</span><button onclick="this.parentElement.remove()" style="background:transparent;border:none;color:rgba(0,0,0,.3);cursor:pointer;font-size:14px;padding:0 2px;line-height:1;" title="Eliminar">×</button></div>
+      <div class="plat-tag-item"><span style="background:var(--n);color:#fff;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;display:inline-flex;align-items:center;gap:8px;" contenteditable="true">LinkedIn</span><button onclick="this.parentElement.remove()" style="background:transparent;border:none;color:rgba(0,0,0,.3);cursor:pointer;font-size:14px;padding:0 2px;line-height:1;" title="Eliminar">×</button></div>
+      <button onclick="addPlat()" style="background:transparent;border:1.5px dashed rgba(0,0,0,.2);color:rgba(0,0,0,.35);font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--o)';this.style.color='var(--o)'" onmouseout="this.style.borderColor='rgba(0,0,0,.2)';this.style.color='rgba(0,0,0,.35)'">+ Agregar</button>
+    </div>
+    <div class="stat-grid" style="margin-top:8px;">
+      <div class="stat-card">
+        <div class="stat-label">Seguidores actuales</div>
+        <div class="stat-num" contenteditable="true">0K</div>
+        <div class="stat-sub" contenteditable="true">Instagram principal</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Engagement rate</div>
+        <div class="stat-num" contenteditable="true">0%</div>
+        <div class="stat-sub" contenteditable="true">Promedio últimos 30 días</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Alcance mensual</div>
+        <div class="stat-num" contenteditable="true">0K</div>
+        <div class="stat-sub" contenteditable="true">Cuentas alcanzadas</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S03 OBJETIVOS Y KPIs -->
+<div class="slide" id="s03" style="background:#fff;flex-direction:column;padding-top:44px;">
+  <div class="sh light"><span class="br">TREMENDO STUDIO ®</span><span class="sl">CONTENT STRATEGY</span><span class="yr">© 2025</span></div>
+  <div style="flex:1;display:flex;flex-direction:column;padding:24px 52px 20px;background:#fff;overflow:auto;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px;">
+      <span style="font-family:var(--fd);font-weight:800;font-size:clamp(20px,3vw,38px);text-transform:uppercase;color:#000;">OBJETIVOS ESTRATÉGICOS</span>
+      <span style="font-family:var(--fd);font-size:11px;color:rgba(0,0,0,.28);letter-spacing:.15em;text-transform:uppercase;" contenteditable="true">Q2 — 2025</span>
+    </div>
+    <div id="obj-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="obj-floating-card">
+        <div class="ofc-num">01</div>
+        <div class="ofc-body">
+          <div class="ofc-label">Objetivo</div>
+          <div class="ofc-val" contenteditable="true">Aumentar comunidad</div>
+          <div class="ofc-label" style="margin-top:10px;">KPI</div>
+          <div class="ofc-val" contenteditable="true">Nuevos seguidores</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+            <div><div class="ofc-label">Meta</div><div class="ofc-val" contenteditable="true">+500 / mes</div></div>
+            <div><div class="ofc-label">Plazo</div><div class="ofc-val" contenteditable="true">3 meses</div></div>
+          </div>
+          <div class="ofc-label" style="margin-top:10px;">Cómo medirlo</div>
+          <div class="ofc-val" contenteditable="true">Instagram Insights — Seguidores</div>
+        </div>
+        <button class="ofc-del" onclick="this.closest('.obj-floating-card').remove()">×</button>
+      </div>
+      <div class="obj-floating-card">
+        <div class="ofc-num">02</div>
+        <div class="ofc-body">
+          <div class="ofc-label">Objetivo</div>
+          <div class="ofc-val" contenteditable="true">Mejorar engagement</div>
+          <div class="ofc-label" style="margin-top:10px;">KPI</div>
+          <div class="ofc-val" contenteditable="true">Tasa de interacción</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+            <div><div class="ofc-label">Meta</div><div class="ofc-val" contenteditable="true">+5%</div></div>
+            <div><div class="ofc-label">Plazo</div><div class="ofc-val" contenteditable="true">2 meses</div></div>
+          </div>
+          <div class="ofc-label" style="margin-top:10px;">Cómo medirlo</div>
+          <div class="ofc-val" contenteditable="true">Likes + comentarios / impresiones</div>
+        </div>
+        <button class="ofc-del" onclick="this.closest('.obj-floating-card').remove()">×</button>
+      </div>
+    </div>
+    <button onclick="addObj()" style="background:transparent;border:1px dashed rgba(0,0,0,.2);color:rgba(0,0,0,.35);font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:10px 16px;cursor:pointer;margin-top:14px;transition:all .2s;width:100%;" onmouseover="this.style.borderColor='var(--o)';this.style.color='var(--o)'" onmouseout="this.style.borderColor='rgba(0,0,0,.2)';this.style.color='rgba(0,0,0,.35)'">+ Agregar objetivo</button>
+  </div>
+</div>
+
+<!-- S04 ANÁLISIS DE MÉTRICAS -->
+<div class="slide" id="s04" style="background:#fff;flex-direction:row;padding-top:44px;">
+  <div class="sh light"><span class="br">TREMENDO STUDIO ®</span><span class="sl">CONTENT STRATEGY</span><span class="yr">© 2025</span></div>
+  <div class="col-l" style="width:35%;height:calc(100% - 44px);background:#fff;">
+    <div class="tag">MÉTRICAS</div>
+    <div class="ttl dk" contenteditable="true">ANÁLISIS DE DESEMPEÑO ACTUAL</div>
+    <div class="body lt" contenteditable="true">Análisis del estado actual de las redes sociales de la marca. Estos números son el punto de partida para medir el impacto de la estrategia.</div>
+    <div style="margin-top:16px;font-family:var(--fd);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.3);" contenteditable="true">Período analizado: Ene — Abr 2025</div>
+  </div>
+  <div style="width:65%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:center;padding:32px 44px;gap:16px;background:#fff;">
+    <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);">
+      <div class="stat-card"><div class="stat-label">Seguidores totales</div><div class="stat-num" contenteditable="true">—</div><div class="stat-sub" contenteditable="true">Todas las plataformas</div></div>
+      <div class="stat-card"><div class="stat-label">Alcance promedio</div><div class="stat-num" contenteditable="true">—</div><div class="stat-sub" contenteditable="true">Por publicación</div></div>
+      <div class="stat-card"><div class="stat-label">Engagement rate</div><div class="stat-num" contenteditable="true">—</div><div class="stat-sub" contenteditable="true">Promedio mensual</div></div>
+      <div class="stat-card"><div class="stat-label">Publicaciones / mes</div><div class="stat-num" contenteditable="true">—</div><div class="stat-sub" contenteditable="true">Frecuencia actual</div></div>
+      <div class="stat-card"><div class="stat-label">Mejor formato</div><div class="stat-num" style="font-size:clamp(14px,1.8vw,22px);padding-top:4px;" contenteditable="true">—</div><div class="stat-sub" contenteditable="true">Mayor engagement</div></div>
+      <div class="stat-card"><div class="stat-label">Mejor horario</div><div class="stat-num" style="font-size:clamp(14px,1.8vw,22px);padding-top:4px;" contenteditable="true">—</div><div class="stat-sub" contenteditable="true">Hora pico de audiencia</div></div>
+    </div>
+    <div style="background:var(--g);border-left:3px solid var(--o);padding:14px 18px;">
+      <div style="font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:6px;">OBSERVACIÓN CLAVE</div>
+      <div style="font-size:13px;color:rgba(0,0,0,.6);line-height:1.6;" contenteditable="true">Escribe aquí el insight más importante del análisis de métricas: qué está funcionando, qué no, y qué oportunidad se identifica.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S05 ANÁLISIS DE AUDIENCIA / BUYER PERSONA -->
+<div class="slide" id="s05" style="background:#fff;flex-direction:row;padding-top:44px;">
+  <div class="sh light"><span class="br">TREMENDO STUDIO ®</span><span class="sl">CONTENT STRATEGY</span><span class="yr">© 2025</span></div>
+  <div class="col-l" style="width:35%;height:calc(100% - 44px);background:#fff;">
+    <div class="tag">AUDIENCIA</div>
+    <div class="ttl dk" contenteditable="true">BUYER PERSONA Y ANÁLISIS DE PÚBLICO</div>
+    <div class="body lt" contenteditable="true">Perfil detallado del cliente ideal de la marca. Este análisis guía cada decisión de contenido: qué decir, cómo decirlo y dónde publicarlo.</div>
+    <div style="margin-top:20px;">
+      <div style="font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:8px;">NOMBRE DEL PERSONA</div>
+      <div style="font-family:var(--fd);font-weight:800;font-size:clamp(20px,2.5vw,32px);text-transform:uppercase;color:#000;min-height:36px;" contenteditable="true">LA EMPRENDEDORA</div>
+    </div>
+  </div>
+  <div style="width:65%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:center;padding:32px 44px;gap:14px;background:#fff;">
+    <div class="persona-grid">
+      <div class="persona-item"><div class="persona-label">Edad</div><div class="persona-val" contenteditable="true">25 — 38 años</div></div>
+      <div class="persona-item"><div class="persona-label">Género</div><div class="persona-val" contenteditable="true">Mujer · 80% / Hombre · 20%</div></div>
+      <div class="persona-item"><div class="persona-label">Ubicación</div><div class="persona-val" contenteditable="true">CDMX, Monterrey, Guadalajara</div></div>
+      <div class="persona-item"><div class="persona-label">Ocupación</div><div class="persona-val" contenteditable="true">Emprendedora, freelancer, directiva</div></div>
+    </div>
+    <div class="persona-grid" style="margin-top:4px;">
+      <div class="persona-item"><div class="persona-label">Intereses</div><div class="persona-val" contenteditable="true">Diseño, moda, negocios, bienestar</div></div>
+      <div class="persona-item"><div class="persona-label">Plataformas favoritas</div><div class="persona-val" contenteditable="true">Instagram, TikTok, Pinterest</div></div>
+      <div class="persona-item"><div class="persona-label">Pain point principal</div><div class="persona-val" contenteditable="true">Quiere crecer su marca pero no sabe cómo comunicarla</div></div>
+      <div class="persona-item"><div class="persona-label">Qué la motiva</div><div class="persona-val" contenteditable="true">Ver marcas con identidad fuerte y auténtica</div></div>
+    </div>
+    <div style="background:var(--g);border-left:3px solid var(--o);padding:14px 18px;">
+      <div style="font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:6px;">CÓMO CONECTAMOS CON ELLA</div>
+      <div style="font-size:13px;color:rgba(0,0,0,.6);line-height:1.6;" contenteditable="true">Describe aquí cómo el contenido propuesto conecta específicamente con este buyer persona: qué mensajes resuenan, qué formatos prefiere y en qué momento del día consume contenido.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S06 SWOT / ANÁLISIS DE COMPETENCIA -->
+<div class="slide" id="s06" style="flex-direction:row;padding-top:44px;">
+  <div class="sh"><span class="br">TREMENDO STUDIO ®</span><span class="sl">CONTENT STRATEGY</span><span class="yr">© 2025</span></div>
+  <div class="col-l" style="width:28%;height:calc(100% - 44px);">
+    <div class="tag">SWOT</div>
+    <div class="ttl" contenteditable="true">ANÁLISIS FODA DE LA MARCA</div>
+    <div class="body dk" contenteditable="true">Evaluación honesta de la posición de la marca en el entorno digital. Base para definir oportunidades estratégicas de contenido.</div>
+    <div style="margin-top:16px;font-size:12px;color:rgba(255,255,255,.3);line-height:1.7;" contenteditable="true">Competidores analizados: escribe aquí los nombres de las marcas de referencia que se analizaron.</div>
+  </div>
+  <div class="col-r" style="width:72%;height:calc(100% - 44px);">
+    <div class="swot-grid">
+      <div class="swot-cell" style="background:#1a1a1a;">
+        <div class="swot-sub" style="color:rgba(255,255,255,.4);">FORTALEZAS</div>
+        <div class="swot-label" style="color:#2ecc71;">STRENGTHS</div>
+        <div class="swot-items" style="color:rgba(255,255,255,.7);" contenteditable="true">• Identidad visual fuerte y diferenciada&#10;• Comunidad leal y comprometida&#10;• Producto / servicio de alta calidad&#10;• Agrega más fortalezas aquí...</div>
+      </div>
+      <div class="swot-cell" style="background:#111;">
+        <div class="swot-sub" style="color:rgba(255,255,255,.4);">DEBILIDADES</div>
+        <div class="swot-label" style="color:#e74c3c;">WEAKNESSES</div>
+        <div class="swot-items" style="color:rgba(255,255,255,.7);" contenteditable="true">• Baja frecuencia de publicación&#10;• Inconsistencia en el tono de comunicación&#10;• Poca presencia en video&#10;• Agrega más debilidades aquí...</div>
+      </div>
+      <div class="swot-cell" style="background:#111;">
+        <div class="swot-sub" style="color:rgba(255,255,255,.4);">OPORTUNIDADES</div>
+        <div class="swot-label" style="color:var(--o);">OPPORTUNITIES</div>
+        <div class="swot-items" style="color:rgba(255,255,255,.7);" contenteditable="true">• Nicho con poca competencia visual de calidad&#10;• Alta demanda del formato Reels&#10;• Audiencia lista para comprar online&#10;• Agrega más oportunidades aquí...</div>
+      </div>
+      <div class="swot-cell" style="background:#1a1a1a;">
+        <div class="swot-sub" style="color:rgba(255,255,255,.4);">AMENAZAS</div>
+        <div class="swot-label" style="color:#f39c12;">THREATS</div>
+        <div class="swot-items" style="color:rgba(255,255,255,.7);" contenteditable="true">• Competidores con mayor presupuesto de pauta&#10;• Cambios constantes en el algoritmo&#10;• Saturación de contenido en el nicho&#10;• Agrega más amenazas aquí...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S07 PILARES DE CONTENIDO -->
+<div class="slide" id="s07" style="background:#fff;flex-direction:column;padding-top:44px;">
+  <div class="sh light"><span class="br">TREMENDO STUDIO ®</span><span class="sl">CONTENT STRATEGY</span><span class="yr">© 2025</span></div>
+  <div style="flex:1;display:flex;flex-direction:column;padding:24px 52px 20px;background:#fff;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px;">
+      <span style="font-family:var(--fd);font-weight:800;font-size:clamp(20px,3vw,38px);text-transform:uppercase;color:#000;">PILARES DE CONTENIDO</span>
+      <span style="font-size:13px;color:rgba(0,0,0,.4);" contenteditable="true">Los temas clave que guían toda la comunicación de la marca</span>
+    </div>
+    <div id="pilar-grid-wrap" class="pilar-grid">
+      <div class="pilar-card" style="position:relative;">
+        <button onclick="this.closest('.pilar-card').remove();renumPilares()" style="position:absolute;top:10px;right:10px;background:transparent;border:none;color:rgba(0,0,0,.25);cursor:pointer;font-size:16px;line-height:1;">×</button>
+        <div class="pilar-num">01</div>
+        <div class="pilar-name" contenteditable="true">INSPIRACIÓN</div>
+        <div class="pilar-desc" contenteditable="true">Contenido que eleva y motiva a la audiencia. Muestra el behind the scenes, el proceso creativo y los valores de la marca.</div>
+      </div>
+      <div class="pilar-card" style="position:relative;">
+        <button onclick="this.closest('.pilar-card').remove();renumPilares()" style="position:absolute;top:10px;right:10px;background:transparent;border:none;color:rgba(0,0,0,.25);cursor:pointer;font-size:16px;line-height:1;">×</button>
+        <div class="pilar-num">02</div>
+        <div class="pilar-name" contenteditable="true">PRODUCTO / SERVICIO</div>
+        <div class="pilar-desc" contenteditable="true">Presentación directa de lo que ofrece la marca: beneficios, uso, resultados y propuesta de valor diferenciada.</div>
+      </div>
+      <div class="pilar-card" style="position:relative;">
+        <button onclick="this.closest('.pilar-card').remove();renumPilares()" style="position:absolute;top:10px;right:10px;background:transparent;border:none;color:rgba(0,0,0,.25);cursor:pointer;font-size:16px;line-height:1;">×</button>
+        <div class="pilar-num">03</div>
+        <div class="pilar-name" contenteditable="true">EDUCACIÓN</div>
+        <div class="pilar-desc" contenteditable="true">Tips, tutoriales, datos y contenido de valor que posicionan a la marca como referente y experto en su industria.</div>
+      </div>
+    </div>
+    <button onclick="addPilar()" style="background:transparent;border:1px dashed rgba(0,0,0,.2);color:rgba(0,0,0,.35);font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:10px 16px;cursor:pointer;margin-top:14px;transition:all .2s;width:100%;" onmouseover="this.style.borderColor='var(--o)';this.style.color='var(--o)'" onmouseout="this.style.borderColor='rgba(0,0,0,.2)';this.style.color='rgba(0,0,0,.35)'">+ Agregar pilar</button>
+  </div>
+</div>
+
+<!-- S08 TONO Y VOZ DE MARCA -->
+<div class="slide" id="s08" style="background:#fff;flex-direction:row;padding-top:44px;">
+  <div class="sh light"><span class="br">TREMENDO STUDIO ®</span><span class="sl">CONTENT STRATEGY</span><span class="yr">© 2025</span></div>
+  <div class="col-l" style="width:38%;height:calc(100% - 44px);background:#fff;">
+    <div class="tag">TONO Y VOZ</div>
+    <div class="ttl dk" contenteditable="true">CÓMO HABLA ESTA MARCA</div>
+    <div class="body lt" contenteditable="true">El tono de comunicación define la personalidad de la marca en cada publicación. Es la diferencia entre sonar genérico y sonar auténtico.</div>
+    <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px;">
+      <span style="background:var(--n);color:#fff;font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;" contenteditable="true">Directo</span>
+      <span style="background:var(--n);color:#fff;font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;" contenteditable="true">Auténtico</span>
+      <span style="background:var(--o);color:#fff;font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;" contenteditable="true">Disruptivo</span>
+      <span style="background:var(--n);color:#fff;font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;" contenteditable="true">Cercano</span>
+      <span style="background:var(--n);color:#fff;font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;" contenteditable="true">Aspiracional</span>
+    </div>
+  </div>
+  <div style="width:62%;height:calc(100% - 44px);display:flex;flex-direction:column;justify-content:center;padding:32px 44px;gap:16px;background:#fff;">
+    <div class="voz-grid">
+      <div class="voz-si">
+        <div class="voz-label si">✓ SÍ DECIMOS</div>
+        <div class="voz-items" contenteditable="true">• Tuteamos siempre — hablamos de tú a tú&#10;• Usamos lenguaje positivo y de acción&#10;• Somos directas y vamos al punto&#10;• Celebramos los logros de la comunidad&#10;• Usamos humor inteligente cuando aplica</div>
+      </div>
+      <div class="voz-no">
+        <div class="voz-label no">✗ NO DECIMOS</div>
+        <div class="voz-items" contenteditable="true">• No usamos tecnicismos innecesarios&#10;• No hablamos de más — menos es más&#10;• No copiamos tendencias que no van con la marca&#10;• No prometemos lo que no podemos cumplir&#10;• No usamos un tono corporativo o frío</div>
+      </div>
+    </div>
+    <div style="background:var(--g);border-left:3px solid var(--o);padding:16px 20px;">
+      <div style="font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:8px;">FRASE QUE DEFINE EL TONO</div>
+      <div style="font-family:var(--fb);font-style:italic;font-size:clamp(13px,1.3vw,17px);color:rgba(0,0,0,.7);line-height:1.6;min-height:32px;" contenteditable="true">"Escribe aquí una frase que capture perfectamente el tono y la voz de esta marca."</div>
+    </div>
+  </div>
+</div>
+
+<!-- S09 ESTRATEGIA DE PAUTA -->
+<div class="slide" id="s09" style="background:#fff;flex-direction:column;padding-top:44px;">
+  <div class="sh light"><span class="br">TREMENDO STUDIO ®</span><span class="sl">CONTENT STRATEGY</span><span class="yr">© 2025</span></div>
+  <div style="flex:1;display:flex;flex-direction:column;padding:20px 52px 16px;background:#fff;overflow:auto;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;">
+      <span style="font-family:var(--fd);font-weight:800;font-size:clamp(20px,3vw,36px);text-transform:uppercase;color:#000;">ESTRATEGIA DE PAUTA</span>
+      <div style="background:var(--n);color:#fff;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;" contenteditable="true">Paid Media · Meta Ads</div>
+    </div>
+    <div style="background:var(--g);border-left:3px solid var(--o);padding:12px 18px;margin-bottom:14px;">
+      <div style="font-size:13px;color:rgba(0,0,0,.6);line-height:1.6;" contenteditable="true">La pauta estratégica amplifica el contenido de calidad, acelera el crecimiento y permite segmentar con precisión al buyer persona ideal de la marca.</div>
+    </div>
+    <div id="pauta-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="pauta-card-new" style="background:var(--g);padding:20px;border-top:3px solid var(--o);position:relative;">
+        <button onclick="this.closest('.pauta-card-new').remove()" style="position:absolute;top:8px;right:10px;background:transparent;border:none;color:rgba(0,0,0,.25);cursor:pointer;font-size:16px;line-height:1;">×</button>
+        <div class="pf-row"><span class="pf-label">Contenido a publicar</span><div class="pf-val" contenteditable="true">Reel de lanzamiento de producto con hook en los primeros 3 segundos</div></div>
+        <div class="pf-row"><span class="pf-label">Tipo de campaña</span><div class="pf-val" contenteditable="true">Reconocimiento de marca</div></div>
+        <div class="pf-row"><span class="pf-label">Presupuesto</span><div class="pf-val" contenteditable="true">$100 MXN diarios durante 7 días</div></div>
+        <div class="pf-row"><span class="pf-label">Canal</span><div class="pf-val" contenteditable="true">Instagram + Facebook</div></div>
+        <div class="pf-row"><span class="pf-label">Segmentación sugerida</span><div class="pf-val" contenteditable="true">Mujeres 25–38 · CDMX · Intereses: moda, diseño, emprendimiento</div></div>
+      </div>
+      <div class="pauta-card-new" style="background:var(--g);padding:20px;border-top:3px solid var(--o);position:relative;">
+        <button onclick="this.closest('.pauta-card-new').remove()" style="position:absolute;top:8px;right:10px;background:transparent;border:none;color:rgba(0,0,0,.25);cursor:pointer;font-size:16px;line-height:1;">×</button>
+        <div class="pf-row"><span class="pf-label">Contenido a publicar</span><div class="pf-val" contenteditable="true">Carrusel educativo con tips del servicio</div></div>
+        <div class="pf-row"><span class="pf-label">Tipo de campaña</span><div class="pf-val" contenteditable="true">Tráfico al sitio web</div></div>
+        <div class="pf-row"><span class="pf-label">Presupuesto</span><div class="pf-val" contenteditable="true">$150 MXN diarios durante 5 días</div></div>
+        <div class="pf-row"><span class="pf-label">Canal</span><div class="pf-val" contenteditable="true">Facebook</div></div>
+        <div class="pf-row"><span class="pf-label">Segmentación sugerida</span><div class="pf-val" contenteditable="true">Audiencia similar a seguidores existentes · México · 28–45 años</div></div>
+      </div>
+    </div>
+    <button onclick="addPauta()" style="background:transparent;border:1px dashed rgba(0,0,0,.2);color:rgba(0,0,0,.35);font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:10px 16px;cursor:pointer;margin-top:12px;transition:all .2s;width:100%;" onmouseover="this.style.borderColor='var(--o)';this.style.color='var(--o)'" onmouseout="this.style.borderColor='rgba(0,0,0,.2)';this.style.color='rgba(0,0,0,.35)'">+ Agregar pauta</button>
+    <div style="margin-top:10px;background:#fff8f6;border:1px solid rgba(232,80,42,.25);padding:10px 16px;">
+      <div style="font-size:12px;color:rgba(0,0,0,.5);line-height:1.6;font-style:italic;" contenteditable="true">⚠️ Tremendo Studio diseña la estrategia y las piezas creativas para pauta. La gestión de campañas en Meta Ads corre por cuenta del cliente o de un especialista en media buying.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- S14 CONCEPTO DEL MES -->
+<div class="slide" id="s14" style="flex-direction:row;padding-top:44px;">
+  <div class="sh"><span class="br">TREMENDO STUDIO ®</span><span class="sl">CONTENT STRATEGY</span><span class="yr">© 2025</span></div>
+  <div class="col-l" style="width:45%;height:calc(100% - 44px);">
+    <div class="tag">CONCEPTO CREATIVO</div>
+    <div class="ttl" contenteditable="true">DIRECCIÓN VISUAL Y CREATIVA DEL MES</div>
+    <div class="body dk" contenteditable="true">Describe aquí el concepto creativo que va a guiar todo el contenido visual y editorial de este período: el tema central, la paleta de colores, el tipo de imágenes, el tono del copy y cómo todo se conecta con la estrategia.</div>
+    <div style="margin-top:20px;border:1px solid rgba(255,255,255,.15);padding:16px 20px;">
+      <div style="font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px;">CONCEPTO EN UNA FRASE</div>
+      <div style="font-family:var(--fb);font-style:italic;font-size:clamp(14px,1.5vw,20px);color:#fff;line-height:1.5;min-height:36px;" contenteditable="true">"Escribe aquí el concepto creativo en una sola frase poderosa."</div>
+    </div>
+  </div>
+  <div style="width:55%;height:calc(100% - 44px);">
+    <div class="ip"><input type="file" accept="image/*" onchange="loadImg(this)"><div class="ico">🖼</div><span class="lbl">Moodboard / referencia visual del mes</span></div>
+  </div>
+</div>
+
+<!-- S15 NOTA IMPORTANTE -->
+<div class="slide" id="s15" style="flex-direction:column;align-items:center;justify-content:center;gap:0;background:var(--n);">
+  <div style="font-family:var(--fd);font-weight:700;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:32px;">IMPORTANTE · ALCANCE DEL SERVICIO</div>
+  <div class="nota-box">
+    <div class="nota-icon">✦ TREMENDO STUDIO ®</div>
+    <div class="nota-title">DISEÑAMOS LA ESTRATEGIA.<br>TÚ LA EJECUTAS.</div>
+    <div class="nota-text" contenteditable="true">Tremendo Studio es un estudio de diseño y estrategia de contenido. Nuestro servicio incluye la planeación estratégica, la producción visual y la dirección creativa de tu contenido digital.<br><br>No realizamos gestión de comunidades (community management), no publicamos en tus redes sociales, no creamos captions o copies para publicaciones, ni gestionamos campañas de publicidad pagada. Estos servicios corren por cuenta del cliente o de un especialista externo.</div>
+  </div>
+  <div style="margin-top:28px;font-size:12px;color:rgba(255,255,255,.25);letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.8;" contenteditable="true">¿Tienes dudas sobre el alcance del servicio? Escríbenos a somos@tremendo.com</div>
+</div>
+
+<!-- S16 CIERRE -->
+<div class="slide" id="s16">
+  <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iQ2FwYV8yIiBkYXRhLW5hbWU9IkNhcGEgMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgODk1LjA5IDI1NC40MiI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPGcgaWQ9IkNhcGFfMS0yIiBkYXRhLW5hbWU9IkNhcGEgMSI+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNjAuMiAxNzIuNDkgMjEuNDEgMTcyLjQ5IDIxLjQxIDYzLjI4IDAgNjMuMjggMCAyOC44NyA4Mi40MSAyOC44NyA4Mi40MSA2My4yOCA2MC4xNyA2My4yOCA2MC4xNyAxNzIuNDkgNjAuMiAxNzIuNDkiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTEzMy4xNiw5NS4zOGgyLjU5YzQuNDcsMCw4LjE4LTEuNywxMS4xNS01LjEzLDIuOTctMy40LDQuNDctNy43NSw0LjQ3LTEzLjAyLDAtMTAuNzItNS42Mi0xNi4xMS0xNi44My0xNi4xMWgtMS4zOHYzNC4yNlpNMTk2LjUzLDE3Mi40OWgtNDEuOTZsLTE5LjE2LTUxLjE4Yy0uMTctLjg2LS41Mi0yLjAyLS45OC0zLjQ2LS40Ni0xLjQxLTEuMDQtMy4xNC0xLjczLTUuMTNsLjI5LDkuNDh2NTAuMjNoLTM4LjYxVjI4Ljc5aDM5Ljc0YzE3LjQ5LDAsMzAuNTcsMy40NiwzOS4yNSwxMC4zMiwxMS4wNCw4LjgyLDE2LjU3LDIxLjMyLDE2LjU3LDM3LjU4LDAsMTcuMzgtNy40MSwyOS4zNi0yMi4yNSwzNS45OWwyOC44NSw1OS43NHYuMDlaIi8+CiAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMjA2LjY0IDE3Mi40OSAyMDYuNjQgMjguODUgMjc4Ljc0IDI4Ljg1IDI3OC43NCA2Mi42MiAyNDUuNDMgNjIuNjIgMjQ1LjQzIDgzLjU0IDI3NS4yOCA4My41NCAyNzUuMjggMTE2LjAxIDI0NS40MyAxMTYuMDEgMjQ1LjQzIDEzNy45NyAyNzguNzQgMTM3Ljk3IDI3OC43NCAxNzIuNDkgMjA2LjY0IDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDI2LjkxLDE3Mi40OWgtMzguM2wtMi40OC02NS41LTEuMDQtMjYuMTRjLS4zNyw1LjAxLS44MSw5LjgzLTEuMjcsMTQuMzgtLjQ2LDQuNTUtMS4wNyw4Ljk2LTEuNzYsMTMuMjZsLTEwLjQzLDY0aC0yNy4xMmwtOC45My02NC4wOWMtLjUyLTMuNzItMS4yNC0xMC4xMS0yLjE2LTE5LjE2LS4xMi0xLjM1LS4zNS00LjE1LS43Mi04LjM2bC0uODEsMjYuNTEtMi45NCw2NS4xM2gtMzYuOTRWMjguODdoNTcuMjlsNi45NCw0OC4zOGMuNTgsMy45OCwxLjEsOC4yNywxLjU2LDEyLjk0LjQ2LDQuNjQuODYsOS43MSwxLjI0LDE1LjE2LjY5LTkuMTEsMS42NC0xNy4yNiwyLjg4LTI0LjQ3bDguNDQtNTIuMDFoNTYuNTd2MTQzLjY1bC0uMDMtLjAzWiIvPgogICAgPHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjQ0MS4wMSAxNzIuNDkgNDQxLjAxIDI4Ljg1IDUxMy4xIDI4Ljg1IDUxMy4xIDYyLjYyIDQ3OS43OSA2Mi42MiA0NzkuNzkgODMuNTQgNTA5LjY1IDgzLjU0IDUwOS42NSAxMTYuMDEgNDc5Ljc5IDExNi4wMSA0NzkuNzkgMTM3Ljk3IDUxMy4xIDEzNy45NyA1MTMuMSAxNzIuNDkgNDQxLjAxIDE3Mi40OSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTI5Ljg1LDE3Mi40OVYyOC44NWgzNy4wM2wxOS40NSw1MC40M2MxLjA3LDIuOTcsMi4yNSw2LjQsMy41NywxMC4yMywxLjMzLDMuODMsMi44LDguMjcsNC40MSwxMy4zMWw0LjAxLDEyLjY1Yy0xLjQ0LTEyLjQ4LTIuNTEtMjMuMTQtMy4yNi0zMi4wMS0uNzUtOC44OC0xLjEyLTE2LjMxLTEuMTItMjIuMzNWMjguODVoMzcuMDN2MTQzLjY1aC0zNy4wM2wtMTkuNTQtNTIuODVjLTIuMDUtNS42NS0zLjg5LTEwLjkyLTUuNTMtMTUuODVzLTMuMDgtOS42Mi00LjMyLTE0LjA5Yy44MSwxMC4xMSwxLjM4LDE4LjkzLDEuNzYsMjYuNDIuMzcsNy41Mi41NSwxNC4wOS41NSwxOS43MXYzNi42NWgtMzcuMDMuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik02ODYuNDYsMTM3LjhjMTMuODktLjY5LDIwLjgzLTEyLjY1LDIwLjgzLTM1LjkxLDAtMTEuNDctMS43Ni0yMC41Mi01LjMtMjcuMTctMy41NC02LjY5LTguMy0xMC4wNi0xNC4zMi0xMC4wNmgtMS4yMXY3My4xNFpNNjQ3LjY4LDE3Mi40OVYyOC44NWgzMy40OGMxOS4xNiwwLDM0LjA5LDUuMTYsNDQuNzUsMTUuNDUsMTQuMDMsMTMuNDYsMjEuMDQsMzIuMjcsMjEuMDQsNTYuNDhzLTUuOTEsNDIuMjItMTcuNzgsNTUuMTVjLTEwLjExLDExLjA0LTI1LjE5LDE2LjU3LTQ1LjIxLDE2LjU3aC0zNi4yOFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTgyNi4wNSwxMDEuNzVjMC0yNS4xOS00LjU4LTM3LjgxLTEzLjc3LTM3LjgxLTQuNTgsMC04LjI0LDMuMzEtMTAuOTgsOS45MS0yLjY4LDYuMTQtNC4wMSwxNS4xNi00LjAxLDI3LjA2czEuMjcsMjAuODMsMy43NywyNy4yOWMyLjUxLDYuNDUsNS45OSw5LjcxLDEwLjQ2LDkuNzFzOC4xMy0zLjIsMTAuNi05LjU3YzIuNTktNi4zNywzLjkyLTE1LjI0LDMuOTItMjYuNlpNODY2LjM0LDEwMS40NmMwLDIxLjI0LTQuOTksMzguNS0xNC45OCw1MS43OC05LjkxLDEzLjIzLTIyLjg1LDE5Ljg1LTM4Ljc5LDE5Ljg1LTE0LjE1LDAtMjYuMjUtNS4wNy0zNi4zNy0xNS4yNC0xMi43MS0xMi44OC0xOS4wOC0zMi4xNi0xOS4wOC01Ny45MnM2LjYzLTQzLjUxLDE5LjkxLTU2LjU3YzkuODYtOS42OCwyMS41NS0xNC41MiwzNS4wNy0xNC41MiwxNi41NywwLDI5Ljc0LDYuNTcsMzkuNTQsMTkuNjUsOS44LDEzLjExLDE0LjcsMzAuNzUsMTQuNyw1Mi45NloiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzNyAyMjkuOTUgMjUuODIgMjI5Ljk1IDI1LjgyIDIzNi42NyAzNi42OCAyMzYuNjcgMzYuNjggMjQwLjYyIDI1LjgyIDI0MC42MiAyNS44MiAyNDkuOTUgMzcgMjQ5Ljk1IDM3IDI1My45IDIxLjU4IDI1My45IDIxLjU4IDIyNS45OCAzNyAyMjUuOTggMzcgMjI5LjkzIDM3IDIyOS45NSIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjAuMTcsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjA5LTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0czEuNTgsMi45NCwxLjU4LDQuODRjMCwyLjU2LS44Niw0LjctMi41Niw2LjM3LTEuNzMsMS43LTMuODYsMi41NC02LjQzLDIuNTQtMi40MiwwLTQuNDQtLjcyLTUuOTktMi4xNi0xLjU2LTEuNDQtMi41NC0zLjQ2LTIuOTEtNi4wNWw0LjI2LS45NWMuMiwxLjY0LjUyLDIuNzcsMS4wMSwzLjQuODYsMS4yMSwyLjEzLDEuODIsMy44LDEuODIsMS4zLDAsMi4zOS0uNDMsMy4yOS0xLjMzczEuMy0xLjk5LDEuMy0zLjM0YzAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zMi0xLjEyLS42My0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDEsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSI3Ni4wNSAyMjkuOTUgNzYuMDUgMjUzLjkgNzEuODQgMjUzLjkgNzEuODQgMjI5Ljk1IDY1LjQxIDIyOS45NSA2NS40MSAyMjYuMDEgODIuNDQgMjI2LjAxIDgyLjQ0IDIyOS45NSA3Ni4wNSAyMjkuOTUiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTkyLjI3LDI0OS45NWgxLjljMS45LDAsMy40Ni0uMiw0LjczLS42MSwxLjI3LS40MywyLjM5LTEuMSwzLjQtMi4wMiwyLjA3LTEuOSwzLjExLTQuMzUsMy4xMS03LjQxcy0xLjAxLTUuNTMtMy4wOC03LjQzYy0xLjg0LTEuNy00LjU1LTIuNTQtOC4xNi0yLjU0aC0xLjl2MjBaTTg4LjA2LDI1My45M3YtMjcuOTJoNS44NWMyLjgyLDAsNS4wMS4yOSw2LjY2Ljg0LDEuNzYuNTUsMy4zNCwxLjQ3LDQuNzUsMi43NywyLjg4LDIuNjIsNC4zMiw2LjA4LDQuMzIsMTAuMzVzLTEuNSw3Ljc1LTQuNSwxMC40Yy0xLjUsMS4zMy0zLjA4LDIuMjUtNC43MywyLjc3LTEuNTMuNTItMy43Mi43OC02LjU3Ljc4aC01Ljc5di4wM1oiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTExNi42NSwyNTEuODhjMC0uNjYuMjMtMS4yNy43NS0xLjc2LjQ5LS40OSwxLjEtLjc1LDEuNzYtLjc1czEuMjcuMjYsMS43Ni43NWMuNDkuNDkuNzUsMS4xLjc1LDEuNzZzLS4yNiwxLjMtLjc1LDEuNzktMS4wNy43Mi0xLjc2LjcyLTEuMy0uMjMtMS43OS0uNzJjLS40OS0uNDktLjcyLTEuMS0uNzItMS44MnYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik03ODEuNjIsMjQ5Ljk1aDEwLjR2My45NWgtMTguNzZsOS42OC0xMS43M2MuOTUtMS4xOCwxLjc2LTIuMTksMi4zOS0zLjAzLjYzLS44NCwxLjEyLTEuNTgsMS40Ny0yLjE2LjY5LTEuMTIsMS4wNC0yLjE2LDEuMDQtMy4wNSwwLTEuMy0uNDYtMi4zOS0xLjM4LTMuMjktLjkyLS44OS0yLjA1LTEuMzMtMy40LTEuMzMtMi44MiwwLTQuNDQsMS42Ny00Ljg0LDUuMDFoLTQuMjFjLjY2LTUuODgsMy42Ni04LjgyLDguOS04LjgyLDIuNTQsMCw0LjY3LjgxLDYuNCwyLjQyczIuNTksMy42LDIuNTksNS45OWMwLDEuNTMtLjQsMy0xLjIxLDQuNDctLjQuNzUtMS4wMSwxLjY3LTEuNzksMi43MS0uNzgsMS4wNC0xLjc5LDIuMjgtMywzLjY5bC00LjM1LDUuMTMuMDYuMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04MDIuNzQsMjM5LjgxYzAsMy4wOC41NSw1LjY4LDEuNjEsNy43MiwxLjA3LDIuMDIsMi40NSwzLjAzLDQuMDksMy4wM3MzLjAzLTEuMDEsNC4wOS0zLjAzYzEuMS0xLjk5LDEuNjEtNC41MiwxLjYxLTcuNThzLS41NS01LjU5LTEuNjEtNy41OGMtMS4xLTEuOTktMi40NS0zLTQuMDktM3MtMywxLjAxLTQuMDksM2MtMS4wOSwxLjk5LTEuNjEsNC40Ny0xLjYxLDcuNDNaTTc5OC42MiwyMzkuNzhjMC00LjQ0LDEuMDQtNy45OCwzLjExLTEwLjY2LDEuODQtMi4zOSw0LjA5LTMuNiw2Ljc0LTMuNnM0LjksMS4yMSw2Ljc0LDMuNmMyLjA3LDIuNjUsMy4xMSw2LjI1LDMuMTEsMTAuODNzLTEuMDQsOC4xNS0zLjExLDEwLjgxYy0xLjg0LDIuMzktNC4wOSwzLjYtNi43MSwzLjZzLTQuODctMS4yMS02Ljc3LTMuNmMtMi4wNy0yLjY1LTMuMTEtNi4zMS0zLjExLTEwLjk4WiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODMxLjAxLDI0OS45NWgxMC40djMuOTVoLTE4Ljc2bDkuNjgtMTEuNzNjLjk1LTEuMTgsMS43Ni0yLjE5LDIuMzktMy4wMy42My0uODQsMS4xMi0xLjU4LDEuNDctMi4xNi42OS0xLjEyLDEuMDQtMi4xNiwxLjA0LTMuMDUsMC0xLjMtLjQ2LTIuMzktMS4zOC0zLjI5cy0yLjA1LTEuMzMtMy40LTEuMzNjLTIuODIsMC00LjQ0LDEuNjctNC44NCw1LjAxaC00LjIxYy42Ni01Ljg4LDMuNjYtOC44Miw4LjktOC44MiwyLjU0LDAsNC42Ny44MSw2LjQsMi40MnMyLjU5LDMuNiwyLjU5LDUuOTljMCwxLjUzLS40LDMtMS4yMSw0LjQ3LS40Ljc1LTEuMDEsMS42Ny0xLjc5LDIuNzEtLjc4LDEuMDQtMS43OSwyLjI4LTMsMy42OWwtNC4zNSw1LjEzLjA2LjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODY1LjksMjI5Ljk1aC04LjYybC0xLjM4LDQuNjRjLjIsMCwuNC0uMDMuNTgtLjA2LjE3LS4wMy4zNSwwLC41MiwwLDIuNzEsMCw0LjkzLjkyLDYuNjYsMi43NCwxLjc2LDEuODIsMi42Miw0LjE1LDIuNjIsN3MtLjk4LDUuMzYtMi45Nyw3LjI2Yy0xLjk5LDEuOS00LjQ3LDIuODUtNy40NiwyLjg1LTMuNjksMC02LjYzLTEuNzMtOC43Ni01LjIybDMuMTctMi42OGMuODksMS41LDEuNzYsMi41NCwyLjY1LDMuMTcuODkuNjEsMS45OS44OSwzLjI4Ljg5LDEuNywwLDMuMTEtLjYxLDQuMjQtMS43NiwxLjE1LTEuMjEsMS43My0yLjY4LDEuNzMtNC40NHMtLjU4LTMuMjMtMS43LTQuMzhjLTEuMTItMS4xOC0yLjU0LTEuNzYtNC4yNC0xLjc2LTEuOSwwLTMuNTIuODQtNC45LDIuNDhoLTEuMzhsNC4zOC0xNC42N2gxMS41M3YzLjk1bC4wNi0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0zNzguNTYsMjMwLjE2bC0zLjQzLDIuMDJjLS42My0xLjEyLTEuMjQtMS44NC0xLjgyLTIuMTYtLjYxLS4zNy0xLjM4LS41OC0yLjMzLS41OC0xLjE4LDAtMi4xMy4zMi0yLjkxLDEuMDEtLjc4LjY2LTEuMTUsMS40Ny0xLjE1LDIuNDUsMCwxLjM1LDEuMDEsMi40NSwzLjAzLDMuMjlsMi44LDEuMTVjMi4yOC45MiwzLjkyLDIuMDUsNC45OSwzLjM0LDEuMDcsMS4zLDEuNTgsMi45NCwxLjU4LDQuODQsMCwyLjU2LS44Niw0LjY3LTIuNTYsNi4zNy0xLjczLDEuNjctMy44NiwyLjU0LTYuNDMsMi41NC0yLjQyLDAtNC40NC0uNzItNS45OS0yLjE2LTEuNTYtMS40NC0yLjU0LTMuNDYtMi45MS02LjA1bDQuMjYtLjk1Yy4yLDEuNjQuNTIsMi43NywxLjAxLDMuNC44NiwxLjIxLDIuMTMsMS44MiwzLjgsMS44MiwxLjMsMCwyLjM5LS40MywzLjI5LTEuMzMuODYtLjg5LDEuMy0xLjk5LDEuMy0zLjM0LDAtLjU1LS4wOS0xLjA0LS4yMy0xLjUtLjE0LS40Ni0uMzctLjg2LS42OS0xLjI0LS4zMi0uMzctLjcyLS43NS0xLjI0LTEuMDctLjUyLS4zNS0xLjEyLS42Ni0xLjgyLS45NWwtMi42OC0xLjEyYy0zLjgzLTEuNjEtNS43My0zLjk4LTUuNzMtNy4wOSwwLTIuMS44MS0zLjg2LDIuMzktNS4yNywxLjYxLTEuNDQsMy42LTIuMTMsNS45OS0yLjEzLDMuMjMsMCw1LjczLDEuNTYsNy41NSw0LjdsLS4wNi4wM1oiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzOTQuNDQgMjI5Ljk4IDM5NC40NCAyNTMuOTMgMzkwLjIzIDI1My45MyAzOTAuMjMgMjI5Ljk4IDM4My44MSAyMjkuOTggMzgzLjgxIDIyNi4wNCA0MDAuODQgMjI2LjA0IDQwMC44NCAyMjkuOTggMzk0LjQ0IDIyOS45OCIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDEwLjY2LDIyNi4wMXYxNi44YzAsMi4zOS4zNyw0LjE1LDEuMTgsNS4yNywxLjE1LDEuNjEsMi44MiwyLjM5LDQuOTMsMi4zOXMzLjc3LS44MSw0Ljk2LTIuMzljLjc4LTEuMDcsMS4xOC0yLjgyLDEuMTgtNS4yN3YtMTYuOGg0LjIxdjE3Ljk4YzAsMi45NC0uOTIsNS4zNi0yLjc0LDcuMjYtMi4wNywyLjEtNC41OCwzLjE3LTcuNTgsMy4xN3MtNS41My0xLjA3LTcuNTgtMy4xN2MtMS44NC0xLjktMi43NC00LjMyLTIuNzQtNy4yNnYtMTcuOThoNC4yMS0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00MzkuODUsMjQ5Ljk1aDEuOWMxLjksMCwzLjQ2LS4yLDQuNzMtLjYxLDEuMjQtLjQzLDIuMzktMS4xLDMuNC0yLjAyLDIuMDctMS45LDMuMTEtNC4zNSwzLjExLTcuNDFzLTEuMDQtNS41Ni0zLjA4LTcuNDNjLTEuODQtMS43LTQuNTUtMi41NC04LjE2LTIuNTRoLTEuOXYyMFpNNDM1LjY1LDI1My45M3YtMjcuOTJoNS44NWMyLjgsMCw1LjAxLjI2LDYuNjYuODQsMS43Ni41NSwzLjM0LDEuNDcsNC43NSwyLjc3LDIuODgsMi42Miw0LjMyLDYuMDgsNC4zMiwxMC4zNXMtMS41LDcuNzUtNC41LDEwLjRjLTEuNSwxLjMzLTMuMDgsMi4yNS00LjczLDIuNzctMS41Ni41Mi0zLjc1Ljc4LTYuNTcuNzhoLTUuNzl2LjAzWiIvPgogICAgPHJlY3QgY2xhc3M9ImNscy0xIiB4PSI0NjQuMzgiIHk9IjIyNi4wMSIgd2lkdGg9IjQuMjEiIGhlaWdodD0iMjcuOTIiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQ4MC4wMiwyMzkuOWMwLDMuMDgsMS4wNCw1LjYyLDMuMTEsNy42MSwyLjA3LDEuOTksNC40NCwzLDcuMTUsMywyLjk0LDAsNS4zOS0xLjAxLDcuNDEtMy4wMywyLjAyLTIuMDUsMy4wMy00LjU1LDMuMDMtNy40OXMtMS4wMS01LjQ4LTMtNy40OWMtMS45OS0yLjAyLTQuNDQtMy4wMy03LjM1LTMuMDNzLTUuMzYsMS4wMS03LjM1LDMuMDNjLTEuOTksMS45OS0zLDQuNDctMyw3LjQxWk00NzUuNzYsMjM5Ljg0YzAtMy45MiwxLjQ0LTcuMjksNC4zMi0xMC4xMSwyLjg1LTIuODIsNi4zMS00LjI0LDEwLjM1LTQuMjRzNy4zOCwxLjQxLDEwLjIzLDQuMjZjMi44NSwyLjgyLDQuMjksNi4yNSw0LjI5LDEwLjI2cy0xLjQ0LDcuNDEtNC4yOSwxMC4yYy0yLjg4LDIuOC02LjM3LDQuMjEtMTAuNDMsNC4yMS0zLjYsMC02LjgzLTEuMjQtOS43MS0zLjc1LTMuMTctMi43Ny00LjczLTYuMzctNC43My0xMC44M2gtLjAzWiIvPgogICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODgwLjYsMi4xYy0zLjI5LDAtNi4wOCwxLjIxLTguNDQsMy42M3MtMy41NCw1LjMtMy41NCw4LjY0LDEuMTgsNi4zNCwzLjU0LDguNzZjMi4zMywyLjQyLDUuMTksMy42Myw4LjU2LDMuNjNzNi4xNC0xLjIxLDguNS0zLjZjMi4zMy0yLjQyLDMuNTItNS4zMywzLjUyLTguNzYsMC0xLjg0LS40Ni0zLjcyLTEuMzgtNS42OC0uOTItMS44NC0yLjEzLTMuMjktMy42My00LjM1LTIuMTMtMS41LTQuNS0yLjI1LTcuMTItMi4yNXYtLjAzWk04OTUuMDksMTQuNDFjMCw0LjAxLTEuNDEsNy40MS00LjIxLDEwLjIzLTIuOCwyLjgyLTYuMiw0LjIxLTEwLjE0LDQuMjFzLTcuMzgtMS40MS0xMC4yLTQuMjRjLTIuOC0yLjgyLTQuMjEtNi4yMi00LjIxLTEwLjI2LDAtMi4yMi40Ni00LjI2LDEuMzUtNi4wOC45Mi0xLjk2LDIuMTktMy42LDMuODMtNC45NiwyLjY4LTIuMjIsNS42OC0zLjMxLDkuMDItMy4zMSwyLjIyLDAsNC4yMS40Myw2LjAyLDEuMjcsMi41NCwxLjEyLDQuNjEsMi44OCw2LjE3LDUuMywxLjU2LDIuNDIsMi4zNiw1LjA0LDIuMzYsNy44NFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTg3OS4yNSwxMy41MWgtLjU1di00LjU1aC42M2MyLjE5LDAsMy4zMS43MiwzLjMxLDIuMTksMCwxLjU2LTEuMTUsMi4zNi0zLjQsMi4zNlpNODgyLjEzLDE1Ljc5bC4yMy0uMDZjLjk4LS4yOSwxLjc5LS44NiwyLjQyLTEuNzMuNjMtLjg5Ljk1LTEuODQuOTUtMi44OCwwLTEuNTYtLjYxLTIuOC0xLjc5LTMuNzUtMS4wNy0uODQtMi43Ny0xLjI0LTUuMDctMS4yNGgtMy4zMXYxNi42M2gzLjE3di02LjZsNC45Myw2LjZoMy44OWwtNS40Mi02Ljk0di0uMDNaIi8+CiAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik04NzguODQsMTMuMzRoLjM3YzIuMTksMCwzLjI2LS43MiwzLjI2LTIuMTksMC0xLjM4LTEuMDQtMi4wNS0zLjE0LTIuMDVoLS40OXY0LjI0Wk04NzkuMjUsMTMuNjZoLS42OXYtNC44NGguODFjMi4zMSwwLDMuNDYuNzgsMy40NiwyLjMzLDAsMS42Ny0xLjIxLDIuNTEtMy41NywyLjUxWk04ODMuNzEsMjIuNTloMy40OWwtNS4zMy02Ljg2LjQzLS4xNGMuOTUtLjI5LDEuNzMtLjg0LDIuMzMtMS42Ny42MS0uODYuOTItMS43OS45Mi0yLjgsMC0xLjUtLjU1LTIuNzEtMS43My0zLjYzLTEuMDQtLjgxLTIuNzEtMS4yMS00Ljk5LTEuMjFoLTMuMTd2MTYuMzFoMi44NXYtNi44OWw1LjE2LDYuODloLjAzWk04ODcuODMsMjIuOTFoLTQuMjZsLTQuNy02LjI4djYuMjhoLTMuNDlWNS45OWgzLjQ5YzIuMzMsMCw0LjA5LjQzLDUuMTksMS4yNywxLjIxLjk4LDEuODQsMi4yOCwxLjg0LDMuODYsMCwxLjA3LS4zMiwyLjA3LS45OCwyLjk3cy0xLjUsMS41LTIuNTEsMS43OWw1LjQ4LDcuMDNoLS4wNloiLz4KICA8L2c+Cjwvc3ZnPg==" alt="Tremendo Studio" style="height:50px;object-fit:contain;">
+  <div class="cierre-line"></div>
+  <div class="cierre-ttl" contenteditable="true">LISTOS PARA HACER ALGO TREMENDO.</div>
+  <div style="width:40px;height:1px;background:rgba(255,255,255,.12);margin:18px auto;"></div>
+  <div class="cierre-ct" contenteditable="true">CDMX · SOMOS@TREMENDO.COM<br>@SOMOSTREMENDO · 55.3727.8763</div>
+</div>
+
+</div>
+
+<script>
+var slides,total,cur=0,dotsEl=document.getElementById('dots');
+function rebuildDots(){slides=document.querySelectorAll('.slide');total=slides.length;dotsEl.innerHTML='';for(var i=0;i<total;i++){var d=document.createElement('div');d.className='dot'+(i===cur?' active':'');(function(x){d.onclick=function(){goTo(x);};})(i);dotsEl.appendChild(d);}document.getElementById('sc').textContent=(cur+1)+' / '+total;}
+rebuildDots();
+function goTo(n){slides[cur].classList.remove('active');cur=(n+total)%total;slides[cur].classList.add('active');rebuildDots();}
+function next(){goTo(cur+1);}function prev(){goTo(cur-1);}
+document.addEventListener('keydown',function(e){if(document.activeElement&&document.activeElement.getAttribute('contenteditable')==='true')return;if(e.key==='ArrowRight'||e.key==='ArrowDown')next();if(e.key==='ArrowLeft'||e.key==='ArrowUp')prev();});
+document.addEventListener('paste',function(e){if(!e.target||e.target.getAttribute('contenteditable')!=='true')return;e.preventDefault();document.execCommand('insertText',false,e.clipboardData.getData('text/plain'));});
+function loadImg(input){if(!input.files||!input.files[0])return;var r=new FileReader(),p=input.closest('.ip');r.onload=function(ev){var ex=p.querySelector('.li');if(ex)ex.remove();var img=document.createElement('img');img.className='li';img.src=ev.target.result;p.appendChild(img);var ic=p.querySelector('.ico'),lb=p.querySelector('.lbl');if(ic)ic.style.display='none';if(lb)lb.style.display='none';};r.readAsDataURL(input.files[0]);}
+function addKpi(){var tr=document.createElement('tr');tr.innerHTML='<td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>';document.getElementById('kpi-body').appendChild(tr);}
+/* Fix 1: Agregar plataforma */
+function addPlat(){var wrap=document.getElementById('plat-tags');var btn=wrap.querySelector('button:last-child');var div=document.createElement('div');div.className='plat-tag-item';div.innerHTML='<span style="background:var(--n);color:#fff;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;display:inline-flex;align-items:center;gap:8px;" contenteditable="true">Nueva red</span><button onclick="this.parentElement.remove()" style="background:transparent;border:none;color:rgba(0,0,0,.3);cursor:pointer;font-size:14px;padding:0 2px;line-height:1;" title="Eliminar">×</button>';wrap.insertBefore(div,btn);}
+/* Fix 2: Agregar objetivo */
+var objCount=2;
+function addObj(){objCount++;var div=document.createElement('div');div.className='obj-floating-card';div.innerHTML='<div class="ofc-num">0'+objCount+'</div><div class="ofc-body"><div class="ofc-label">Objetivo</div><div class="ofc-val" contenteditable="true">Nuevo objetivo</div><div class="ofc-label" style="margin-top:10px;">KPI</div><div class="ofc-val" contenteditable="true">Indicador clave</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;"><div><div class="ofc-label">Meta</div><div class="ofc-val" contenteditable="true">Meta</div></div><div><div class="ofc-label">Plazo</div><div class="ofc-val" contenteditable="true">Plazo</div></div></div><div class="ofc-label" style="margin-top:10px;">Cómo medirlo</div><div class="ofc-val" contenteditable="true">Herramienta de medición</div></div><button class="ofc-del" onclick="this.closest(\'.obj-floating-card\').remove()">×</button>';document.getElementById('obj-cards').appendChild(div);}
+/* Fix 3: Agregar y renumerar pilares */
+function addPilar(){var grid=document.getElementById('pilar-grid-wrap');var cards=grid.querySelectorAll('.pilar-card');var num=cards.length+1;var div=document.createElement('div');div.className='pilar-card';div.style.position='relative';div.innerHTML='<button onclick="this.closest(\'.pilar-card\').remove();renumPilares()" style="position:absolute;top:10px;right:10px;background:transparent;border:none;color:rgba(0,0,0,.25);cursor:pointer;font-size:16px;line-height:1;">×</button><div class="pilar-num">0'+num+'</div><div class="pilar-name" contenteditable="true">NUEVO PILAR</div><div class="pilar-desc" contenteditable="true">Describe el tipo de contenido que engloba este pilar y su objetivo comunicativo.</div>';grid.appendChild(div);}
+function renumPilares(){var cards=document.querySelectorAll('#pilar-grid-wrap .pilar-card');cards.forEach(function(c,i){var n=c.querySelector('.pilar-num');if(n)n.textContent='0'+(i+1);});}
+/* Fix 5: Agregar pauta */
+function addPauta(){var div=document.createElement('div');div.className='pauta-card-new';div.style.cssText='background:var(--g);padding:20px;border-top:3px solid var(--o);position:relative;';div.innerHTML='<button onclick="this.closest(\'.pauta-card-new\').remove()" style="position:absolute;top:8px;right:10px;background:transparent;border:none;color:rgba(0,0,0,.25);cursor:pointer;font-size:16px;line-height:1;">×</button><div class="pf-row"><span class="pf-label">Contenido a publicar</span><div class="pf-val" contenteditable="true">Describe el contenido que se va a pautar</div></div><div class="pf-row"><span class="pf-label">Tipo de campaña</span><div class="pf-val" contenteditable="true">Reconocimiento · Tráfico · Conversión</div></div><div class="pf-row"><span class="pf-label">Presupuesto</span><div class="pf-val" contenteditable="true">$100 MXN diarios durante 5 días</div></div><div class="pf-row"><span class="pf-label">Canal</span><div class="pf-val" contenteditable="true">Instagram · Facebook</div></div><div class="pf-row"><span class="pf-label">Segmentación sugerida</span><div class="pf-val" contenteditable="true">Escribe aquí la segmentación propuesta</div></div>';document.getElementById('pauta-cards').appendChild(div);}
+
+async function exportPDF(){
+  var btn=document.querySelector(".pdf-btn")||document.querySelector(".pb");
+  if(btn){btn.textContent="Generando PDF...";btn.disabled=true;}
+  var allSlides=document.querySelectorAll(".slide");
+  var savedCur=cur;
+  var pdf=null;
+  for(var i=0;i<allSlides.length;i++){
+    allSlides.forEach(function(s){s.style.display="none";});
+    allSlides[i].style.display="flex";
+    await new Promise(function(r){setTimeout(r,180);});
+    var bg=window.getComputedStyle(allSlides[i]).backgroundColor||"#000000";
+    var canvas=await html2canvas(allSlides[i],{
+      scale:1.5,useCORS:true,allowTaint:true,
+      backgroundColor:bg,logging:false,
+      width:window.innerWidth,height:window.innerHeight
+    });
+    var imgData=canvas.toDataURL("image/jpeg",0.93);
+    var w=canvas.width,h=canvas.height;
+    if(!pdf){
+      pdf=new window.jspdf.jsPDF({orientation:w>h?"landscape":"portrait",unit:"px",format:[w,h],compress:true});
+    } else {
+      pdf.addPage([w,h],w>h?"landscape":"portrait");
+    }
+    pdf.addImage(imgData,"JPEG",0,0,w,h,undefined,"FAST");
+  }
+  allSlides.forEach(function(s,i){s.style.display=i===savedCur?"flex":"none";});
+  pdf.save("tremendo-studio.pdf");
+  if(btn){btn.textContent="Generando... 100%";setTimeout(function(){btn.textContent="↓ Guardar PDF";btn.disabled=false;},800);}
+}
+
+</script>
+</body>
+</html>
