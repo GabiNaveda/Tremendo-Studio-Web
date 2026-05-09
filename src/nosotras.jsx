@@ -34,7 +34,7 @@ const TEAM = [
   sign: "Leo ♌︎",
   tagline: "Experta que estructura y sociable por instinto",
   color: "var(--ink)",
-  photo: "assets/Jos.JPG"
+  photo: "assets/jos.jpg"
 }];
 
 
