@@ -5,7 +5,7 @@ const { useEffect, useRef, useState } = React;
 // HOME: Hero + Marquee banner + Manifiesto + Portafolio
 // ──────────────────────────────────────────────────────────
 
-function Hero() {
+function Hero({ go }) {
   const wrapRef = useRef(null);
   const isMobile = window.innerWidth <= 600;
   const [progress, setProgress] = useState(isMobile ? 1 : 0);
@@ -82,9 +82,9 @@ function Hero() {
         </p>
 
         <div className="hero-cta-row">
-          <a href="#" className="btn" data-cursor="hola">
+          <button className="btn" onClick={() => go("servicios")} data-cursor="hola">
             Quiero algo Tremendo <Star size={12} />
-          </a>
+          </button>
           <span className="hero-note">
             <Asterisk size={10} /> respuesta en &lt;48h
           </span>
@@ -305,7 +305,7 @@ function Showreel() {
 function Home({ tweaks, go }) {
   return (
     <div className="page-home tab-enter">
-      <Hero />
+      <Hero go={go} />
       <MarqueeBlock style={tweaks.bannerStyle} />
       <Manifiesto />
       <Portafolio />
