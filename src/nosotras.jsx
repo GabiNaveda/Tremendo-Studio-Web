@@ -10,9 +10,9 @@ const TEAM = [
   name: "Gabi",
   handle: "@gabi.tremenda",
   role: "Directora de Estrategia & Contenido",
-  bio: "Creativa con enfoque estratégico. Experta en construir marcas que conectan y crecen en redes. Entiende el comportamiento digital y transforma ideas en contenido con intención.",
+  bio: "Mente inquieta y energía imparable",
   fav: "Excel + café frío",
-  sign: "Escorpio ♏︎",
+  sign: "Acuario ♒︎",
   color: "var(--orange)",
   photo: "assets/gabi.png"
 },
@@ -20,9 +20,9 @@ const TEAM = [
   name: "Dani",
   handle: "@dani.tremenda",
   role: "Directora de Identidad & Branding",
-  bio: "Especialista en diseño de marca. Da forma a lo intangible: crea identidades sólidas, memorables y coherentes que reflejan el alma de cada proyecto desde el primer trazo.",
+  bio: "Minimalismo puro y ejecución perfecta",
   fav: "Pantone + vinilos",
-  sign: "Virgo ♍︎",
+  sign: "Libra ♎︎",
   color: "var(--burnt)",
   photo: "assets/dani.png"
 },
@@ -30,9 +30,9 @@ const TEAM = [
   name: "Jos",
   handle: "@jos.tremenda",
   role: "Directora de Arte & Dirección Visual",
-  bio: "Ojo editorial y visión estética afilada. Lidera shootings y el estilo visual de cada marca. Aporta narrativa, intención y belleza en cada encuadre.",
+  bio: "Experta que estructura y sociable por instinto",
   fav: "Cámara analógica",
-  sign: "Géminis ♊︎",
+  sign: "Leo ♌︎",
   color: "var(--ink)",
   photo: "assets/jos.png"
 }];
