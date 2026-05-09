@@ -10,9 +10,8 @@ const TEAM = [
   name: "Gabi",
   handle: "@gabi.tremenda",
   role: "Directora de Estrategia & Contenido",
-  bio: "Mente inquieta y energía imparable",
-  fav: "Excel + café frío",
-  sign: "Acuario ♒︎",
+  bio: "Creativa con enfoque estratégico. Experta en construir marcas que conectan y crecen en redes. Entiende el comportamiento digital y transforma ideas en contenido con intención.",
+  sign: "Acuario ♒︎ • Mente inquieta y energía imparable",
   color: "var(--orange)",
   photo: "assets/gabi.png"
 },
@@ -20,9 +19,8 @@ const TEAM = [
   name: "Dani",
   handle: "@dani.tremenda",
   role: "Directora de Identidad & Branding",
-  bio: "Minimalismo puro y ejecución perfecta",
-  fav: "Pantone + vinilos",
-  sign: "Libra ♎︎",
+  bio: "Especialista en diseño de marca. Da forma a lo intangible: crea identidades sólidas, memorables y coherentes que reflejan el alma de cada proyecto desde el primer trazo.",
+  sign: "Libra ♎︎ • Minimalismo puro y ejecución perfecta",
   color: "var(--burnt)",
   photo: "assets/dani.png"
 },
@@ -30,9 +28,8 @@ const TEAM = [
   name: "Jos",
   handle: "@jos.tremenda",
   role: "Directora de Arte & Dirección Visual",
-  bio: "Experta que estructura y sociable por instinto",
-  fav: "Cámara analógica",
-  sign: "Leo ♌︎",
+  bio: "Ojo editorial y visión estética afilada. Lidera shootings y el estilo visual de cada marca. Aporta narrativa, intención y belleza en cada encuadre.",
+  sign: "Leo ♌︎ • Experta que estructura y sociable por instinto",
   color: "var(--ink)",
   photo: "assets/jos.png"
 }];
@@ -65,9 +62,6 @@ function TeamCard({ t, i }) {
           <div className="teamcard-stats">
             <span className="teamcard-stat" title="Signo">
               <Asterisk size={11} /> {t.sign}
-            </span>
-            <span className="teamcard-stat" title="Fav tool">
-              ✦ {t.fav}
             </span>
           </div>
           <button
