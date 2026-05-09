@@ -2060,6 +2060,7 @@ input, textarea, [contenteditable] { caret-color: var(--orange); }
   border: 0;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, transform 0.2s;
+  white-space: nowrap;
 }
 .teamcard-follow:hover {
   background: var(--orange);
